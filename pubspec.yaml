@@ -37,8 +37,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   intl: ^0.17.0
+  google_fonts: ^3.0.1
+  country_picker: ^2.0.16
+  pin_code_fields: ^7.4.0
   flutter_screenutil: ^5.5.4
   cached_network_image: ^3.2.2
+  social_login_buttons: ^1.0.6+2
 
 dev_dependencies:
   flutter_test:
