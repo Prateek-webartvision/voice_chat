@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -17,14 +15,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(392.7, 834.9),
+      designSize: const Size(392.7, 834.9),
       builder: (context, child) {
         return GetMaterialApp(
           title: "Voice Chat",
           theme: AppThemes.light(),
           darkTheme: AppThemes.dark(),
           themeMode: ThemeMode.light,
-          home: SignInPage(),
+          home: const SignInPage(),
         );
       },
     );
