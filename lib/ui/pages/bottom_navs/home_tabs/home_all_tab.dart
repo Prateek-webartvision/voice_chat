@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,14 +31,14 @@ class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(height: 20.h),
-          Banner(),
+          const Banner(),
           SizedBox(height: 20.h),
           MainTitleWithWidget(
             title: "Fixed Room",
             onTab: () {
               print("Fixed Room");
             },
-            child: HomeAllFixedRoom(),
+            child: const HomeAllFixedRoom(),
           ),
           SizedBox(height: 20.h),
           Row(
@@ -55,7 +53,7 @@ class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
                   ),
                   labelColor: AppColor.white,
                   unselectedLabelColor: AppColor.black,
-                  tabs: [
+                  tabs: const [
                     Tab(text: "Trend"),
                     Tab(text: "Following"),
                   ],
@@ -66,7 +64,7 @@ class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
           SizedBox(
             height: h10,
           ),
-          Rooms(),
+          const Rooms(),
 
           // TabBarView(
           //     controller: tabController,
@@ -98,7 +96,7 @@ class HomeAllFixedRoom extends StatelessWidget {
               width: 120,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: CachedNetworkImageProvider(
+                  image: const CachedNetworkImageProvider(
                       "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/117935323/original/ff84d06b328e419ee1d23bb05f0350c330a2c75e/create-a-unique-and-professional-youtube-gaming-thumbnail.png"),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
@@ -109,7 +107,7 @@ class HomeAllFixedRoom extends StatelessWidget {
               ),
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   bottom: 10,
                   left: 10,
                   right: 10,
@@ -121,7 +119,7 @@ class HomeAllFixedRoom extends StatelessWidget {
                       width: 30,
                       decoration: BoxDecoration(
                         color: Colors.green,
-                        image: DecorationImage(
+                        image: const DecorationImage(
                           image: CachedNetworkImageProvider(
                               "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"),
                           fit: BoxFit.cover,
@@ -129,7 +127,7 @@ class HomeAllFixedRoom extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         "Name",
@@ -162,7 +160,7 @@ class Banner extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.green,
           borderRadius: BorderRadius.circular(16),
-          image: DecorationImage(
+          image: const DecorationImage(
             image: CachedNetworkImageProvider(
                 "https://indiater.com/wp-content/uploads/2021/06/free-cover-banner-for-season-x-fortnite-game-psd-template-scaled.jpg"),
             fit: BoxFit.cover,

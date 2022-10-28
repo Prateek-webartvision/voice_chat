@@ -36,7 +36,7 @@ class MainTitleWithWidget extends StatelessWidget {
                       size: 15,
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: Text(
                       title,
@@ -52,7 +52,7 @@ class MainTitleWithWidget extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             GestureDetector(
               onTap: () => onTab(),
               child: Row(
@@ -62,7 +62,7 @@ class MainTitleWithWidget extends StatelessWidget {
                     "more",
                     style: TextStyle(color: AppColor.closeToRed),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Container(
                     height: 20,
                     width: 20,
@@ -81,7 +81,7 @@ class MainTitleWithWidget extends StatelessWidget {
             )
           ],
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         child ?? Container(),
       ],
     );

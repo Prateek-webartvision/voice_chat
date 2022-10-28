@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,7 +27,7 @@ class SignInPage extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: h60),
-                AppLogoWidget(),
+                const AppLogoWidget(),
                 SizedBox(height: h30),
                 Text(
                   "Voice Chat",
@@ -44,7 +42,7 @@ class SignInPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 //  socialBtn
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -81,10 +79,10 @@ class SignInPage extends StatelessWidget {
                       ),
                       bgColor: AppColor.grey400,
                       onPress: () {
-                        Get.to(() => SignInWithIDPage());
+                        Get.to(() => const SignInWithIDPage());
                       },
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     // login with number
                     MyRoundedIConBtn(
                       icon: Icon(
@@ -94,7 +92,7 @@ class SignInPage extends StatelessWidget {
                       ),
                       bgColor: AppColor.closeToRed,
                       onPress: () {
-                        Get.to(() => SignInWithNumberPage());
+                        Get.to(() => const SignInWithNumberPage());
                       },
                     ),
                   ],
@@ -122,7 +120,7 @@ class SignInPage extends StatelessWidget {
                             },
                           style: TextStyle(color: AppColor.closeToRed),
                         ),
-                        TextSpan(text: "and"),
+                        const TextSpan(text: "and"),
                         TextSpan(
                           text: " privacy policy",
                           recognizer: TapGestureRecognizer()

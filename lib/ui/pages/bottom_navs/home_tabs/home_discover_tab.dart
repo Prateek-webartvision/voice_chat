@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,17 +21,17 @@ class HomeDiscoverTab extends StatelessWidget {
               onTab: () {
                 print("object");
               },
-              child: CountryGridView(),
+              child: const CountryGridView(),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             MainTitleWithWidget(
               title: "New Rooms",
               onTab: () {
                 print("new Rooms");
               },
-              child: Rooms(),
+              child: const Rooms(),
             ),
-            SizedBox(height: 50)
+            const SizedBox(height: 50)
           ],
         ),
       ),
@@ -51,9 +49,9 @@ class Rooms extends StatelessWidget {
     return GridView.builder(
       itemCount: 16,
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemBuilder: (context, index) {
         return Card(
           clipBehavior: Clip.hardEdge,
@@ -62,7 +60,7 @@ class Rooms extends StatelessWidget {
             // width: 180,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: CachedNetworkImageProvider(
+                image: const CachedNetworkImageProvider(
                     "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/117935323/original/ff84d06b328e419ee1d23bb05f0350c330a2c75e/create-a-unique-and-professional-youtube-gaming-thumbnail.png"),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
@@ -73,7 +71,7 @@ class Rooms extends StatelessWidget {
             ),
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 bottom: 10,
                 left: 10,
                 right: 10,
@@ -85,7 +83,7 @@ class Rooms extends StatelessWidget {
                     width: 30,
                     decoration: BoxDecoration(
                       color: Colors.green,
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: CachedNetworkImageProvider(
                             "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"),
                         fit: BoxFit.cover,
@@ -93,7 +91,7 @@ class Rooms extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: Text(
                       "Name",
@@ -127,7 +125,7 @@ class CountryGridView extends StatelessWidget {
       child: GridView.builder(
         itemCount: countrysFlagEmojiList.length,
         scrollDirection: Axis.horizontal,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
         ),
         itemBuilder: (context, index) {

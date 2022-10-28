@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/bottom_nav_bar_page.dart';
-import 'package:voice_chat/ui/pages/bottom_navs/home_tab_page.dart';
 import 'package:voice_chat/ui/widgets/app_logo_widget.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/ui/widgets/my_login_btn.dart';
@@ -34,7 +31,7 @@ class SignInWithIDPage extends StatelessWidget {
         child: Column(
           children: [
             Container(height: h30),
-            AppLogoWidget(),
+            const AppLogoWidget(),
             SizedBox(height: h30),
             Text(
               "SignIn with ID",
@@ -55,7 +52,7 @@ class SignInWithIDPage extends StatelessWidget {
                   KTextField(
                     controller: idController,
                     hintText: "Enter your ID number",
-                    prefixIcon: Icon(Icons.phone_android),
+                    prefixIcon: const Icon(Icons.phone_android),
                     textInputType: TextInputType.phone,
                   ),
                   SizedBox(height: h10),
@@ -63,7 +60,7 @@ class SignInWithIDPage extends StatelessWidget {
                   KTextField(
                     controller: passwordController,
                     hintText: "Enter your password",
-                    prefixIcon: Icon(Icons.lock),
+                    prefixIcon: const Icon(Icons.lock),
                     textInputType: TextInputType.visiblePassword,
                     isPassword: true,
                   ),
@@ -78,7 +75,7 @@ class SignInWithIDPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         height: 80,
         child: Center(
           child: SizedBox(
@@ -101,7 +98,7 @@ class SignInWithIDPage extends StatelessWidget {
                       },
                     style: TextStyle(color: AppColor.closeToRed),
                   ),
-                  TextSpan(text: "and"),
+                  const TextSpan(text: "and"),
                   TextSpan(
                     text: " privacy policy",
                     recognizer: TapGestureRecognizer()
@@ -120,6 +117,6 @@ class SignInWithIDPage extends StatelessWidget {
   }
 
   loginBtn() {
-    Get.offAll(() => BottomNavBarPage());
+    Get.offAll(() => const BottomNavBarPage());
   }
 }

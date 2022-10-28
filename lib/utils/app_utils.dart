@@ -4,12 +4,14 @@ import 'package:voice_chat/res/app_color.dart';
 
 class AppUtils {
   static showSnakBar(String msg) {
-    Get.showSnackbar(GetSnackBar(
-      duration: Duration(seconds: 1),
-      messageText: Text(
-        msg,
-        style: TextStyle(color: AppColor.white),
+    Get.showSnackbar(
+      GetSnackBar(
+        duration: const Duration(seconds: 1),
+        messageText: Text(
+          msg,
+          style: TextStyle(color: AppColor.white),
+        ),
       ),
-    ));
+    );
   }
 }

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +37,7 @@ class _SignInWithNumberPageState extends State<SignInWithNumberPage> {
         child: Column(
           children: [
             Container(height: h30),
-            AppLogoWidget(),
+            const AppLogoWidget(),
             SizedBox(height: h30),
             Text(
               "SignIn & SignUp",
@@ -104,7 +102,7 @@ class _SignInWithNumberPageState extends State<SignInWithNumberPage> {
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               child: (isCodeview == true)
                   //Code View Text
-                  ? CodeViewText()
+                  ? const CodeViewText()
                   : Text(
                       "Tap Next to receive an SMS confirmation. message and data rates may apply.",
                       style: GoogleFonts.roboto(color: AppColor.black54),
@@ -124,7 +122,7 @@ class _SignInWithNumberPageState extends State<SignInWithNumberPage> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         height: 80,
         child: Center(
           child: SizedBox(
@@ -147,7 +145,7 @@ class _SignInWithNumberPageState extends State<SignInWithNumberPage> {
                       },
                     style: TextStyle(color: AppColor.closeToRed),
                   ),
-                  TextSpan(text: "and"),
+                  const TextSpan(text: "and"),
                   TextSpan(
                     text: " privacy policy",
                     recognizer: TapGestureRecognizer()
@@ -209,7 +207,6 @@ class CodeViewText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int time = 60;
     return Row();
   }
 }

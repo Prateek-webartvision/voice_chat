@@ -1,9 +1,5 @@
-// ignore_for_file: sort_child_properties_last, sized_box_for_whitespace
-
 import 'package:flutter/material.dart';
 import 'dart:math';
-
-import 'package:voice_chat/res/app_color.dart';
 
 class HaxWidget extends StatelessWidget {
   const HaxWidget({
@@ -16,18 +12,15 @@ class HaxWidget extends StatelessWidget {
         child: Transform.rotate(
       angle: pi / 2,
       child: ClipPath(
+        clipper: _MyClipper(),
         child: Transform.rotate(
           angle: -pi,
           child: Container(
             height: 100,
             width: 100,
-            decoration: BoxDecoration(
-              // gradient: AppColor.backgraundGradient(),
-              color: Colors.green,
-            ),
+            decoration: const BoxDecoration(color: Colors.green),
           ),
         ),
-        clipper: _MyClipper(),
       ),
     ));
   }

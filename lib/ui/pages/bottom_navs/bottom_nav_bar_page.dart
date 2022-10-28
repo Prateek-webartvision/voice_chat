@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/res/app_color.dart';
+import 'package:voice_chat/ui/pages/bottom_navs/account_tab_page.dart';
+import 'package:voice_chat/ui/pages/bottom_navs/create_room_tab_page.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/home_tab_page.dart';
+import 'package:voice_chat/ui/pages/bottom_navs/messages_tab_page.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/post_tab_page.dart';
 
 class BottomNavBarPage extends StatefulWidget {
@@ -17,19 +18,12 @@ class BottomNavBarPage extends StatefulWidget {
 class _BottomNavBarPageState extends State<BottomNavBarPage> {
   int currentPage = 0;
   List<Widget> tabPages = [
-    HomeTabPage(),
-    PostTabPage(),
-    Container(
-      child: Center(
-        child: Text("tab 3"),
-      ),
-    ),
-    Container(
-      child: Center(
-        child: Text("tab 4"),
-      ),
-    ),
+    const HomeTabPage(),
+    const PostTabPage(),
+    const MessagesTabPage(),
+    const AccountTabPage(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,8 +46,8 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
                   currentPage = 1;
                   break;
                 case 2:
-                  Get.to(() => HomeTabPage());
-                  // currentPage = 1;
+                  //Create Post Nav
+                  Get.to(() => const CreateRoomTabPage());
                   break;
                 case 3:
                   currentPage = 2;
@@ -64,7 +58,7 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
               }
             });
           },
-          items: [
+          items: const [
             TabItem(icon: Icons.home, title: 'Home'),
             TabItem(icon: Icons.post_add, title: 'Post'),
             TabItem(icon: Icons.mic),

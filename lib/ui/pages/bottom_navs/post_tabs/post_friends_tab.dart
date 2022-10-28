@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class PostFriendsTab extends StatelessWidget {
   const PostFriendsTab({super.key});
@@ -8,7 +6,8 @@ class PostFriendsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text("Friends"),
+      alignment: Alignment.center,
+      child: const Text("Friends not found"),
     );
   }
 }

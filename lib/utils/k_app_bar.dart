@@ -1,9 +1,13 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class KAppBar {
   static homeAppBar() {
     return PreferredSize(
-        child: HomeAppBar(), preferredSize: Size.fromHeight(50));
+      preferredSize: Size.fromHeight(50),
+      child: HomeAppBar(),
+    );
   }
 }
 
@@ -17,7 +21,9 @@ class HomeAppBar extends StatelessWidget {
       color: Colors.green,
       child: SafeArea(
           child: Row(
-        children: [Text("data")],
+        children: const [
+          Text("data"),
+        ],
       )),
     );
   }

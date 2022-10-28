@@ -52,7 +52,11 @@ class KTextField2 extends StatelessWidget {
     this.prefixIcon,
     this.textInputType,
     this.textInputAction,
+    this.maxLines,
+    this.minLines,
+    this.fillColor,
   });
+
   final TextEditingController? textEditingController;
   final String hintText;
   final double? borderRadius;
@@ -60,6 +64,9 @@ class KTextField2 extends StatelessWidget {
   final Icon? prefixIcon;
   final TextInputType? textInputType;
   final TextInputAction? textInputAction;
+  final int? maxLines;
+  final int? minLines;
+  final Color? fillColor;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +75,8 @@ class KTextField2 extends StatelessWidget {
       obscureText: isPassword ?? false,
       keyboardType: textInputType,
       textInputAction: textInputAction,
+      maxLines: maxLines ?? 1,
+      minLines: minLines ?? 1,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
@@ -76,7 +85,7 @@ class KTextField2 extends StatelessWidget {
         prefixIcon: prefixIcon,
         hintText: hintText,
         filled: true,
-        fillColor: AppColor.grey200,
+        fillColor: fillColor ?? AppColor.grey200,
         isCollapsed: false,
       ),
     );

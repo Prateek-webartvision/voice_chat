@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -21,10 +19,10 @@ class _HomeTabPageState extends State<HomeTabPage>
   late TabController tabController;
   int currentTabPage = 0;
 
-  List<Widget> HomeTabPages = [
-    HomeGameTab(),
-    HomeDiscoverTab(),
-    HomeAllTab(),
+  List<Widget> homeTabPages = [
+    const HomeGameTab(),
+    const HomeDiscoverTab(),
+    const HomeAllTab(),
   ];
 
   @override
@@ -41,11 +39,11 @@ class _HomeTabPageState extends State<HomeTabPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
+        preferredSize: const Size.fromHeight(50),
         child: Container(
           color: AppColor.grey200,
           height: double.maxFinite,
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           width: Get.width,
           child: SafeArea(
             child: Row(
@@ -64,14 +62,14 @@ class _HomeTabPageState extends State<HomeTabPage>
                         currentTabPage = value;
                       });
                     },
-                    tabs: [
+                    tabs: const [
                       Tab(text: "Games"),
                       Tab(text: "Discover"),
                       Tab(text: "All"),
                     ],
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -89,7 +87,7 @@ class _HomeTabPageState extends State<HomeTabPage>
                         ),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Center(
                       child: Container(
                         height: 30.h,
@@ -111,7 +109,7 @@ class _HomeTabPageState extends State<HomeTabPage>
           ),
         ),
       ),
-      body: TabBarView(controller: tabController, children: HomeTabPages),
+      body: TabBarView(controller: tabController, children: homeTabPages),
     );
   }
 }

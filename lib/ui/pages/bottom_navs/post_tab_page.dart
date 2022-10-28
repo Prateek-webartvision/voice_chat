@@ -1,9 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/res/app_color.dart';
+import 'package:voice_chat/ui/pages/bottom_navs/post_tabs/create_post_page.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/post_tabs/post_friends_tab.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/post_tabs/post_suggested_tab.dart';
 
@@ -20,8 +19,8 @@ class _PostTabPageState extends State<PostTabPage>
   int currentPage = 0;
 
   List<Widget> postTabPages = [
-    PostSuggestedTab(),
-    PostFriendsTab(),
+    const PostSuggestedTab(),
+    const PostFriendsTab(),
   ];
 
   @override
@@ -35,11 +34,11 @@ class _PostTabPageState extends State<PostTabPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
+        preferredSize: const Size.fromHeight(50),
         child: Container(
           color: AppColor.grey200,
           height: double.maxFinite,
-          padding: EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           width: Get.width,
           child: SafeArea(
             child: Row(
@@ -48,7 +47,6 @@ class _PostTabPageState extends State<PostTabPage>
                 SizedBox(
                   width: 200,
                   child: TabBar(
-                    // isScrollable: true,
                     controller: tabController,
                     indicatorColor: AppColor.closeToRed,
                     labelColor: AppColor.closeToRed,
@@ -59,13 +57,13 @@ class _PostTabPageState extends State<PostTabPage>
                         currentPage = value;
                       });
                     },
-                    tabs: [
+                    tabs: const [
                       Tab(text: "Suggested"),
                       Tab(text: "Friends"),
                     ],
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -77,9 +75,15 @@ class _PostTabPageState extends State<PostTabPage>
                             gradient: AppColor.backgraundGradient(),
                             borderRadius: BorderRadius.circular(30.r)),
                         alignment: Alignment.center,
-                        child: Icon(
-                          Icons.camera,
-                          color: AppColor.white,
+                        child: InkWell(
+                          onTap: () {
+                            print("Open post");
+                            Get.to(() => const CreatePostPage());
+                          },
+                          child: Icon(
+                            Icons.camera,
+                            color: AppColor.white,
+                          ),
                         ),
                       ),
                     ),
@@ -105,7 +109,10 @@ class _PostTabPageState extends State<PostTabPage>
           ),
         ),
       ),
-      body: TabBarView(controller: tabController, children: postTabPages),
+      body: TabBarView(
+        controller: tabController,
+        children: postTabPages,
+      ),
     );
   }
 }

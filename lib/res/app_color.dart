@@ -1,9 +1,9 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 
 class AppColor extends Color {
-  AppColor.color({required String colorCode}) : super(0xff0f4302);
+  //convert hax color to int color
+  AppColor.hexColor({required String colorCode})
+      : super(int.parse("0xff${colorCode.split("#").last}"));
 
   static Color transparent = Colors.transparent;
   static Color white = Colors.white;
@@ -14,13 +14,13 @@ class AppColor extends Color {
   static Color black = Colors.black;
   static Color black54 = Colors.black54;
 
-  static Color closeToRed = Color(0xffEF308C);
-  static Color closeToYellow = Color(0xfffcc284);
+  static Color closeToRed = const Color(0xffEF308C);
+  static Color closeToYellow = const Color(0xfffcc284);
 
   static backgraundGradient() => LinearGradient(
         begin: Alignment.centerLeft,
         end: Alignment.centerRight,
-        stops: [0, 0.7],
+        stops: const [0, 0.7],
         tileMode: TileMode.clamp,
         colors: [closeToRed, closeToYellow],
       );
