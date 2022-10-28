@@ -3,9 +3,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
+import 'package:voice_chat/ui/pages/bottom_navs/bottom_nav_bar_page.dart';
+import 'package:voice_chat/ui/pages/bottom_navs/home_tab_page.dart';
 import 'package:voice_chat/ui/widgets/app_logo_widget.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/ui/widgets/my_login_btn.dart';
@@ -66,7 +69,7 @@ class SignInWithIDPage extends StatelessWidget {
                   ),
                   SizedBox(height: h10),
                   MyGradientBtn(
-                    onPress: () {},
+                    onPress: () => loginBtn(),
                     text: "Sign In".toUpperCase(),
                   )
                 ],
@@ -114,5 +117,9 @@ class SignInWithIDPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  loginBtn() {
+    Get.offAll(() => BottomNavBarPage());
   }
 }

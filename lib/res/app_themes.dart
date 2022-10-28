@@ -6,12 +6,18 @@ import 'package:voice_chat/res/app_color.dart';
 class AppThemes {
   // Light Theme
   static ThemeData light() => ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.blue,
-        textTheme: TextTheme(
+      brightness: Brightness.light,
+      primarySwatch: Colors.blue,
+      textTheme: GoogleFonts.robotoTextTheme(
+        TextTheme(
           headlineMedium: KTextTheme.headlineMedium(AppColor.white),
           headlineSmall: KTextTheme.headlineSmall(AppColor.white54),
         ),
+      )
+      // textTheme: TextTheme(
+      //   headlineMedium: KTextTheme.headlineMedium(AppColor.white),
+      //   headlineSmall: KTextTheme.headlineSmall(AppColor.white54),
+      // ),
       );
 
 // Dark Theme
@@ -23,7 +29,7 @@ class AppThemes {
 
 class KTextTheme {
   static TextStyle headlineSmall(Color? textColor) {
-    return GoogleFonts.roboto(
+    return TextStyle(
       color: textColor ?? AppColor.black,
       fontSize: 12.sp,
       fontWeight: FontWeight.w500,
@@ -31,7 +37,7 @@ class KTextTheme {
   }
 
   static TextStyle headlineMedium(Color? textColor) {
-    return GoogleFonts.roboto(
+    return TextStyle(
       color: textColor ?? AppColor.white,
       fontSize: 20.sp,
       fontWeight: FontWeight.w600,

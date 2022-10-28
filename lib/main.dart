@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/res/app_themes.dart';
-import 'package:voice_chat/ui/auth/sign_in_page.dart';
+import 'package:voice_chat/ui/pages/auth/sign_in_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

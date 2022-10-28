@@ -7,13 +7,13 @@ import 'package:get/get.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
-import 'package:voice_chat/ui/auth/sign_in_with_id_page.dart';
-import 'package:voice_chat/ui/auth/sign_in_with_number_page.dart';
+import 'package:voice_chat/ui/pages/auth/sign_in_with_id_page.dart';
+import 'package:voice_chat/ui/pages/auth/sign_in_with_number_page.dart';
 import 'package:voice_chat/ui/widgets/app_logo_widget.dart';
 import 'package:voice_chat/ui/widgets/my_login_btn.dart';
 import 'package:voice_chat/utils/app_utils.dart';
 
-import '../widgets/backgraund_widget.dart';
+import '../../widgets/backgraund_widget.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
