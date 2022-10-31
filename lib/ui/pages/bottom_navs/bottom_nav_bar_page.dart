@@ -35,7 +35,7 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
           height: 55,
           elevation: 0,
           color: AppColor.grey400,
-          activeColor: AppColor.closeToRed,
+          activeColor: AppColor.closeToBlue,
           onTap: (index) {
             setState(() {
               switch (index) {

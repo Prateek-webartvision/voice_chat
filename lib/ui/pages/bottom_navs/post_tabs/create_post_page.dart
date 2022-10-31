@@ -71,7 +71,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                               height: h30,
                               width: h30,
                               decoration: BoxDecoration(
-                                color: AppColor.closeToRed,
+                                color: AppColor.closeToBlue,
                                 borderRadius: BorderRadius.circular(30.r),
                               ),
                               alignment: Alignment.center,
@@ -150,7 +150,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                   borderRadius: BorderRadius.circular(16.r),
                 ),
               ),
-              backgroundColor: MaterialStateProperty.all(AppColor.closeToRed),
+              backgroundColor: MaterialStateProperty.all(AppColor.closeToBlue),
             ),
             child: Text(
               "Send",

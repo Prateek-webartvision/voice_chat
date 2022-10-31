@@ -56,7 +56,7 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
                           height: 30,
                           width: 40,
                           decoration: BoxDecoration(
-                            color: AppColor.closeToRed,
+                            color: AppColor.closeToBlue,
                             borderRadius: BorderRadius.circular(40),
                           ),
                           child: InkWell(
@@ -115,7 +115,7 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
                                 Icons.favorite,
                                 color: (allPostList[index].isLiked == false)
                                     ? AppColor.black54
-                                    : AppColor.closeToRed,
+                                    : AppColor.closeToBlue,
                               ),
                             ),
                             const SizedBox(width: 10),

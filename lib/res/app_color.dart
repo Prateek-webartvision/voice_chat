@@ -14,14 +14,20 @@ class AppColor extends Color {
   static Color black = Colors.black;
   static Color black54 = Colors.black54;
 
-  static Color closeToRed = const Color(0xffEF308C);
-  static Color closeToYellow = const Color(0xfffcc284);
+  // static Color closeToRed = const Color(0xffEF308C);
+  // static Color closeToYellow = const Color(0xfffcc284);
+
+  static Color closeToBlue = const Color(0xff50B3E5);
+  static Color closeToPurple = const Color(0xff8F4398);
 
   static backgraundGradient() => LinearGradient(
         begin: Alignment.centerLeft,
         end: Alignment.centerRight,
         stops: const [0, 0.7],
         tileMode: TileMode.clamp,
-        colors: [closeToRed, closeToYellow],
+        colors: [
+          closeToBlue,
+          closeToPurple,
+        ],
       );
 }

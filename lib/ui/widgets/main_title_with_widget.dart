@@ -26,7 +26,7 @@ class MainTitleWithWidget extends StatelessWidget {
                     height: 20,
                     width: 20,
                     decoration: BoxDecoration(
-                      color: AppColor.closeToRed,
+                      color: AppColor.closeToBlue,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     alignment: Alignment.center,
@@ -60,7 +60,7 @@ class MainTitleWithWidget extends StatelessWidget {
                 children: [
                   Text(
                     "more",
-                    style: TextStyle(color: AppColor.closeToRed),
+                    style: TextStyle(color: AppColor.closeToBlue),
                   ),
                   const SizedBox(width: 10),
                   Container(

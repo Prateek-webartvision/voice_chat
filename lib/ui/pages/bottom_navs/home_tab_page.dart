@@ -53,8 +53,8 @@ class _HomeTabPageState extends State<HomeTabPage>
                   child: TabBar(
                     // isScrollable: true,
                     controller: tabController,
-                    indicatorColor: AppColor.closeToRed,
-                    labelColor: AppColor.closeToRed,
+                    indicatorColor: AppColor.closeToBlue,
+                    labelColor: AppColor.closeToBlue,
                     unselectedLabelColor: AppColor.black54,
                     indicatorSize: TabBarIndicatorSize.label,
                     onTap: (value) {

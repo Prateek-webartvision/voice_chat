@@ -9,7 +9,7 @@ class CreateRoomTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.closeToRed,
+      backgroundColor: AppColor.closeToBlue,
       appBar: AppBar(
         backgroundColor: AppColor.transparent,
         elevation: 0,
@@ -89,7 +89,7 @@ class CreateRoomTabPage extends StatelessWidget {
                         color: AppColor.white,
                         borderRadius: BorderRadius.circular(50),
                         border:
-                            Border.all(color: AppColor.closeToRed, width: 2)),
+                            Border.all(color: AppColor.closeToBlue, width: 2)),
                   ),
                 ),
                 //chat

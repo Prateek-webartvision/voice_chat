@@ -64,7 +64,7 @@ class MessagesTabPage extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Icon(
                           Icons.mail,
-                          color: AppColor.closeToYellow,
+                          color: AppColor.closeToPurple,
                         ),
                       ),
                       title: const Text("System Messages"),

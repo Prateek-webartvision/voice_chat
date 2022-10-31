@@ -69,7 +69,7 @@ class AccountTabPage extends StatelessWidget {
                                     const SizedBox(width: 10),
                                     Icon(
                                       Icons.mode_edit_outlined,
-                                      color: AppColor.closeToRed,
+                                      color: AppColor.closeToBlue,
                                     )
                                   ],
                                 ),
@@ -171,7 +171,7 @@ class AccountTabPage extends StatelessWidget {
                         ListTile(
                           leading: Icon(
                             Icons.reviews,
-                            color: AppColor.closeToRed,
+                            color: AppColor.closeToBlue,
                           ),
                           title: Text(
                             "Level",
@@ -189,7 +189,7 @@ class AccountTabPage extends StatelessWidget {
                         ListTile(
                           leading: Icon(
                             Icons.wallet,
-                            color: AppColor.closeToRed,
+                            color: AppColor.closeToBlue,
                           ),
                           title: Text(
                             "Wallet",
@@ -216,7 +216,7 @@ class AccountTabPage extends StatelessWidget {
                         ListTile(
                           leading: Icon(
                             Icons.store,
-                            color: AppColor.closeToRed,
+                            color: AppColor.closeToBlue,
                           ),
                           title: Text(
                             "Store",
@@ -242,7 +242,7 @@ class AccountTabPage extends StatelessWidget {
                         ListTile(
                           leading: Icon(
                             Icons.safety_check,
-                            color: AppColor.closeToRed,
+                            color: AppColor.closeToBlue,
                           ),
                           title: Text(
                             "Mamilies",
@@ -260,7 +260,7 @@ class AccountTabPage extends StatelessWidget {
                         ListTile(
                           leading: Icon(
                             Icons.hexagon_outlined,
-                            color: AppColor.closeToRed,
+                            color: AppColor.closeToBlue,
                           ),
                           title: Text(
                             "My Collectibles",
@@ -278,7 +278,7 @@ class AccountTabPage extends StatelessWidget {
                         ListTile(
                           leading: Icon(
                             Icons.file_present_sharp,
-                            color: AppColor.closeToRed,
+                            color: AppColor.closeToBlue,
                           ),
                           title: Text(
                             "Error Reporting",
@@ -296,7 +296,7 @@ class AccountTabPage extends StatelessWidget {
                         ListTile(
                           leading: Icon(
                             Icons.file_present_sharp,
-                            color: AppColor.closeToRed,
+                            color: AppColor.closeToBlue,
                           ),
                           title: Text(
                             "Check Name",
@@ -340,7 +340,7 @@ class Bg extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Container(
-                color: AppColor.closeToRed,
+                color: AppColor.closeToBlue,
               ),
             ),
             Expanded(

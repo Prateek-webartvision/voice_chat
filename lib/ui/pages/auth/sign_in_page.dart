@@ -90,7 +90,7 @@ class SignInPage extends StatelessWidget {
                         size: 30,
                         color: AppColor.white,
                       ),
-                      bgColor: AppColor.closeToRed,
+                      bgColor: AppColor.closeToBlue,
                       onPress: () {
                         Get.to(() => const SignInWithNumberPage());
                       },
@@ -118,7 +118,7 @@ class SignInPage extends StatelessWidget {
                             ..onTap = () {
                               AppUtils.showSnakBar("Terms of use");
                             },
-                          style: TextStyle(color: AppColor.closeToRed),
+                          style: TextStyle(color: AppColor.closeToBlue),
                         ),
                         const TextSpan(text: "and"),
                         TextSpan(
@@ -127,7 +127,7 @@ class SignInPage extends StatelessWidget {
                             ..onTap = () {
                               AppUtils.showSnakBar("Privacy policy");
                             },
-                          style: TextStyle(color: AppColor.closeToRed),
+                          style: TextStyle(color: AppColor.closeToBlue),
                         ),
                       ],
                     ),

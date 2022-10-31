@@ -143,7 +143,7 @@ class _SignInWithNumberPageState extends State<SignInWithNumberPage> {
                       ..onTap = () {
                         AppUtils.showSnakBar("Terms of use");
                       },
-                    style: TextStyle(color: AppColor.closeToRed),
+                    style: TextStyle(color: AppColor.closeToBlue),
                   ),
                   const TextSpan(text: "and"),
                   TextSpan(
@@ -152,7 +152,7 @@ class _SignInWithNumberPageState extends State<SignInWithNumberPage> {
                       ..onTap = () {
                         AppUtils.showSnakBar("Privacy policy");
                       },
-                    style: TextStyle(color: AppColor.closeToRed),
+                    style: TextStyle(color: AppColor.closeToBlue),
                   ),
                 ],
               ),
@@ -173,8 +173,8 @@ class _SignInWithNumberPageState extends State<SignInWithNumberPage> {
         shape: PinCodeFieldShape.underline,
         borderWidth: 1,
         activeFillColor: Colors.green,
-        selectedFillColor: AppColor.closeToYellow,
-        activeColor: AppColor.closeToYellow,
+        selectedFillColor: AppColor.closeToPurple,
+        activeColor: AppColor.closeToPurple,
         borderRadius: BorderRadius.circular(10),
       ),
 

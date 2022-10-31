@@ -96,7 +96,7 @@ class SignInWithIDPage extends StatelessWidget {
                       ..onTap = () {
                         AppUtils.showSnakBar("Terms of use");
                       },
-                    style: TextStyle(color: AppColor.closeToRed),
+                    style: TextStyle(color: AppColor.closeToBlue),
                   ),
                   const TextSpan(text: "and"),
                   TextSpan(
@@ -105,7 +105,7 @@ class SignInWithIDPage extends StatelessWidget {
                       ..onTap = () {
                         AppUtils.showSnakBar("Privacy policy");
                       },
-                    style: TextStyle(color: AppColor.closeToRed),
+                    style: TextStyle(color: AppColor.closeToBlue),
                   ),
                 ],
               ),

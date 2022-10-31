@@ -48,7 +48,7 @@ class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
                 child: TabBar(
                   controller: tabController,
                   indicator: BoxDecoration(
-                    color: AppColor.closeToRed,
+                    color: AppColor.closeToBlue,
                     borderRadius: BorderRadius.circular(50.r),
                   ),
                   labelColor: AppColor.white,
