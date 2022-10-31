@@ -5,10 +5,6 @@ class CountryFlagEmojiModel {
   CountryFlagEmojiModel({required this.name, required this.emoji});
 }
 
-// 🇧🇧 Flag: Barbados
-// 🇧🇩 Flag: Bangladesh
-// 🇧🇪 Flag: Belgium
-
 List<CountryFlagEmojiModel> countrysFlagEmojiList = [
   CountryFlagEmojiModel(name: "Brunei", emoji: "🇧🇳"),
   CountryFlagEmojiModel(name: "Bermuda", emoji: "🇧🇲"),

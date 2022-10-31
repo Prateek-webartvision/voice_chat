@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:voice_chat/models/countrys_flag_imoji_model.dart';
+import 'package:voice_chat/models/room_model.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/widgets/main_title_with_widget.dart';
 
@@ -47,7 +48,7 @@ class Rooms extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      itemCount: 16,
+      itemCount: rooms.length,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate:
@@ -56,12 +57,9 @@ class Rooms extends StatelessWidget {
         return Card(
           clipBehavior: Clip.hardEdge,
           child: Container(
-            // height: 180,
-            // width: 180,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: const CachedNetworkImageProvider(
-                    "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/117935323/original/ff84d06b328e419ee1d23bb05f0350c330a2c75e/create-a-unique-and-professional-youtube-gaming-thumbnail.png"),
+                image: CachedNetworkImageProvider(rooms[index].roomThum),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
                   AppColor.black.withOpacity(0.3),
@@ -82,10 +80,9 @@ class Rooms extends StatelessWidget {
                     height: 30,
                     width: 30,
                     decoration: BoxDecoration(
-                      color: Colors.green,
-                      image: const DecorationImage(
+                      image: DecorationImage(
                         image: CachedNetworkImageProvider(
-                            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"),
+                            rooms[index].userProfile),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: BorderRadius.circular(30),
@@ -94,11 +91,11 @@ class Rooms extends StatelessWidget {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      "Name",
+                      rooms[index].userName,
                       style: TextStyle(
                         color: AppColor.white,
                         fontSize: 16.sp,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),

@@ -15,7 +15,6 @@ class HomeTabPage extends StatefulWidget {
 
 class _HomeTabPageState extends State<HomeTabPage>
     with TickerProviderStateMixin {
-  // var tabController = DefaultTabController(length: 3, child: )
   late TabController tabController;
   int currentTabPage = 0;
 
@@ -41,20 +40,19 @@ class _HomeTabPageState extends State<HomeTabPage>
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
         child: Container(
-          color: AppColor.grey200,
-          height: double.maxFinite,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
           width: Get.width,
+          height: double.maxFinite,
+          color: AppColor.grey200,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: SafeArea(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: TabBar(
-                    // isScrollable: true,
                     controller: tabController,
-                    indicatorColor: AppColor.closeToBlue,
-                    labelColor: AppColor.closeToBlue,
+                    indicatorColor: AppColor.closeToPurple,
+                    labelColor: AppColor.closeToPurple,
                     unselectedLabelColor: AppColor.black54,
                     indicatorSize: TabBarIndicatorSize.label,
                     onTap: (value) {
@@ -111,5 +109,13 @@ class _HomeTabPageState extends State<HomeTabPage>
       ),
       body: TabBarView(controller: tabController, children: homeTabPages),
     );
+  }
+
+//dispose
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    tabController.dispose();
+    super.dispose();
   }
 }

@@ -6,8 +6,10 @@ class AppColor extends Color {
       : super(int.parse("0xff${colorCode.split("#").last}"));
 
   static Color transparent = Colors.transparent;
+
   static Color white = Colors.white;
   static Color white54 = Colors.white54;
+
   static Color grey400 = Colors.grey.shade400;
   static Color grey200 = Colors.grey.shade200;
 
@@ -20,6 +22,7 @@ class AppColor extends Color {
   static Color closeToBlue = const Color(0xff50B3E5);
   static Color closeToPurple = const Color(0xff8F4398);
 
+  // Gradient
   static backgraundGradient() => LinearGradient(
         begin: Alignment.centerLeft,
         end: Alignment.centerRight,

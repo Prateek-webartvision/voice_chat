@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:voice_chat/models/room_model.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/home_tabs/home_discover_tab.dart';
@@ -36,6 +37,7 @@ class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
           MainTitleWithWidget(
             title: "Fixed Room",
             onTab: () {
+              //TODO add see more
               print("Fixed Room");
             },
             child: const HomeAllFixedRoom(),
@@ -48,7 +50,7 @@ class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
                 child: TabBar(
                   controller: tabController,
                   indicator: BoxDecoration(
-                    color: AppColor.closeToBlue,
+                    color: AppColor.closeToPurple,
                     borderRadius: BorderRadius.circular(50.r),
                   ),
                   labelColor: AppColor.white,
@@ -84,10 +86,12 @@ class HomeAllFixedRoom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    rooms.shuffle();
+
     return SizedBox(
       height: 140,
       child: ListView.builder(
-        itemCount: 10,
+        itemCount: rooms.length > 6 ? 6 : rooms.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Card(
@@ -95,9 +99,9 @@ class HomeAllFixedRoom extends StatelessWidget {
             child: Container(
               width: 120,
               decoration: BoxDecoration(
+                //Room Thumb
                 image: DecorationImage(
-                  image: const CachedNetworkImageProvider(
-                      "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/117935323/original/ff84d06b328e419ee1d23bb05f0350c330a2c75e/create-a-unique-and-professional-youtube-gaming-thumbnail.png"),
+                  image: CachedNetworkImageProvider(rooms[index].roomThum),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
                     AppColor.black.withOpacity(0.3),
@@ -118,10 +122,10 @@ class HomeAllFixedRoom extends StatelessWidget {
                       height: 30,
                       width: 30,
                       decoration: BoxDecoration(
-                        color: Colors.green,
-                        image: const DecorationImage(
+                        //Avtar
+                        image: DecorationImage(
                           image: CachedNetworkImageProvider(
-                              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"),
+                              rooms[index].userProfile),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(30),
@@ -130,7 +134,7 @@ class HomeAllFixedRoom extends StatelessWidget {
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        "Name",
+                        rooms[index].userName,
                         style: TextStyle(
                           color: AppColor.white,
                           fontSize: 16.sp,

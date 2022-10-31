@@ -17,6 +17,7 @@ class BottomNavBarPage extends StatefulWidget {
 
 class _BottomNavBarPageState extends State<BottomNavBarPage> {
   int currentPage = 0;
+
   List<Widget> tabPages = [
     const HomeTabPage(),
     const PostTabPage(),
@@ -27,44 +28,45 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: tabPages[currentPage],
-        bottomNavigationBar: ConvexAppBar(
-          style: TabStyle.fixedCircle,
-          initialActiveIndex: currentPage,
-          backgroundColor: AppColor.white,
-          height: 55,
-          elevation: 0,
-          color: AppColor.grey400,
-          activeColor: AppColor.closeToBlue,
-          onTap: (index) {
-            setState(() {
-              switch (index) {
-                case 0:
-                  currentPage = 0;
-                  break;
-                case 1:
-                  currentPage = 1;
-                  break;
-                case 2:
-                  //Create Post Nav
-                  Get.to(() => const CreateRoomTabPage());
-                  break;
-                case 3:
-                  currentPage = 2;
-                  break;
-                case 4:
-                  currentPage = 3;
-                  break;
-              }
-            });
-          },
-          items: const [
-            TabItem(icon: Icons.home, title: 'Home'),
-            TabItem(icon: Icons.post_add, title: 'Post'),
-            TabItem(icon: Icons.mic),
-            TabItem(icon: Icons.message, title: 'Messages'),
-            TabItem(icon: Icons.person, title: 'My Account'),
-          ],
-        ));
+      body: tabPages[currentPage],
+      bottomNavigationBar: ConvexAppBar(
+        height: 55,
+        elevation: 0,
+        color: AppColor.grey400,
+        style: TabStyle.fixedCircle,
+        initialActiveIndex: currentPage,
+        backgroundColor: AppColor.white,
+        activeColor: AppColor.closeToPurple,
+        onTap: (index) {
+          setState(() {
+            switch (index) {
+              case 0:
+                currentPage = 0;
+                break;
+              case 1:
+                currentPage = 1;
+                break;
+              case 2:
+                //Create Post Nav
+                Get.to(() => const CreateRoomTabPage());
+                break;
+              case 3:
+                currentPage = 2;
+                break;
+              case 4:
+                currentPage = 3;
+                break;
+            }
+          });
+        },
+        items: const [
+          TabItem(icon: Icons.home, title: 'Home'),
+          TabItem(icon: Icons.post_add, title: 'Post'),
+          TabItem(icon: Icons.mic),
+          TabItem(icon: Icons.message, title: 'Messages'),
+          TabItem(icon: Icons.person, title: 'My Account'),
+        ],
+      ),
+    );
   }
 }

@@ -11,14 +11,20 @@ import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/ui/widgets/my_login_btn.dart';
 import 'package:voice_chat/utils/app_utils.dart';
 
-class SignInWithIDPage extends StatelessWidget {
+class SignInWithIDPage extends StatefulWidget {
   const SignInWithIDPage({super.key});
+
+  @override
+  State<SignInWithIDPage> createState() => _SignInWithIDPageState();
+}
+
+class _SignInWithIDPageState extends State<SignInWithIDPage> {
+  TextEditingController idController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
-    TextEditingController idController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: AppColor.black),
@@ -118,5 +124,12 @@ class SignInWithIDPage extends StatelessWidget {
 
   loginBtn() {
     Get.offAll(() => const BottomNavBarPage());
+  }
+
+  @override
+  void dispose() {
+    idController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

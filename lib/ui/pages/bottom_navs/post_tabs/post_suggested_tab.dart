@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:voice_chat/models/post_suggested_model.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
@@ -28,117 +29,20 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: allPostList.length,
               itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    Container(height: 10),
-                    Row(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(40),
-                              image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                    allPostList[index].userProfile),
-                                fit: BoxFit.cover,
-                              )),
-                        ),
-                        const SizedBox(width: 10),
-                        //User name
-                        Expanded(
-                          child: Text(allPostList[index].userName),
-                        ),
-                        const SizedBox(width: 10),
-                        //Add Btn
-                        Container(
-                          height: 30,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.closeToBlue,
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              AppUtils.showSnakBar("Friend added");
-                            },
-                            child: Icon(
-                              Icons.add,
-                              color: AppColor.white,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(height: h10),
-                    //Comment
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            (allPostList[index].comment != null)
-                                ? allPostList[index].comment!
-                                : "",
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: h10),
-                    //Post Image
-                    (allPostList[index].image != null)
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: CachedNetworkImage(
-                                imageUrl: allPostList[index].image!))
-                        : const SizedBox(),
-                    (allPostList[index].image != null)
-                        ? SizedBox(height: h10)
-                        : const SizedBox(),
-
-                    //Likes and comments
-                    Row(
-                      children: [
-                        // Likes
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                AppUtils.showSnakBar("Like");
-                                setState(() {
-                                  allPostList[index].isLiked =
-                                      !allPostList[index].isLiked;
-                                });
-                              },
-                              child: Icon(
-                                Icons.favorite,
-                                color: (allPostList[index].isLiked == false)
-                                    ? AppColor.black54
-                                    : AppColor.closeToBlue,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Text(allPostList[index].likes.toString())
-                          ],
-                        ),
-                        const SizedBox(width: 20),
-
-                        //Comments
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.message,
-                              color: AppColor.black54,
-                            ),
-                            const SizedBox(width: 10),
-                            Text(allPostList[index].comments.toString())
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
+                return PostCardWidget(
+                  cardData: allPostList[index],
+                  onAddFriendTab: (friend) {
+                    AppUtils.showSnakBar("friends");
+                  },
+                  onLikeTab: (like) {
+                    AppUtils.showSnakBar("Like");
+                    setState(() {
+                      allPostList[index].isLiked = like;
+                    });
+                  },
+                  onCommentTab: () {
+                    AppUtils.showSnakBar("Comment");
+                  },
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
@@ -163,6 +67,132 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class PostCardWidget extends StatelessWidget {
+  const PostCardWidget({
+    super.key,
+    required this.cardData,
+    required this.onLikeTab,
+    required this.onCommentTab,
+    required this.onAddFriendTab,
+  });
+  final PostSeggestedModel cardData;
+  final Function(bool like) onLikeTab;
+  final Function onCommentTab;
+  final Function(bool friend) onAddFriendTab;
+  @override
+  Widget build(BuildContext context) {
+    final avtarSize = 40.h;
+    return Column(
+      children: [
+        Container(height: 10),
+        Row(
+          children: [
+            //avtar
+            Container(
+              height: avtarSize,
+              width: avtarSize,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                image: DecorationImage(
+                  image: CachedNetworkImageProvider(cardData.userProfile),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            //User name
+            Expanded(
+              child: Text(
+                cardData.userName,
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            //Add Btn
+            Container(
+              height: 30,
+              width: 40,
+              decoration: BoxDecoration(
+                color: AppColor.closeToBlue,
+                borderRadius: BorderRadius.circular(40),
+              ),
+              child: InkWell(
+                onTap: () => onAddFriendTab(!cardData.isfriend),
+                child: Icon(
+                  Icons.add,
+                  color: AppColor.white,
+                ),
+              ),
+            )
+          ],
+        ),
+        SizedBox(height: h10),
+        //Comment
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                (cardData.comment != null) ? cardData.comment! : "",
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: h10),
+        //Post Image
+        (cardData.image != null)
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: CachedNetworkImage(imageUrl: cardData.image!))
+            : const SizedBox(),
+        (cardData.image != null) ? SizedBox(height: h10) : const SizedBox(),
+
+        //Likes and comments
+        Row(
+          children: [
+            // Likes
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: () => onLikeTab(!cardData.isLiked),
+                  child: Icon(
+                    Icons.favorite,
+                    color: (cardData.isLiked == false)
+                        ? AppColor.black54
+                        : Colors.red,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(cardData.likes.toString())
+              ],
+            ),
+            const SizedBox(width: 20),
+
+            //Comments
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: () => onCommentTab(),
+                  child: Icon(
+                    Icons.message,
+                    color: AppColor.black54,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(cardData.comments.toString())
+              ],
+            )
+          ],
+        ),
+      ],
     );
   }
 }

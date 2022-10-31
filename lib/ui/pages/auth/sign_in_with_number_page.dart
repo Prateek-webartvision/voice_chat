@@ -19,9 +19,12 @@ class SignInWithNumberPage extends StatefulWidget {
 }
 
 class _SignInWithNumberPageState extends State<SignInWithNumberPage> {
-  String countryCode = "🇮🇳 +91";
   TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController phonePinCodeController = TextEditingController();
+
+  String countryCode = "🇮🇳 +91";
   bool isCodeview = false;
+
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -165,6 +168,7 @@ class _SignInWithNumberPageState extends State<SignInWithNumberPage> {
 
   Widget pinCode(BuildContext context) {
     return PinCodeTextField(
+      controller: phonePinCodeController,
       keyboardType: TextInputType.number,
       appContext: context,
       length: 6,
@@ -194,9 +198,17 @@ class _SignInWithNumberPageState extends State<SignInWithNumberPage> {
           isCodeview = true;
         });
       } else {
-        print("codeView");
+        print("pinCode: ${phonePinCodeController.text}");
       }
     }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    // phonePinCodeController.dispose();
+    phoneNumberController.dispose();
+    super.dispose();
   }
 }
 

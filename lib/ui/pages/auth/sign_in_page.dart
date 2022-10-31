@@ -29,10 +29,7 @@ class SignInPage extends StatelessWidget {
                 SizedBox(height: h60),
                 const AppLogoWidget(),
                 SizedBox(height: h30),
-                Text(
-                  "Voice Chat",
-                  style: textTheme.headlineMedium,
-                ),
+                Text("Voice Chat", style: textTheme.headlineMedium),
                 SizedBox(height: h10),
                 SizedBox(
                   width: 200,
@@ -52,21 +49,27 @@ class SignInPage extends StatelessWidget {
                         buttonType: SocialLoginButtonType.facebook,
                         borderRadius: 16.r,
                         width: 300.w,
+                        height: h50,
                         mode: SocialLoginButtonMode.multi,
-                        onPressed: () {},
+                        onPressed: () {
+                          //TODO Add facebook
+                        },
                       ),
                       SizedBox(height: h10),
                       SocialLoginButton(
                         buttonType: SocialLoginButtonType.google,
                         borderRadius: 16.r,
                         width: 300.w,
+                        height: h50,
                         mode: SocialLoginButtonMode.multi,
-                        onPressed: () {},
+                        onPressed: () {
+                          //TODO add Google
+                        },
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: h10),
+                SizedBox(height: h20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -74,7 +77,7 @@ class SignInPage extends StatelessWidget {
                     MyRoundedIConBtn(
                       icon: Icon(
                         Icons.person,
-                        size: 30,
+                        size: h50 * .6,
                         color: AppColor.white,
                       ),
                       bgColor: AppColor.grey400,
@@ -87,10 +90,10 @@ class SignInPage extends StatelessWidget {
                     MyRoundedIConBtn(
                       icon: Icon(
                         Icons.call,
-                        size: 30,
+                        size: h50 * .6,
                         color: AppColor.white,
                       ),
-                      bgColor: AppColor.closeToBlue,
+                      bgColor: AppColor.closeToPurple,
                       onPress: () {
                         Get.to(() => const SignInWithNumberPage());
                       },
@@ -116,6 +119,7 @@ class SignInPage extends StatelessWidget {
                           text: " terms of use ",
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
+                              //TODO Add Terms of Use here
                               AppUtils.showSnakBar("Terms of use");
                             },
                           style: TextStyle(color: AppColor.closeToBlue),
@@ -125,6 +129,7 @@ class SignInPage extends StatelessWidget {
                           text: " privacy policy",
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
+                              //TODO add privacy Policy here
                               AppUtils.showSnakBar("Privacy policy");
                             },
                           style: TextStyle(color: AppColor.closeToBlue),
