@@ -102,8 +102,8 @@ class MyRoundedIConBtn extends StatelessWidget {
     return GestureDetector(
       onTap: () => onPress(),
       child: Container(
-        height: h60,
-        width: h60,
+        height: h50,
+        width: h50,
         decoration: BoxDecoration(
           color: bgColor ?? AppColor.white,
           borderRadius: BorderRadius.circular(30.r),

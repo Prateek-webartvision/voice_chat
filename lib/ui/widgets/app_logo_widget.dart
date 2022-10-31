@@ -11,7 +11,7 @@ class AppLogoWidget extends StatelessWidget {
       width: logoSize,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-      child: Image.asset("assets/images/logo.jpeg"),
+      child: Image.asset("assets/images/logo2.jpeg"),
     );
   }
 }
