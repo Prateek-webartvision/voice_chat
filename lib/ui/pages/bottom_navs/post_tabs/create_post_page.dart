@@ -71,7 +71,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                               height: h30,
                               width: h30,
                               decoration: BoxDecoration(
-                                color: AppColor.closeToBlue,
+                                color: AppColor.closeToPurple,
                                 borderRadius: BorderRadius.circular(30.r),
                               ),
                               alignment: Alignment.center,
@@ -150,7 +150,8 @@ class _CreatePostPageState extends State<CreatePostPage> {
                   borderRadius: BorderRadius.circular(16.r),
                 ),
               ),
-              backgroundColor: MaterialStateProperty.all(AppColor.closeToBlue),
+              backgroundColor:
+                  MaterialStateProperty.all(AppColor.closeToPurple),
             ),
             child: Text(
               "Send",
@@ -160,5 +161,12 @@ class _CreatePostPageState extends State<CreatePostPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    messageTextController.dispose();
+    super.dispose();
   }
 }
