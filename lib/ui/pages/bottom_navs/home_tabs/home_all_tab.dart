@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:voice_chat/models/room_model.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/home_tabs/home_discover_tab.dart';
+import 'package:voice_chat/ui/pages/rooms/room_page.dart';
 import 'package:voice_chat/ui/widgets/main_title_with_widget.dart';
 
 class HomeAllTab extends StatefulWidget {
@@ -100,54 +102,61 @@ class HomeAllFixedRoom extends StatelessWidget {
         itemBuilder: (context, index) {
           return Card(
             clipBehavior: Clip.hardEdge,
-            child: Container(
-              width: 120,
-              decoration: BoxDecoration(
-                //Room Thumb
-                image: DecorationImage(
-                  image: CachedNetworkImageProvider(rooms[index].roomThum),
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                    AppColor.black.withOpacity(0.3),
-                    BlendMode.darken,
+            child: InkWell(
+              onTap: () {
+                Get.to(() => RoomPage(
+                      room: rooms[index],
+                    ));
+              },
+              child: Container(
+                width: 120,
+                decoration: BoxDecoration(
+                  //Room Thumb
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(rooms[index].roomThum),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                      AppColor.black.withOpacity(0.3),
+                      BlendMode.darken,
+                    ),
                   ),
                 ),
-              ),
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 10,
-                  left: 10,
-                  right: 10,
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        //Avtar
-                        image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              rooms[index].userProfile),
-                          fit: BoxFit.cover,
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 10,
+                    left: 10,
+                    right: 10,
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          //Avtar
+                          image: DecorationImage(
+                            image: CachedNetworkImageProvider(
+                                rooms[index].userProfile),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        borderRadius: BorderRadius.circular(30),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        rooms[index].userName,
-                        style: TextStyle(
-                          color: AppColor.white,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          rooms[index].userName,
+                          style: TextStyle(
+                            color: AppColor.white,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

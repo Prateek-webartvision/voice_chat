@@ -10,7 +10,7 @@ class CreateRoomTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthBackgraundWidget(
-      widget: Scaffold(
+      child: Scaffold(
         backgroundColor: AppColor.transparent,
         appBar: AppBar(
           backgroundColor: AppColor.transparent,

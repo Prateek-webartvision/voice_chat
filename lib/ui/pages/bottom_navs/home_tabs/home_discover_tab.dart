@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:voice_chat/models/countrys_flag_imoji_model.dart';
 import 'package:voice_chat/models/room_model.dart';
 import 'package:voice_chat/res/app_color.dart';
+import 'package:voice_chat/ui/pages/rooms/room_page.dart';
 import 'package:voice_chat/ui/widgets/main_title_with_widget.dart';
 
 class HomeDiscoverTab extends StatelessWidget {
@@ -56,51 +58,56 @@ class Rooms extends StatelessWidget {
       itemBuilder: (context, index) {
         return Card(
           clipBehavior: Clip.hardEdge,
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: CachedNetworkImageProvider(rooms[index].roomThum),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                  AppColor.black.withOpacity(0.3),
-                  BlendMode.darken,
+          child: InkWell(
+            onTap: () {
+              Get.to(RoomPage(room: rooms[index]));
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: CachedNetworkImageProvider(rooms[index].roomThum),
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    AppColor.black.withOpacity(0.3),
+                    BlendMode.darken,
+                  ),
                 ),
               ),
-            ),
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                bottom: 10,
-                left: 10,
-                right: 10,
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: CachedNetworkImageProvider(
-                            rooms[index].userProfile),
-                        fit: BoxFit.cover,
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 10,
+                  left: 10,
+                  right: 10,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 30,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              rooms[index].userProfile),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(30),
                       ),
-                      borderRadius: BorderRadius.circular(30),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      rooms[index].userName,
-                      style: TextStyle(
-                        color: AppColor.white,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        rooms[index].userName,
+                        style: TextStyle(
+                          color: AppColor.white,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

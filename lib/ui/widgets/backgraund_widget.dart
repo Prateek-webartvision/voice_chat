@@ -5,10 +5,10 @@ import 'package:voice_chat/res/constant_value.dart';
 class AuthBackgraundWidget extends StatelessWidget {
   const AuthBackgraundWidget({
     Key? key,
-    this.widget,
+    this.child,
   }) : super(key: key);
 
-  final Widget? widget;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class AuthBackgraundWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(o40p),
         ),
-        child: widget,
+        child: child,
       ),
     );
   }

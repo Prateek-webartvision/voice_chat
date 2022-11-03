@@ -23,7 +23,7 @@ class SignInPage extends StatelessWidget {
 
     return Scaffold(
       body: AuthBackgraundWidget(
-        widget: SafeArea(
+        child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               children: [
