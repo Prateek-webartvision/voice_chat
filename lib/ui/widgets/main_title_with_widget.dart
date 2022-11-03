@@ -27,6 +27,7 @@ class MainTitleWithWidget extends StatelessWidget {
                     width: 20,
                     decoration: BoxDecoration(
                       color: AppColor.closeToPurple,
+                      gradient: AppColor.backgraundGradient(),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     alignment: Alignment.center,

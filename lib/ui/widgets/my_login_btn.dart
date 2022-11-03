@@ -76,10 +76,11 @@ class MyGradientBtn extends StatelessWidget {
           child: Center(
               child: Text(
             text,
-            style: Theme.of(context)
-                .textTheme
-                .button!
-                .copyWith(color: AppColor.white),
+            style: Theme.of(context).textTheme.button!.copyWith(
+                  color: AppColor.white,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                ),
           )),
         ),
       ),

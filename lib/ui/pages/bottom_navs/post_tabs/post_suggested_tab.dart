@@ -120,7 +120,8 @@ class PostCardWidget extends StatelessWidget {
               height: 30,
               width: 40,
               decoration: BoxDecoration(
-                color: AppColor.closeToPurple,
+                // color: AppColor.closeToPurple,
+                gradient: AppColor.backgraundGradient(),
                 borderRadius: BorderRadius.circular(40),
               ),
               child: InkWell(

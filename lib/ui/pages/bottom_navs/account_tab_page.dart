@@ -1,7 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
+import 'package:voice_chat/ui/widgets/account_tab_page_bg.dart';
+import 'package:voice_chat/ui/widgets/gradient_icon_widget.dart';
 
 class AccountTabPage extends StatelessWidget {
   const AccountTabPage({super.key});
@@ -9,7 +13,7 @@ class AccountTabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Bg(
+      body: AccountTabPageBg(
         child: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -38,6 +42,7 @@ class AccountTabPage extends StatelessWidget {
                               width: 100,
                               decoration: BoxDecoration(
                                 color: Colors.green,
+                                gradient: AppColor.backgraundGradientV,
                                 borderRadius: BorderRadius.circular(100.r),
                               ),
                               alignment: Alignment.center,
@@ -164,15 +169,18 @@ class AccountTabPage extends StatelessWidget {
                   const SizedBox(height: 20),
                   Container(
                     decoration: BoxDecoration(
-                        color: AppColor.white,
-                        borderRadius: BorderRadius.circular(16)),
+                      color: AppColor.white,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                     child: Column(
                       children: [
                         ListTile(
-                          leading: Icon(
-                            Icons.reviews,
-                            color: AppColor.closeToPurple,
-                          ),
+                          // leading: Icon(
+                          //   Icons.reviews,
+                          //   color: AppColor.closeToPurple,
+                          // ),
+                          leading: GradientIcon(
+                              Icons.reviews, 25, AppColor.backgraundGradientV),
                           title: Text(
                             "Level",
                             style: TextStyle(
@@ -187,10 +195,12 @@ class AccountTabPage extends StatelessWidget {
                           thickness: 1.5,
                         ),
                         ListTile(
-                          leading: Icon(
-                            Icons.wallet,
-                            color: AppColor.closeToPurple,
-                          ),
+                          // leading: Icon(
+                          //   Icons.wallet,
+                          //   color: AppColor.closeToPurple,
+                          // ),
+                          leading: GradientIcon(
+                              Icons.wallet, 25, AppColor.backgraundGradientV),
                           title: Text(
                             "Wallet",
                             style: TextStyle(
@@ -214,10 +224,12 @@ class AccountTabPage extends StatelessWidget {
                           thickness: 1.5,
                         ),
                         ListTile(
-                          leading: Icon(
-                            Icons.store,
-                            color: AppColor.closeToPurple,
-                          ),
+                          // leading: Icon(
+                          //   Icons.store,
+                          //   color: AppColor.closeToPurple,
+                          // ),
+                          leading: GradientIcon(
+                              Icons.store, 25, AppColor.backgraundGradientV),
                           title: Text(
                             "Store",
                             style: TextStyle(
@@ -240,10 +252,12 @@ class AccountTabPage extends StatelessWidget {
                     child: Column(
                       children: [
                         ListTile(
-                          leading: Icon(
-                            Icons.safety_check,
-                            color: AppColor.closeToPurple,
-                          ),
+                          // leading: Icon(
+                          //   Icons.safety_check,
+                          //   color: AppColor.closeToPurple,
+                          // ),
+                          leading: GradientIcon(Icons.safety_check, 25,
+                              AppColor.backgraundGradientV),
                           title: Text(
                             "Mamilies",
                             style: TextStyle(
@@ -258,10 +272,12 @@ class AccountTabPage extends StatelessWidget {
                           thickness: 1.5,
                         ),
                         ListTile(
-                          leading: Icon(
-                            Icons.hexagon_outlined,
-                            color: AppColor.closeToPurple,
-                          ),
+                          // leading: Icon(
+                          //   Icons.hexagon_outlined,
+                          //   color: AppColor.closeToPurple,
+                          // ),
+                          leading: GradientIcon(Icons.hexagon_outlined, 25,
+                              AppColor.backgraundGradientV),
                           title: Text(
                             "My Collectibles",
                             style: TextStyle(
@@ -276,10 +292,12 @@ class AccountTabPage extends StatelessWidget {
                           thickness: 1.5,
                         ),
                         ListTile(
-                          leading: Icon(
-                            Icons.file_present_sharp,
-                            color: AppColor.closeToPurple,
-                          ),
+                          // leading: Icon(
+                          //   Icons.file_present_sharp,
+                          //   color: AppColor.closeToPurple,
+                          // ),
+                          leading: GradientIcon(Icons.file_present_sharp, 25,
+                              AppColor.backgraundGradientV),
                           title: Text(
                             "Error Reporting",
                             style: TextStyle(
@@ -294,10 +312,13 @@ class AccountTabPage extends StatelessWidget {
                           thickness: 1.5,
                         ),
                         ListTile(
-                          leading: Icon(
-                            Icons.file_present_sharp,
-                            color: AppColor.closeToPurple,
-                          ),
+                          // leading: Icon(
+                          //   Icons.file_present_sharp,
+                          //   color: AppColor.closeToPurple,
+                          // ),
+
+                          leading: GradientIcon(Icons.file_present_sharp, 25,
+                              AppColor.backgraundGradientV),
                           title: Text(
                             "Check Name",
                             style: TextStyle(
@@ -320,39 +341,6 @@ class AccountTabPage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class Bg extends StatelessWidget {
-  const Bg({
-    Key? key,
-    this.child,
-  }) : super(key: key);
-  final Widget? child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Column(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                color: AppColor.closeToPurple,
-              ),
-            ),
-            Expanded(
-              flex: 4,
-              child: Container(
-                color: AppColor.grey200,
-              ),
-            ),
-          ],
-        ),
-        child ?? const SizedBox()
-      ],
     );
   }
 }

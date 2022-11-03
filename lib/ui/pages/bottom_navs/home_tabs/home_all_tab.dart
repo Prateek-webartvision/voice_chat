@@ -32,8 +32,10 @@ class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(height: 20.h),
+          //Banner
           const Banner(),
           SizedBox(height: 20.h),
+          // Fixed Room
           MainTitleWithWidget(
             title: "Fixed Room",
             onTab: () {
@@ -43,6 +45,7 @@ class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
             child: const HomeAllFixedRoom(),
           ),
           SizedBox(height: 20.h),
+          //tab bar
           Row(
             children: [
               SizedBox(
@@ -51,6 +54,7 @@ class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
                   controller: tabController,
                   indicator: BoxDecoration(
                     color: AppColor.closeToPurple,
+                    gradient: AppColor.backgraundGradient(),
                     borderRadius: BorderRadius.circular(50.r),
                   ),
                   labelColor: AppColor.white,

@@ -39,4 +39,15 @@ class KTextTheme {
       fontWeight: FontWeight.w600,
     );
   }
+
+  static TextStyle btmText = TextStyle(
+    color: AppColor.white,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+  );
+  static TextStyle btmTextSpan = TextStyle(
+    color: AppColor.closeToPurple,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.bold,
+  );
 }

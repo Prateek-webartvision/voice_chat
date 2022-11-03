@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:tabbar_gradient_indicator/tabbar_gradient_indicator.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/home_tabs/home_all_tab.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/home_tabs/home_discover_tab.dart';
@@ -51,10 +52,16 @@ class _HomeTabPageState extends State<HomeTabPage>
                 Expanded(
                   child: TabBar(
                     controller: tabController,
-                    indicatorColor: AppColor.closeToPurple,
                     labelColor: AppColor.closeToPurple,
                     unselectedLabelColor: AppColor.black54,
                     indicatorSize: TabBarIndicatorSize.label,
+                    indicator: TabBarGradientIndicator(
+                      gradientColor: [
+                        AppColor.closeToBlue,
+                        AppColor.closeToPurple
+                      ],
+                      indicatorWidth: 3,
+                    ),
                     onTap: (value) {
                       setState(() {
                         currentTabPage = value;

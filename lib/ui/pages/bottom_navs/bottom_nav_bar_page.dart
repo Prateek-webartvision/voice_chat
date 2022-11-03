@@ -37,6 +37,8 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
         initialActiveIndex: currentPage,
         backgroundColor: AppColor.white,
         activeColor: AppColor.closeToPurple,
+        // gradient: AppColor.backgraundGradient(),
+
         onTap: (index) {
           setState(() {
             switch (index) {

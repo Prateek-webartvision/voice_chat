@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +11,7 @@ import 'package:voice_chat/ui/pages/bottom_navs/bottom_nav_bar_page.dart';
 import 'package:voice_chat/ui/widgets/app_logo_widget.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/ui/widgets/my_login_btn.dart';
+import 'package:voice_chat/ui/widgets/privacy_policy_text_widget.dart';
 import 'package:voice_chat/utils/app_utils.dart';
 
 class SignInWithIDPage extends StatefulWidget {
@@ -86,36 +89,37 @@ class _SignInWithIDPageState extends State<SignInWithIDPage> {
         child: Center(
           child: SizedBox(
             width: 200,
-            child: Text.rich(
-              style: GoogleFonts.roboto(
-                color: AppColor.black,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-              textAlign: TextAlign.center,
-              TextSpan(
-                text: "You agree to the",
-                children: [
-                  TextSpan(
-                    text: " terms of use ",
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        AppUtils.showSnakBar("Terms of use");
-                      },
-                    style: TextStyle(color: AppColor.closeToBlue),
-                  ),
-                  const TextSpan(text: "and"),
-                  TextSpan(
-                    text: " privacy policy",
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        AppUtils.showSnakBar("Privacy policy");
-                      },
-                    style: TextStyle(color: AppColor.closeToBlue),
-                  ),
-                ],
-              ),
-            ),
+            // child: Text.rich(
+            //   style: GoogleFonts.roboto(
+            //     color: AppColor.black,
+            //     fontSize: 14.sp,
+            //     fontWeight: FontWeight.w500,
+            //   ),
+            //   textAlign: TextAlign.center,
+            //   TextSpan(
+            //     text: "You agree to the",
+            //     children: [
+            //       TextSpan(
+            //         text: " terms of use ",
+            //         recognizer: TapGestureRecognizer()
+            //           ..onTap = () {
+            //             AppUtils.showSnakBar("Terms of use");
+            //           },
+            //         style: TextStyle(color: AppColor.closeToBlue),
+            //       ),
+            //       const TextSpan(text: "and"),
+            //       TextSpan(
+            //         text: " privacy policy",
+            //         recognizer: TapGestureRecognizer()
+            //           ..onTap = () {
+            //             AppUtils.showSnakBar("Privacy policy");
+            //           },
+            //         style: TextStyle(color: AppColor.closeToBlue),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            child: PrivacyPolicyTextWidget(textColor: AppColor.black),
           ),
         ),
       ),

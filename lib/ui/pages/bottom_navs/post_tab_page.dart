@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:tabbar_gradient_indicator/tabbar_gradient_indicator.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/post_tabs/create_post_page.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/post_tabs/post_friends_tab.dart';
@@ -48,10 +49,16 @@ class _PostTabPageState extends State<PostTabPage>
                   width: 200,
                   child: TabBar(
                     controller: tabController,
-                    indicatorColor: AppColor.closeToBlue,
-                    labelColor: AppColor.closeToBlue,
+                    labelColor: AppColor.closeToPurple,
                     unselectedLabelColor: AppColor.black54,
                     indicatorSize: TabBarIndicatorSize.label,
+                    indicator: TabBarGradientIndicator(
+                      gradientColor: [
+                        AppColor.closeToBlue,
+                        AppColor.closeToPurple
+                      ],
+                      indicatorWidth: 3,
+                    ),
                     onTap: (value) {
                       setState(() {
                         currentPage = value;

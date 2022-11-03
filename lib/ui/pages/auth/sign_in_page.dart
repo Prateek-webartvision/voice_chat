@@ -1,4 +1,5 @@
-import 'package:flutter/gestures.dart';
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -9,7 +10,7 @@ import 'package:voice_chat/ui/pages/auth/sign_in_with_id_page.dart';
 import 'package:voice_chat/ui/pages/auth/sign_in_with_number_page.dart';
 import 'package:voice_chat/ui/widgets/app_logo_widget.dart';
 import 'package:voice_chat/ui/widgets/my_login_btn.dart';
-import 'package:voice_chat/utils/app_utils.dart';
+import 'package:voice_chat/ui/widgets/privacy_policy_text_widget.dart';
 
 import '../../widgets/backgraund_widget.dart';
 
@@ -105,38 +106,7 @@ class SignInPage extends StatelessWidget {
                 //Terms and privacy palicy
                 SizedBox(
                   width: 200,
-                  child: Text.rich(
-                    style: TextStyle(
-                      color: AppColor.white,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
-                    TextSpan(
-                      text: "You agree to the",
-                      children: [
-                        TextSpan(
-                          text: " terms of use ",
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              //TODO Add Terms of Use here
-                              AppUtils.showSnakBar("Terms of use");
-                            },
-                          style: TextStyle(color: AppColor.closeToBlue),
-                        ),
-                        const TextSpan(text: "and"),
-                        TextSpan(
-                          text: " privacy policy",
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              //TODO add privacy Policy here
-                              AppUtils.showSnakBar("Privacy policy");
-                            },
-                          style: TextStyle(color: AppColor.closeToBlue),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: PrivacyPolicyTextWidget(),
                 ),
               ],
             ),

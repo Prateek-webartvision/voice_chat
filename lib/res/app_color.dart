@@ -19,18 +19,28 @@ class AppColor extends Color {
   // static Color closeToRed = const Color(0xffEF308C);
   // static Color closeToYellow = const Color(0xfffcc284);
 
-  static Color closeToBlue = const Color(0xff50B3E5);
-  static Color closeToPurple = const Color(0xff8F4398);
+  static const Color closeToBlue = Color(0xff50B3E5);
+  static const Color closeToPurple = Color(0xff8F4398);
 
   // Gradient
-  static backgraundGradient() => LinearGradient(
+  static backgraundGradient() => const LinearGradient(
         begin: Alignment.centerLeft,
         end: Alignment.centerRight,
-        stops: const [0, 0.7],
+        // stops: [0, 0.7],
         tileMode: TileMode.clamp,
         colors: [
           closeToBlue,
           closeToPurple,
         ],
       );
+
+  static const Gradient backgraundGradientV = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    tileMode: TileMode.clamp,
+    colors: [
+      closeToBlue,
+      closeToPurple,
+    ],
+  );
 }
