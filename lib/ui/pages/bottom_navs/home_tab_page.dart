@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,6 +8,8 @@ import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/home_tabs/home_all_tab.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/home_tabs/home_discover_tab.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/home_tabs/home_game_tab.dart';
+import 'package:voice_chat/ui/pages/reward/rewards_page.dart';
+import 'package:voice_chat/ui/pages/search/search_page.dart';
 
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({super.key});
@@ -78,6 +82,7 @@ class _HomeTabPageState extends State<HomeTabPage>
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    //Search
                     Center(
                       child: Container(
                         height: 30.h,
@@ -86,13 +91,17 @@ class _HomeTabPageState extends State<HomeTabPage>
                             gradient: AppColor.backgraundGradient(),
                             borderRadius: BorderRadius.circular(30.r)),
                         alignment: Alignment.center,
-                        child: Icon(
-                          Icons.search,
-                          color: AppColor.white,
+                        child: InkWell(
+                          onTap: () => Get.to(() => SearchPage()),
+                          child: Icon(
+                            Icons.search,
+                            color: AppColor.white,
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(width: 10),
+                    //rewards
                     Center(
                       child: Container(
                         height: 30.h,
@@ -101,9 +110,15 @@ class _HomeTabPageState extends State<HomeTabPage>
                             gradient: AppColor.backgraundGradient(),
                             borderRadius: BorderRadius.circular(30.r)),
                         alignment: Alignment.center,
-                        child: Icon(
-                          Icons.wine_bar_outlined,
-                          color: AppColor.white,
+                        child: InkWell(
+                          onTap: () {
+                            print("rewards");
+                            Get.to(() => RewardsPage());
+                          },
+                          child: Icon(
+                            Icons.wine_bar_outlined,
+                            color: AppColor.white,
+                          ),
                         ),
                       ),
                     ),

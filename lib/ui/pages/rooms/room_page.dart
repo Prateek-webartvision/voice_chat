@@ -3,11 +3,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:voice_chat/models/room_model.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
-import 'package:voice_chat/ui/widgets/k_text_field.dart';
 
 class RoomPage extends StatelessWidget {
   const RoomPage({super.key, required this.room});
@@ -26,14 +24,11 @@ class RoomPage extends StatelessWidget {
             RoomHeaderUsers(testImage: room.userProfile),
             //Chat List
             Flexible(
-              child: Container(
-                // color: AppColor.white,
-                child: ListView.builder(
-                  itemCount: 100,
-                  itemBuilder: (context, index) {
-                    return Text("this is your message $index");
-                  },
-                ),
+              child: ListView.builder(
+                itemCount: 100,
+                itemBuilder: (context, index) {
+                  return Text("this is your message $index");
+                },
               ),
             ),
 

@@ -55,6 +55,7 @@ class KTextField2 extends StatelessWidget {
     this.maxLines,
     this.minLines,
     this.fillColor,
+    this.onSubmit,
   });
 
   final TextEditingController? textEditingController;
@@ -67,6 +68,7 @@ class KTextField2 extends StatelessWidget {
   final int? maxLines;
   final int? minLines;
   final Color? fillColor;
+  final Function(String value)? onSubmit;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +79,7 @@ class KTextField2 extends StatelessWidget {
       textInputAction: textInputAction,
       maxLines: maxLines ?? 1,
       minLines: minLines ?? 1,
+      onSubmitted: (value) => onSubmit!(value),
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
