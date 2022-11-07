@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
+import 'package:voice_chat/data/api_services.dart';
+import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/ui/pages/auth/sign_in_with_id_page.dart';
@@ -14,12 +16,21 @@ import 'package:voice_chat/ui/widgets/privacy_policy_text_widget.dart';
 
 import '../../widgets/backgraund_widget.dart';
 
+getUSer() async {
+  await ApiServices.getApi(url: AppUrls.getAllUsers)
+      .then((value) => print(value))
+      .onError(
+        (error, stackTrace) => print(error),
+      );
+}
+
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+    getUSer();
 
     return Scaffold(
       body: AuthBackgraundWidget(
