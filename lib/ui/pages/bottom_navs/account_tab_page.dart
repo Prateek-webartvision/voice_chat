@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
+import 'package:voice_chat/ui/pages/wallet/wallet_page.dart';
 import 'package:voice_chat/ui/widgets/account_tab_page_bg.dart';
 import 'package:voice_chat/ui/widgets/gradient_icon_widget.dart';
 
@@ -174,11 +176,8 @@ class AccountTabPage extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
+                        //Level
                         ListTile(
-                          // leading: Icon(
-                          //   Icons.reviews,
-                          //   color: AppColor.closeToPurple,
-                          // ),
                           leading: GradientIcon(
                               Icons.reviews, 25, AppColor.backgraundGradientV),
                           title: Text(
@@ -194,11 +193,11 @@ class AccountTabPage extends StatelessWidget {
                         const Divider(
                           thickness: 1.5,
                         ),
+                        // Wallet
                         ListTile(
-                          // leading: Icon(
-                          //   Icons.wallet,
-                          //   color: AppColor.closeToPurple,
-                          // ),
+                          onTap: () {
+                            Get.to(() => WalletPage());
+                          },
                           leading: GradientIcon(
                               Icons.wallet, 25, AppColor.backgraundGradientV),
                           title: Text(
