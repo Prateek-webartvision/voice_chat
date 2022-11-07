@@ -18,6 +18,11 @@ class AppUtils {
     );
   }
 
+  //Close Snack bar
+  closeSnackbar() {
+    Get.closeCurrentSnackbar();
+  }
+
   //flush bar
   static showFlushBar({
     required String message,
@@ -38,6 +43,7 @@ class AppUtils {
     )..show(Get.context!);
   }
 
+  // close flush bor
   static closeFlushBar() {
     flushbar.dismiss();
   }

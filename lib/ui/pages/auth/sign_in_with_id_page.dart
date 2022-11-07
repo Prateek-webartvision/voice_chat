@@ -1,10 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/bottom_nav_bar_page.dart';
@@ -22,13 +19,14 @@ class SignInWithIDPage extends StatefulWidget {
 }
 
 class _SignInWithIDPageState extends State<SignInWithIDPage> {
-  TextEditingController idController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
+      // App Bar
       appBar: AppBar(
         iconTheme: IconThemeData(color: AppColor.black),
         backgroundColor: AppColor.white,
@@ -36,10 +34,12 @@ class _SignInWithIDPageState extends State<SignInWithIDPage> {
         elevation: 0,
         title: Text("SignIn", style: TextStyle(color: AppColor.black)),
       ),
+      // Body
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(height: h30),
+            //Logo Image
             const AppLogoWidget(),
             SizedBox(height: h30),
             Text(
@@ -58,22 +58,23 @@ class _SignInWithIDPageState extends State<SignInWithIDPage> {
               child: Column(
                 children: [
                   // Phone number
-                  KTextField(
-                    controller: idController,
+                  KTextField2(
+                    textEditingController: phoneNumberController,
                     hintText: "Enter your ID number",
                     prefixIcon: const Icon(Icons.phone_android),
                     textInputType: TextInputType.phone,
                   ),
                   SizedBox(height: h10),
                   // Password
-                  KTextField(
-                    controller: passwordController,
+                  KTextField2(
+                    textEditingController: passwordController,
                     hintText: "Enter your password",
                     prefixIcon: const Icon(Icons.lock),
                     textInputType: TextInputType.visiblePassword,
                     isPassword: true,
                   ),
                   SizedBox(height: h10),
+                  //Login Btn
                   MyGradientBtn(
                     onPress: () => loginBtn(),
                     text: "Sign In".toUpperCase(),
@@ -126,13 +127,20 @@ class _SignInWithIDPageState extends State<SignInWithIDPage> {
     );
   }
 
+// Login
   loginBtn() {
-    Get.offAll(() => const BottomNavBarPage());
+    // print(phoneNumberController.text);
+    if (phoneNumberController.text.isEmpty || passwordController.text.isEmpty) {
+      AppUtils.showSnakBar("Field is Empty");
+    } else {
+      print("data");
+      Get.offAll(() => const BottomNavBarPage());
+    }
   }
 
   @override
   void dispose() {
-    idController.dispose();
+    phoneNumberController.dispose();
     passwordController.dispose();
     super.dispose();
   }
