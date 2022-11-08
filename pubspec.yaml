@@ -38,6 +38,7 @@ dependencies:
   get: ^4.6.5
   intl: ^0.17.0
   http: ^0.13.5
+  get_storage: ^2.0.3
   google_fonts: ^3.0.1
   country_picker: ^2.0.16
   pin_code_fields: ^7.4.0

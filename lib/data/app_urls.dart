@@ -4,4 +4,5 @@ class AppUrls {
 
   //
   static const getAllUsers = "$_api/get";
+  static const signInWithId = "$_api/users/login";
 }
