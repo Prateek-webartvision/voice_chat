@@ -5,6 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
+import 'package:voice_chat/ui/pages/Collectibles/my_collectibles_page.dart';
+import 'package:voice_chat/ui/pages/check_name/check_name_page.dart';
+import 'package:voice_chat/ui/pages/error_report/error_reporting_page.dart';
+import 'package:voice_chat/ui/pages/profile_edit/profile_edit_page.dart';
+import 'package:voice_chat/ui/pages/setting/setting_page.dart';
+import 'package:voice_chat/ui/pages/store/store_page.dart';
 import 'package:voice_chat/ui/pages/wallet/wallet_page.dart';
 import 'package:voice_chat/ui/widgets/account_tab_page_bg.dart';
 import 'package:voice_chat/ui/widgets/gradient_icon_widget.dart';
@@ -26,7 +32,7 @@ class AccountTabPage extends StatelessWidget {
                   const SizedBox(height: 70),
                   //Account card
                   Container(
-                    height: 210,
+                    // height: 210,
                     padding: const EdgeInsets.all(16),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
@@ -74,9 +80,14 @@ class AccountTabPage extends StatelessWidget {
                                       ),
                                     ),
                                     const SizedBox(width: 10),
-                                    Icon(
-                                      Icons.mode_edit_outlined,
-                                      color: AppColor.closeToPurple,
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.mode_edit_outlined,
+                                        color: AppColor.closeToPurple,
+                                      ),
+                                      onPressed: () {
+                                        Get.to(() => ProfileEditPage());
+                                      },
                                     )
                                   ],
                                 ),
@@ -222,13 +233,16 @@ class AccountTabPage extends StatelessWidget {
                         const Divider(
                           thickness: 1.5,
                         ),
+                        // Store
                         ListTile(
-                          // leading: Icon(
-                          //   Icons.store,
-                          //   color: AppColor.closeToPurple,
-                          // ),
+                          onTap: () {
+                            Get.to(() => StorePage());
+                          },
                           leading: GradientIcon(
-                              Icons.store, 25, AppColor.backgraundGradientV),
+                            Icons.store,
+                            25,
+                            AppColor.backgraundGradientV,
+                          ),
                           title: Text(
                             "Store",
                             style: TextStyle(
@@ -250,11 +264,8 @@ class AccountTabPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16)),
                     child: Column(
                       children: [
+                        //Mamilies
                         ListTile(
-                          // leading: Icon(
-                          //   Icons.safety_check,
-                          //   color: AppColor.closeToPurple,
-                          // ),
                           leading: GradientIcon(Icons.safety_check, 25,
                               AppColor.backgraundGradientV),
                           title: Text(
@@ -270,13 +281,13 @@ class AccountTabPage extends StatelessWidget {
                         const Divider(
                           thickness: 1.5,
                         ),
+                        //My Collectibles
                         ListTile(
-                          // leading: Icon(
-                          //   Icons.hexagon_outlined,
-                          //   color: AppColor.closeToPurple,
-                          // ),
                           leading: GradientIcon(Icons.hexagon_outlined, 25,
                               AppColor.backgraundGradientV),
+                          onTap: () {
+                            Get.to(() => MyCollectiblesPage());
+                          },
                           title: Text(
                             "My Collectibles",
                             style: TextStyle(
@@ -290,11 +301,11 @@ class AccountTabPage extends StatelessWidget {
                         const Divider(
                           thickness: 1.5,
                         ),
+                        //Error Reporting
                         ListTile(
-                          // leading: Icon(
-                          //   Icons.file_present_sharp,
-                          //   color: AppColor.closeToPurple,
-                          // ),
+                          onTap: () {
+                            Get.to(() => ErrorReportingPage());
+                          },
                           leading: GradientIcon(Icons.file_present_sharp, 25,
                               AppColor.backgraundGradientV),
                           title: Text(
@@ -310,16 +321,39 @@ class AccountTabPage extends StatelessWidget {
                         const Divider(
                           thickness: 1.5,
                         ),
-                        ListTile(
-                          // leading: Icon(
-                          //   Icons.file_present_sharp,
-                          //   color: AppColor.closeToPurple,
-                          // ),
 
+                        //Check name
+                        ListTile(
+                          onTap: () {
+                            Get.to(() => CheckNamePage());
+                          },
                           leading: GradientIcon(Icons.file_present_sharp, 25,
                               AppColor.backgraundGradientV),
                           title: Text(
                             "Check Name",
+                            style: TextStyle(
+                              color: AppColor.black,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          trailing: const Icon(Icons.arrow_forward_ios_rounded),
+                        ),
+                        //setting
+                        const Divider(
+                          thickness: 1.5,
+                        ),
+                        ListTile(
+                          onTap: () {
+                            Get.to(() => SettingPage());
+                          },
+                          leading: GradientIcon(
+                            Icons.settings_outlined,
+                            25,
+                            AppColor.backgraundGradientV,
+                          ),
+                          title: Text(
+                            "Setting",
                             style: TextStyle(
                               color: AppColor.black,
                               fontSize: 18.sp,

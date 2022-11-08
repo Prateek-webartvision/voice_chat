@@ -60,7 +60,7 @@ class Rooms extends StatelessWidget {
           clipBehavior: Clip.hardEdge,
           child: InkWell(
             onTap: () {
-              Get.to(RoomPage(room: rooms[index]));
+              Get.to(() => RoomPage(room: rooms[index]));
             },
             child: Container(
               decoration: BoxDecoration(
