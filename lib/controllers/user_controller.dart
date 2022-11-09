@@ -6,10 +6,10 @@ class UserController extends GetxController {
   GetStorage userStorage = GetStorage();
 
   String user = "user";
-  String id = "id";
-  String firstName = "first_name";
-  String lastName = "last_name";
-  String mobile = "mobile";
+  // String id = "id";
+  // String firstName = "first_name";
+  // String lastName = "last_name";
+  // String mobile = "mobile";
   String token = "token";
 
   setUser({required Map<String, dynamic> userData}) {
@@ -29,9 +29,9 @@ class UserController extends GetxController {
 
   //user geters
   get getUser => userStorage.read(user);
-  get getId => getUser[id];
-  get getFirstName => getUser[firstName];
-  get getLastName => getUser[lastName];
-  get getMobile => getUser[mobile];
+  // get getId => getUser[id];
+  // get getFirstName => getUser[firstName];
+  // get getLastName => getUser[lastName];
+  // get getMobile => getUser[mobile];
   get getToken => getUser[token];
 }

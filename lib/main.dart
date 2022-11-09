@@ -8,9 +8,10 @@ import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/res/app_themes.dart';
 import 'package:voice_chat/ui/pages/auth/sign_in_page.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/bottom_nav_bar_page.dart';
-import 'package:voice_chat/utils/app_utils.dart';
 
-void networkChecker() {
+import 'utils/app_utils.dart';
+
+networkChecker() {
   Connectivity().onConnectivityChanged.listen(
     (event) {
       if (event == ConnectivityResult.none) {
@@ -18,9 +19,12 @@ void networkChecker() {
           message: "No Internet Connection",
           color: Colors.red,
         );
+        // isConnected = false;
       } else {
         AppUtils.closeFlushBar();
+        // isConnected = true;
       }
+      // update();
     },
   );
 }
@@ -28,7 +32,6 @@ void networkChecker() {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-  networkChecker();
   runApp(const MyApp());
 }
 
@@ -47,6 +50,8 @@ class MyApp extends StatelessWidget {
           themeMode: ThemeMode.light,
           home: GetBuilder<UserController>(
             builder: (user) {
+              //check internet
+              networkChecker();
               if (user.getUser != null) {
                 return const BottomNavBarPage();
               } else {

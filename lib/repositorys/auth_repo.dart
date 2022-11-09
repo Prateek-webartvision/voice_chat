@@ -19,8 +19,8 @@ class AuthRepository {
     AppUtils.progressDailog();
     Map<String, dynamic> userData = (kDebugMode == true)
         ? {
-            "mobile": "1234567890",
-            "password": "123",
+            "mobile": "12",
+            "password": "12",
           }
         : {
             "mobile": phone,
@@ -30,6 +30,7 @@ class AuthRepository {
     ApiServices.postApi(url: AppUrls.signInWithId, mapData: userData).then(
       (value) {
         AppUtils.closeDailog();
+        print(value);
         var userRes = value['data'];
 
         if (value["status"] == false) {
@@ -38,10 +39,10 @@ class AuthRepository {
           //seccess
           userController.setUser(
             userData: {
-              userController.id: userRes[userController.id],
-              userController.firstName: userRes[userController.firstName],
-              userController.lastName: userRes[userController.lastName],
-              userController.mobile: userRes[userController.mobile],
+              // userController.id: userRes[userController.id],
+              // userController.firstName: userRes[userController.firstName],
+              // userController.lastName: userRes[userController.lastName],
+              // userController.mobile: userRes[userController.mobile],
               userController.token: userRes[userController.token],
             },
           ).then((v) {
