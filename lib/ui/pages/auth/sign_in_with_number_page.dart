@@ -189,7 +189,9 @@ class _SignInWithNumberPageState extends State<SignInWithNumberPage> {
 
   nextBtn({required TextEditingController phoneNumber}) {
     if (phoneNumber.text.isEmpty) {
-      AppUtils.showSnakBar("Enter Phone Number");
+      AppUtils.showSnakBar(
+        msg: "Enter Phone Number",
+      );
     } else {
       if (isCodeview == false) {
         print(phoneNumber.text);

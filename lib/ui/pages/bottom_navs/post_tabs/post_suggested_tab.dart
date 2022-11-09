@@ -32,16 +32,16 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
                 return PostCardWidget(
                   cardData: allPostList[index],
                   onAddFriendTab: (friend) {
-                    AppUtils.showSnakBar("friends");
+                    AppUtils.showSnakBar(msg: "friends");
                   },
                   onLikeTab: (like) {
-                    AppUtils.showSnakBar("Like");
+                    AppUtils.showSnakBar(msg: "Like");
                     setState(() {
                       allPostList[index].isLiked = like;
                     });
                   },
                   onCommentTab: () {
-                    AppUtils.showSnakBar("Comment");
+                    AppUtils.showSnakBar(msg: "Comment");
                   },
                 );
               },

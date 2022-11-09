@@ -2,7 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:voice_chat/controllers/user_controller.dart';
+import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/res/app_color.dart';
+import 'package:voice_chat/ui/pages/auth/sign_in_page.dart';
+import 'package:voice_chat/utils/app_utils.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -151,7 +156,19 @@ class SettingPage extends StatelessWidget {
               //Logout
               ListTile(
                 onTap: () {
-                  print("Logout");
+                  // LogOut methods
+                  UserController.instance.logoutUser().then(
+                    (value) async {
+                      AppUtils.progressDailog();
+                      await Future.delayed(
+                        Duration(seconds: 1),
+                        () {
+                          AppUtils.closeDailog();
+                          Get.offAll(() => SignInPage());
+                        },
+                      );
+                    },
+                  );
                 },
                 tileColor: AppColor.white,
                 style: ListTileStyle.drawer,

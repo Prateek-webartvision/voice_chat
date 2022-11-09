@@ -25,7 +25,7 @@ class PrivacyPolicyTextWidget extends StatelessWidget {
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 //TODO Add Terms of Use here
-                AppUtils.showSnakBar("Terms of use");
+                AppUtils.showSnakBar(msg: "Terms of use");
               },
             style: KTextTheme.btmTextSpan,
           ),
@@ -35,7 +35,7 @@ class PrivacyPolicyTextWidget extends StatelessWidget {
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 //TODO add privacy Policy here
-                AppUtils.showSnakBar("Privacy policy");
+                AppUtils.showSnakBar(msg: "Privacy policy");
               },
             style: KTextTheme.btmTextSpan,
           ),

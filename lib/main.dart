@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:voice_chat/controller_binding.dart';
+import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/res/app_themes.dart';
 import 'package:voice_chat/ui/pages/auth/sign_in_page.dart';
+import 'package:voice_chat/ui/pages/bottom_navs/bottom_nav_bar_page.dart';
 import 'package:voice_chat/utils/app_utils.dart';
 
 void networkChecker() {
@@ -43,7 +45,15 @@ class MyApp extends StatelessWidget {
           theme: AppThemes.light(),
           darkTheme: AppThemes.dark(),
           themeMode: ThemeMode.light,
-          home: const SignInPage(),
+          home: GetBuilder<UserController>(
+            builder: (user) {
+              if (user.getUser != null) {
+                return const BottomNavBarPage();
+              } else {
+                return const SignInPage();
+              }
+            },
+          ),
           initialBinding: ControllerBinding(),
         );
       },
