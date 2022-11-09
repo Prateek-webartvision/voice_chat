@@ -10,6 +10,7 @@ class AuthRepository {
   ApiServices apiServices = ApiServices();
   UserController userController = UserController.instance;
 
+  //Sign in with Id and password
   signInWithId({required String phone, required String password}) {
     AppUtils.progressDailog();
     Map<String, dynamic> userData = (kDebugMode == true)
@@ -24,20 +25,26 @@ class AuthRepository {
 
     ApiServices.postApi(url: AppUrls.signInWithId, mapData: userData).then(
       (value) {
-        var userRes = value['data'];
-        userController.setUser(
-          userData: {
-            userController.id: userRes[userController.id],
-            userController.firstName: userRes[userController.firstName],
-            userController.lastName: userRes[userController.lastName],
-            userController.mobile: userRes[userController.mobile],
-            userController.token: userRes[userController.token],
-          },
-        ).then((v) {
-          // send to home page
-          Get.offAll(() => const BottomNavBarPage());
-        });
         AppUtils.closeDailog();
+        var userRes = value['data'];
+
+        if (value["status"] == false) {
+          AppUtils.showSnakBar(msg: value['msg'], second: 2);
+        } else {
+          //seccess
+          userController.setUser(
+            userData: {
+              userController.id: userRes[userController.id],
+              userController.firstName: userRes[userController.firstName],
+              userController.lastName: userRes[userController.lastName],
+              userController.mobile: userRes[userController.mobile],
+              userController.token: userRes[userController.token],
+            },
+          ).then((v) {
+            // send to home page
+            Get.offAll(() => const BottomNavBarPage());
+          });
+        }
       },
     ).onError((error, stackTrace) {
       AppUtils.closeDailog();
