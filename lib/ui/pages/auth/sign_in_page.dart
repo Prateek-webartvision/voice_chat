@@ -8,6 +8,7 @@ import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/ui/pages/auth/sign_in_with_id_page.dart';
 import 'package:voice_chat/ui/pages/auth/sign_in_with_number_page.dart';
+import 'package:voice_chat/ui/pages/auth/sign_up_page.dart';
 import 'package:voice_chat/ui/widgets/app_logo_widget.dart';
 import 'package:voice_chat/ui/widgets/my_login_btn.dart';
 import 'package:voice_chat/ui/widgets/privacy_policy_text_widget.dart';
@@ -103,6 +104,16 @@ class SignInPage extends StatelessWidget {
                   ],
                 ),
 
+                //Temp Sign up page
+                SizedBox(height: h30),
+                InkWell(
+                  onTap: () => Get.to(() => SignUpPage()),
+                  child: Text(
+                    "SignUp",
+                    style: textTheme.headlineMedium,
+                  ),
+                ),
+                //
                 SizedBox(height: h100),
                 //Terms and privacy palicy
                 SizedBox(

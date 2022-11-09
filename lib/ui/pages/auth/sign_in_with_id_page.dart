@@ -134,7 +134,7 @@ class _SignInWithIDPageState extends State<SignInWithIDPage> {
       AppUtils.showSnakBar(msg: "Field is Empty", second: 2);
     } else {
       print("data");
-      AuthRepository().signInWithId(
+      AuthRepository.instance.signInWithId(
           phone: phoneNumberController.text, password: passwordController.text);
       // Get.offAll(() => const BottomNavBarPage());
     }
