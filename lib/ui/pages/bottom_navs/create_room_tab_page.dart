@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:voice_chat/controllers/room_controller.dart';
+import 'package:voice_chat/models/room_model.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
+import 'package:voice_chat/utils/app_utils.dart';
 
-class CreateRoomTabPage extends StatelessWidget {
+class CreateRoomTabPage extends StatefulWidget {
   const CreateRoomTabPage({super.key});
 
+  @override
+  State<CreateRoomTabPage> createState() => _CreateRoomTabPageState();
+}
+
+class _CreateRoomTabPageState extends State<CreateRoomTabPage> {
+  TextEditingController roomname = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return AuthBackgraundWidget(
@@ -25,6 +34,7 @@ class CreateRoomTabPage extends StatelessWidget {
               //Text field
               KTextField2(
                 hintText: "Room Name",
+                textEditingController: roomname,
                 fillColor: AppColor.grey200.withOpacity(0.5),
               ),
               const SizedBox(height: 10),
@@ -72,26 +82,30 @@ class CreateRoomTabPage extends StatelessWidget {
                       color: AppColor.white,
                     ),
                   ),
-                  //record
-                  Container(
-                    height: 80,
-                    width: 80,
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppColor.white,
-                      borderRadius: BorderRadius.circular(50),
-                      // border: Border.all(color: AppColor.white, width: 1),
-                    ),
-                    alignment: Alignment.bottomCenter,
+                  //create
+                  InkWell(
+                    onTap: createRoom,
                     child: Container(
-                      height: 50,
-                      width: 50,
+                      height: 80,
+                      width: 80,
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
+                        color: AppColor.white,
+                        borderRadius: BorderRadius.circular(50),
+                        // border: Border.all(color: AppColor.white, width: 1),
+                      ),
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
                           color: AppColor.white,
                           borderRadius: BorderRadius.circular(50),
                           border: Border.all(
-                              color: AppColor.closeToPurple, width: 2)),
+                              color: AppColor.closeToPurple, width: 2),
+                        ),
+                      ),
                     ),
                   ),
                   //chat
@@ -114,5 +128,27 @@ class CreateRoomTabPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  createRoom() {
+    if (roomname.text.isEmpty) {
+      AppUtils.showSnakBar(msg: "Enter Room name", second: 2);
+    } else {
+      RoomController.instance.createRoom(
+        room: RoomModel(
+            userProfile: null,
+            userName: roomname.text,
+            roomThum:
+                "https://i.pinimg.com/564x/5f/fa/2b/5ffa2b2561578d81551c3c1c61c5ec68.jpg"),
+      );
+      print("create ${roomname.text}");
+      AppUtils.showSnakBar(msg: "${roomname.text} Room Created ");
+    }
+  }
+
+  @override
+  void dispose() {
+    roomname.dispose();
+    super.dispose();
   }
 }

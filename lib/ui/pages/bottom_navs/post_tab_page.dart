@@ -52,7 +52,7 @@ class _PostTabPageState extends State<PostTabPage>
                     labelColor: AppColor.closeToPurple,
                     unselectedLabelColor: AppColor.black54,
                     indicatorSize: TabBarIndicatorSize.label,
-                    indicator: TabBarGradientIndicator(
+                    indicator: const TabBarGradientIndicator(
                       gradientColor: [
                         AppColor.closeToBlue,
                         AppColor.closeToPurple

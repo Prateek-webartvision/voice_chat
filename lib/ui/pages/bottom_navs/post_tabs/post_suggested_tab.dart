@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:voice_chat/controllers/post_controller.dart';
 import 'package:voice_chat/models/post_suggested_model.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
@@ -16,57 +18,61 @@ class PostSuggestedTab extends StatefulWidget {
 class _PostSuggestedTabState extends State<PostSuggestedTab> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-      ),
-      // postList
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: allPostList.length,
-              itemBuilder: (context, index) {
-                return PostCardWidget(
-                  cardData: allPostList[index],
-                  onAddFriendTab: (friend) {
-                    AppUtils.showSnakBar(msg: "friends");
+    return GetBuilder<PostController>(
+      builder: (controller) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          // postList
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: controller.allPostList.length,
+                  itemBuilder: (context, index) {
+                    return PostCardWidget(
+                      cardData: controller.allPostList[index],
+                      onAddFriendTab: (friend) {
+                        AppUtils.showSnakBar(msg: "friends");
+                      },
+                      onLikeTab: (like) {
+                        AppUtils.showSnakBar(msg: "Like");
+                        setState(() {
+                          controller.allPostList[index].isLiked = like;
+                        });
+                      },
+                      onCommentTab: () {
+                        AppUtils.showSnakBar(msg: "Comment");
+                      },
+                    );
                   },
-                  onLikeTab: (like) {
-                    AppUtils.showSnakBar(msg: "Like");
-                    setState(() {
-                      allPostList[index].isLiked = like;
-                    });
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        const Divider(
+                          thickness: 2,
+                          endIndent: 40,
+                        ),
+                        SizedBox(
+                          height: h10,
+                        )
+                      ],
+                    );
                   },
-                  onCommentTab: () {
-                    AppUtils.showSnakBar(msg: "Comment");
-                  },
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return Column(
-                  children: [
-                    const Divider(
-                      thickness: 2,
-                      endIndent: 40,
-                    ),
-                    SizedBox(
-                      height: h10,
-                    )
-                  ],
-                );
-              },
-            ),
+                ),
 
-            //Space Sized
-            const SizedBox(
-              height: 20,
-            )
-          ],
-        ),
-      ),
+                //Space Sized
+                const SizedBox(
+                  height: 20,
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -96,11 +102,15 @@ class PostCardWidget extends StatelessWidget {
               height: avtarSize,
               width: avtarSize,
               decoration: BoxDecoration(
+                gradient: AppColor.backgraundGradientV,
                 borderRadius: BorderRadius.circular(40),
-                image: DecorationImage(
-                  image: CachedNetworkImageProvider(cardData.userProfile),
-                  fit: BoxFit.cover,
-                ),
+                image: (cardData.userProfile != null)
+                    ? DecorationImage(
+                        image:
+                            CachedNetworkImageProvider(cardData.userProfile!),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
               ),
             ),
             const SizedBox(width: 10),

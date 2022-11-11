@@ -40,6 +40,7 @@ dependencies:
   http: ^0.13.5
   get_storage: ^2.0.3
   google_fonts: ^3.0.1
+  image_picker: ^0.8.6
   country_picker: ^2.0.16
   pin_code_fields: ^7.4.0
   connectivity_plus: ^3.0.2
@@ -49,6 +50,11 @@ dependencies:
   cached_network_image: ^3.2.2
   social_login_buttons: ^1.0.6+2
   tabbar_gradient_indicator: ^1.0.1
+ 
+  # Socket.io
+  socket_io_client: ^1.0.2 
+
+ 
 
 dev_dependencies:
   flutter_test:

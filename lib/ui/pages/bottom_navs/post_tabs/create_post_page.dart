@@ -1,9 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:voice_chat/res/app_color.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:voice_chat/utils/app_utils.dart';
 import 'package:voice_chat/res/constant_value.dart';
-import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/ui/widgets/my_login_btn.dart';
+import 'package:voice_chat/ui/widgets/k_text_field.dart';
+import 'package:voice_chat/repositorys/profile_repo.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:voice_chat/models/post_suggested_model.dart';
+import 'package:voice_chat/controllers/post_controller.dart';
+import 'package:voice_chat/controllers/profile_controller.dart';
 
 import '../../../widgets/gradient_icon_widget.dart';
 
@@ -16,7 +24,14 @@ class CreatePostPage extends StatefulWidget {
 
 class _CreatePostPageState extends State<CreatePostPage> {
   TextEditingController messageTextController = TextEditingController();
-  String tt = "click";
+  final imagePicker = ImagePicker();
+  File? imageFile;
+
+  @override
+  void initState() {
+    ProfileRepository.instance.getProfile();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +107,8 @@ class _CreatePostPageState extends State<CreatePostPage> {
                         ),
                       ),
                     ),
-                  ), //Image btn
-
+                  ),
+                  //Image btn
                   Flexible(
                     flex: 1,
                     child: Column(
@@ -102,14 +117,24 @@ class _CreatePostPageState extends State<CreatePostPage> {
                         GestureDetector(
                           onTap: () {
                             print("Add Image");
+                            imagePicker
+                                .pickImage(source: ImageSource.gallery)
+                                .then((value) {
+                              setState(() {
+                                imageFile = File(value!.path);
+                              });
+                            });
                           },
                           child: Container(
                             height: 120,
                             width: 120,
                             decoration: BoxDecoration(
-                              color: AppColor.black.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
+                                color: AppColor.black.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(16),
+                                image: (imageFile == null)
+                                    ? null
+                                    : DecorationImage(
+                                        image: FileImage(imageFile!))),
                             child: Icon(
                               Icons.add_photo_alternate_outlined,
                               size: 50,
@@ -153,34 +178,37 @@ class _CreatePostPageState extends State<CreatePostPage> {
             child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 60),
           child: MyGradientBtn(
-            onPress: () {},
+            onPress: sedPost,
             text: "Send",
             borderRadius: 20,
           ),
-        )
-            // child: ElevatedButton(
-            //   onPressed: () {},
-
-            //   style: ButtonStyle(
-            //     fixedSize: MaterialStateProperty.all(const Size(200, 45)),
-            //     shape: MaterialStateProperty.all(
-            //       RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(16.r),
-            //       ),
-            //     ),
-
-            //     backgroundColor:
-            //         MaterialStateProperty.all(AppColor.closeToPurple),
-            //   ),
-            //   child: Text(
-            //     "Send",
-            //     style: Theme.of(context).textTheme.headlineMedium,
-            //   ),
-            // ),
-
-            ),
+        )),
       ),
     );
+  }
+
+  //sedPost
+  sedPost() {
+    if (messageTextController.text.isEmpty) {
+      AppUtils.showSnakBar(msg: "Type your moment");
+    } else {
+      // print(messageTextController.text);
+      // print(imageFile);
+      PostController.instance.addPost(
+        PostSeggestedModel(
+          userName: ProfileController.instance.profileData!.firstName!,
+          userProfile: "ProfileController.instance.profileData!.image",
+          image:
+              "https://i.pinimg.com/736x/fa/f1/f7/faf1f7f6e2e88bafc5b85fd3e9ecae76.jpg",
+          comment: messageTextController.text,
+          likes: 0,
+          comments: 0,
+          isfriend: false,
+          isLiked: false,
+        ),
+      );
+      AppUtils.showSnakBar(msg: "Your Moment is Posted");
+    }
   }
 
   @override

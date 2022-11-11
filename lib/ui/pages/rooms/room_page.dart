@@ -3,14 +3,69 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/room_model.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
+// import 'package:socket_io_client/socket_io_client.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-class RoomPage extends StatelessWidget {
+class RoomPage extends StatefulWidget {
   const RoomPage({super.key, required this.room});
   final RoomModel room;
 
+  @override
+  State<RoomPage> createState() => _RoomPageState();
+}
+
+class _RoomPageState extends State<RoomPage> {
+  late IO.Socket socket;
+
+  @override
+  void initState() {
+    connect();
+    super.initState();
+  }
+  //web socket working on
+
+  Future<void> connect() async {
+    try {
+      socket = IO.io(AppUrls.domain);
+      // socket = IO.io(
+      //   "http://apichatapp.webartvision.in",
+      //   // OptionBuilder()
+      //   //     .setTransports(["websocket"])
+      //   //     .disableAutoConnect()
+      //   //     .build(),
+      // );
+      // socket = IO.io("http://apichatapp.webartvision.in",
+      //     OptionBuilder().autoConnet().build());
+      // socket.connect();
+      var name = "kundan";
+
+      socket.onConnect((v) {
+        print("object $v");
+      });
+
+      // socket.on("user-joined", (name) {
+      //   print("object");
+      // });
+    } on Exception catch (e) {
+      print(e);
+    }
+
+    print("Socket : ${socket.connected}");
+  }
+
+  @override
+  void dispose() {
+    socket.disconnect();
+    socket.dispose();
+
+    super.dispose();
+  }
+
+//
   @override
   Widget build(BuildContext context) {
     return AuthBackgraundWidget(
@@ -19,9 +74,10 @@ class RoomPage extends StatelessWidget {
         body: Column(
           children: [
             //CustumAppBar
-            RoomAppBar(name: room.userName, userImage: room.userProfile),
+            RoomAppBar(
+                name: widget.room.userName, userImage: widget.room.userProfile),
             //Room header
-            RoomHeaderUsers(testImage: room.userProfile),
+            RoomHeaderUsers(testImage: widget.room.userProfile),
             //Chat List
             Flexible(
               child: ListView.builder(
@@ -165,9 +221,9 @@ class RoomPage extends StatelessWidget {
 class RoomHeaderUsers extends StatelessWidget {
   const RoomHeaderUsers({
     Key? key,
-    required this.testImage,
+    this.testImage,
   }) : super(key: key);
-  final String testImage;
+  final String? testImage;
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +260,8 @@ class RoomHeaderUsers extends StatelessWidget {
                   ),
                   image: (index == 9)
                       ? DecorationImage(
-                          image: CachedNetworkImageProvider(testImage),
+                          image: CachedNetworkImageProvider(testImage ??
+                              "https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"),
                           fit: BoxFit.cover)
                       : null,
                 ),
@@ -233,8 +290,8 @@ class RoomHeaderUsers extends StatelessWidget {
 }
 
 class RoomAppBar extends StatelessWidget {
-  const RoomAppBar({super.key, required this.userImage, required this.name});
-  final String userImage;
+  const RoomAppBar({super.key, this.userImage, required this.name});
+  final String? userImage;
   final String name;
 
   @override
@@ -262,10 +319,13 @@ class RoomAppBar extends StatelessWidget {
                         width: 32,
                         decoration: BoxDecoration(
                           color: Colors.green,
-                          image: DecorationImage(
-                            image: CachedNetworkImageProvider(userImage),
-                            fit: BoxFit.cover,
-                          ),
+                          gradient: AppColor.backgraundGradientV,
+                          image: (userImage != null)
+                              ? DecorationImage(
+                                  image: CachedNetworkImageProvider(userImage!),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
@@ -327,17 +387,23 @@ class RoomAppBar extends StatelessWidget {
                       CircleAvatar(
                         radius: 12,
                         backgroundColor: AppColor.white,
-                        foregroundImage: CachedNetworkImageProvider(userImage),
+                        foregroundImage: (userImage != null)
+                            ? CachedNetworkImageProvider(userImage!)
+                            : null,
                       ),
                       CircleAvatar(
                         radius: 12,
                         backgroundColor: AppColor.white,
-                        foregroundImage: CachedNetworkImageProvider(userImage),
+                        foregroundImage: (userImage != null)
+                            ? CachedNetworkImageProvider(userImage!)
+                            : null,
                       ),
                       CircleAvatar(
                         radius: 12,
                         backgroundColor: AppColor.white,
-                        foregroundImage: CachedNetworkImageProvider(userImage),
+                        foregroundImage: (userImage != null)
+                            ? CachedNetworkImageProvider(userImage!)
+                            : null,
                       ),
                     ],
                   ),
