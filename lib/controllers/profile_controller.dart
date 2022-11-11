@@ -27,6 +27,7 @@ class ProfileModel {
   dynamic gender;
   dynamic dob;
   int? level;
+  String? country;
   String? token;
 
   ProfileModel({
@@ -38,6 +39,7 @@ class ProfileModel {
     this.gender,
     this.dob,
     this.level,
+    this.country,
     this.token,
   });
 
@@ -50,6 +52,7 @@ class ProfileModel {
     gender = json['gender'];
     dob = json['dob'];
     level = json['level'];
+    country = json['country'];
     token = json['token'];
   }
 
@@ -64,6 +67,7 @@ class ProfileModel {
     data['dob'] = dob;
     data['level'] = level;
     data['token'] = token;
+    data['country'] = country;
     return data;
   }
 }

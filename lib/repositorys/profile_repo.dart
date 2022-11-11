@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/data/api_services.dart';
@@ -9,6 +7,9 @@ class ProfileRepository {
   static ProfileRepository instance = ProfileRepository();
 
   getProfile() async {
+    ProfileController.instance.error = null;
+    ProfileController.instance.profileData = null;
+
     await ApiServices.postApi(
         url: AppUrls.getCurrentUserBytoken,
         mapData: {"token": UserController.instance.getToken}).then(

@@ -1,11 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
-import 'package:voice_chat/controllers/user_controller.dart';
-import 'package:voice_chat/main.dart';
 import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
@@ -36,22 +35,23 @@ class _AccountTabPageState extends State<AccountTabPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GetBuilder<ProfileController>(
-        builder: (controller) {
-          //Loading and error
-          if (controller.profileData == null) {
-            if (controller.error == null) {
-              return Center(child: CircularProgressIndicator());
+    return AccountTabPageBg(
+      child: Scaffold(
+        backgroundColor: AppColor.transparent,
+        body: GetBuilder<ProfileController>(
+          builder: (controller) {
+            //Loading and error
+            if (controller.profileData == null) {
+              if (controller.error == null) {
+                return Center(child: CircularProgressIndicator());
+              } else {
+                return Center(
+                  child: Text(controller.error!),
+                );
+              }
             } else {
-              return Center(
-                child: Text(controller.error!),
-              );
-            }
-          } else {
-            //Success
-            return AccountTabPageBg(
-              child: SafeArea(
+              //Success
+              return SafeArea(
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -64,8 +64,9 @@ class _AccountTabPageState extends State<AccountTabPage> {
                           padding: const EdgeInsets.all(16),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              color: AppColor.white,
-                              borderRadius: BorderRadius.circular(16)),
+                            color: AppColor.white,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                           child: Column(
                             children: [
                               Row(
@@ -84,14 +85,22 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                           BorderRadius.circular(100.r),
                                     ),
                                     alignment: Alignment.center,
-                                    child: Text(
-                                      "N",
-                                      style: TextStyle(
-                                        color: AppColor.white,
-                                        fontSize: 50.sp,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                                    child: (controller.profileData!.image !=
+                                            null)
+                                        ? CachedNetworkImage(
+                                            imageUrl:
+                                                controller.profileData!.image,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Text(
+                                            controller.profileData!.firstName!
+                                                .characters.first,
+                                            style: TextStyle(
+                                              color: AppColor.white,
+                                              fontSize: 50.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                   ),
                                   SizedBox(width: h20),
                                   Expanded(
@@ -416,18 +425,16 @@ class _AccountTabPageState extends State<AccountTabPage> {
                     ),
                   ),
                 ),
-              ),
-            );
-          }
-        },
+              );
+            }
+          },
+        ),
       ),
     );
   }
 
   @override
   void dispose() {
-    ProfileController.instance.error = null;
-    ProfileController.instance.profileData = null;
     super.dispose();
   }
 }
