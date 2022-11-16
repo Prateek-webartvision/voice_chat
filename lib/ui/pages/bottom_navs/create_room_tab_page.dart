@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:voice_chat/controllers/room_controller.dart';
 import 'package:voice_chat/models/room_model.dart';
+import 'package:voice_chat/repositorys/room_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
@@ -134,13 +135,14 @@ class _CreateRoomTabPageState extends State<CreateRoomTabPage> {
     if (roomname.text.isEmpty) {
       AppUtils.showSnakBar(msg: "Enter Room name", second: 2);
     } else {
-      RoomController.instance.createRoom(
-        room: RoomModel(
-            userProfile: null,
-            userName: roomname.text,
-            roomThum:
-                "https://i.pinimg.com/564x/5f/fa/2b/5ffa2b2561578d81551c3c1c61c5ec68.jpg"),
-      );
+      // RoomController.instance.createRoom(
+      //   room: RoomModel(
+      //       userProfile: null,
+      //       userName: roomname.text,
+      //       roomThum:
+      //           "https://i.pinimg.com/564x/5f/fa/2b/5ffa2b2561578d81551c3c1c61c5ec68.jpg"),
+      // );
+      RoomRepository.instance.createNewRoom(roomName: roomname.text);
       print("create ${roomname.text}");
       AppUtils.showSnakBar(msg: "${roomname.text} Room Created ");
     }

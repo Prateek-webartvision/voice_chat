@@ -5,12 +5,24 @@ import 'package:get/get.dart';
 import 'package:voice_chat/controllers/room_controller.dart';
 import 'package:voice_chat/models/countrys_flag_imoji_model.dart';
 import 'package:voice_chat/models/room_model.dart';
+import 'package:voice_chat/repositorys/room_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/pages/rooms/room_page.dart';
 import 'package:voice_chat/ui/widgets/main_title_with_widget.dart';
 
-class HomeDiscoverTab extends StatelessWidget {
+class HomeDiscoverTab extends StatefulWidget {
   const HomeDiscoverTab({super.key});
+
+  @override
+  State<HomeDiscoverTab> createState() => _HomeDiscoverTabState();
+}
+
+class _HomeDiscoverTabState extends State<HomeDiscoverTab> {
+  @override
+  void initState() {
+    RoomRepository.instance.getAllRooms();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

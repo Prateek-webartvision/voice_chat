@@ -3,12 +3,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:voice_chat/controllers/socket_io_controller.dart';
 import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/room_model.dart';
+import 'package:voice_chat/repositorys/socket_io_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
 // import 'package:socket_io_client/socket_io_client.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart';
+import 'package:voice_chat/ui/widgets/k_text_field.dart';
+import 'package:voice_chat/utils/app_utils.dart';
 
 class RoomPage extends StatefulWidget {
   const RoomPage({super.key, required this.room});
@@ -19,49 +24,49 @@ class RoomPage extends StatefulWidget {
 }
 
 class _RoomPageState extends State<RoomPage> {
-  late IO.Socket socket;
+  TextEditingController message = TextEditingController();
+  // late Socket socket;
+  // Socket? socket;
+
+  // initSocket() {
+  //   print("object");
+
+  //   socket = io(
+  //       // AppUrls.domain,
+  //       "https://apichatapp.webartvision.in",
+  //       // "https://vc-app.herokuapp.com/",
+  //       OptionBuilder().setTransports(['websocket', 'polling']).build());
+  //   socket!.connect();
+  //   socket!.onConnect((_) {
+  //     print('Connection established');
+  //     socket!.emit("chat message", "hello world");
+  //   });
+
+  //   socket!.on("chat message", (data) {
+  //     print("$data");
+  //   });
+
+  //   socket!.onDisconnect((_) => print('Connection Disconnection'));
+  //   socket!.onConnectError((err) => print("errpr; $err"));
+  //   socket!.onError((err) => print(err));
+  // }
 
   @override
   void initState() {
-    connect();
+    // initSocket();
+    SocketIoPrository.instance.connect();
+    SocketIoPrository.instance.socket!.on('chat message', (data) {
+      SocketIoController.instance.addMessages(data);
+    });
     super.initState();
   }
   //web socket working on
 
-  Future<void> connect() async {
-    try {
-      socket = IO.io(AppUrls.domain);
-      // socket = IO.io(
-      //   "http://apichatapp.webartvision.in",
-      //   // OptionBuilder()
-      //   //     .setTransports(["websocket"])
-      //   //     .disableAutoConnect()
-      //   //     .build(),
-      // );
-      // socket = IO.io("http://apichatapp.webartvision.in",
-      //     OptionBuilder().autoConnet().build());
-      // socket.connect();
-      var name = "kundan";
-
-      socket.onConnect((v) {
-        print("object $v");
-      });
-
-      // socket.on("user-joined", (name) {
-      //   print("object");
-      // });
-    } on Exception catch (e) {
-      print(e);
-    }
-
-    print("Socket : ${socket.connected}");
-  }
-
   @override
   void dispose() {
-    socket.disconnect();
-    socket.dispose();
-
+    // socket.disconnect();
+    SocketIoPrository.instance.closeConnection();
+    // socket.dispose();
     super.dispose();
   }
 
@@ -79,14 +84,28 @@ class _RoomPageState extends State<RoomPage> {
             //Room header
             RoomHeaderUsers(testImage: widget.room.userProfile),
             //Chat List
-            Flexible(
-              child: ListView.builder(
-                itemCount: 100,
-                itemBuilder: (context, index) {
-                  return Text("this is your message $index");
-                },
-              ),
-            ),
+            Flexible(child: GetBuilder<SocketIoController>(
+              builder: (controller) {
+                return ListView.builder(
+                  itemCount: controller.socketMessages.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                        padding: EdgeInsets.all(8),
+                        margin: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                            color: AppColor.white,
+                            borderRadius: BorderRadius.circular(8)),
+                        child: Text(
+                          controller.socketMessages[index],
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium!
+                              .copyWith(color: AppColor.black),
+                        ));
+                  },
+                );
+              },
+            )),
 
             //chat text
             Padding(
@@ -190,20 +209,54 @@ class _RoomPageState extends State<RoomPage> {
                     ),
                   ),
 
-                  Container(
-                    height: 35,
-                    // width: 35,
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      // gradient: AppColor.backgraundGradientV,
-                      color: AppColor.white.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: () {
-                        print("Message");
-                      },
+                  InkWell(
+                    onTap: () {
+                      // print("object");
+                      // socket!.emit("chat message", "hello world");
+                      Get.bottomSheet(Container(
+                        // height: 100,
+                        color: AppColor.white,
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          children: [
+                            Flexible(
+                                child: KTextField2(
+                              hintText: "message",
+                              textEditingController: message,
+                            )),
+                            SizedBox(width: 20),
+                            IconButton(
+                              icon: Icon(Icons.send),
+                              onPressed: () {
+                                //socket messgaing
+                                if (message.text.isEmpty) {
+                                  print("send");
+                                  AppUtils.showSnakBar(msg: "Enter message");
+                                } else {
+                                  SocketIoPrository.instance
+                                      .sendMessage(message.text);
+
+                                  if (Get.isBottomSheetOpen == true) {
+                                    message.clear();
+                                    Get.back();
+                                  }
+                                }
+                              },
+                            )
+                          ],
+                        ),
+                      ));
+                    },
+                    child: Container(
+                      height: 35,
+                      // width: 35,
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        // gradient: AppColor.backgraundGradientV,
+                        color: AppColor.white.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      alignment: Alignment.center,
                       child: Text("Write a message...      "),
                     ),
                   ),

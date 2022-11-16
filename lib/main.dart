@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:voice_chat/controller_binding.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
+import 'package:voice_chat/repositorys/socket_io_repo.dart';
 import 'package:voice_chat/res/app_themes.dart';
 import 'package:voice_chat/ui/pages/auth/sign_in_page.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/bottom_nav_bar_page.dart';
@@ -31,6 +32,7 @@ networkChecker() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SocketIoPrository.instance.initSocket();
   await GetStorage.init();
   runApp(const MyApp());
 }
