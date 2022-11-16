@@ -5,7 +5,8 @@ class SocketIoPrository {
   static SocketIoPrository instance = SocketIoPrository();
 
   Socket? socket;
-  final skurl = "https://vc-app.herokuapp.com/";
+  // final skurl = "https://vc-app.herokuapp.com/";
+  final skurl = "http://199.192.24.175:3000/";
 
   // init
   initSocket() {

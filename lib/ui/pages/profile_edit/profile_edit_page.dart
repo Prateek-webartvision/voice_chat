@@ -1,11 +1,16 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
+import 'package:voice_chat/res/constant_value.dart';
+import 'package:voice_chat/ui/widgets/k_text_field.dart';
+import 'package:voice_chat/ui/widgets/my_login_btn.dart';
+import 'package:voice_chat/utils/app_utils.dart';
 
 class ProfileEditPage extends StatefulWidget {
   const ProfileEditPage({super.key});
@@ -15,6 +20,10 @@ class ProfileEditPage extends StatefulWidget {
 }
 
 class _ProfileEditPageState extends State<ProfileEditPage> {
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+  List gender = ["male", "femail", "others"];
+
   @override
   void initState() {
     ProfileRepository.instance.getProfile();
@@ -68,6 +77,11 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         InkWell(
                           onTap: () {
                             print("Get Image");
+                            AppUtils.imagePickerDailog(
+                              seletedImage: (image) {
+                                print("object $image");
+                              },
+                            );
                           },
                           child: Container(
                             constraints: BoxConstraints(
@@ -82,6 +96,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               borderRadius: BorderRadius.circular(25),
                               image: (controller.profileData!.image != null)
                                   ? DecorationImage(
+                                      //Come here user profile pic
                                       image: CachedNetworkImageProvider(
                                           "https://preview.keenthemes.com/metronic-v4/theme/assets/pages/media/profile/profile_user.jpg"),
                                       fit: BoxFit.cover,
@@ -104,17 +119,64 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            "Name",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: AppColor.black,
-                            ),
-                          ),
+                          Text("Name",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.black,
+                              )),
                           InkWell(
                             onTap: () {
-                              print("User name");
+                              //Bottom sheet
+                              Get.bottomSheet(Container(
+                                // height: 100,
+                                color: AppColor.white,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SizedBox(height: h20),
+                                    Text("Edit Name",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineMedium!
+                                            .copyWith(color: AppColor.black)),
+                                    SizedBox(height: h20),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Flexible(
+                                            child: KTextField2(
+                                              textEditingController: firstName,
+                                              hintText: "First Name",
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                            ),
+                                          ),
+                                          SizedBox(width: 8),
+                                          Flexible(
+                                            child: KTextField2(
+                                              textEditingController: lastName,
+                                              hintText: "Last Name",
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: h20),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: MyGradientBtn(
+                                          onPress: () {
+                                            // TODO add save api
+                                          },
+                                          text: "Save"),
+                                    )
+                                  ],
+                                ),
+                              ));
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -153,8 +215,15 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {
+                            onTap: () async {
+                              //TODO DateTime Picker and api
                               print("Date of Birth");
+                              await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1900),
+                                lastDate: DateTime(3000),
+                              ).then((date) => print(date!.year));
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -192,9 +261,11 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               color: AppColor.black,
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              print("gender");
+                          PopupMenuButton(
+                            itemBuilder: (context) {
+                              return gender
+                                  .map((e) => PopupMenuItem(child: Text(e)))
+                                  .toList();
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -235,6 +306,12 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           InkWell(
                             onTap: () {
                               print("country");
+                              showCountryPicker(
+                                context: context,
+                                onSelect: (value) {
+                                  AppUtils.showSnakBar(msg: value.toString());
+                                },
+                              );
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.min,

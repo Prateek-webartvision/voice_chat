@@ -1,12 +1,15 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:voice_chat/res/app_color.dart';
+import 'package:voice_chat/res/constant_value.dart';
 
 class AppUtils {
   static Flushbar flushbar = Flushbar();
+  static ImagePicker imagePicker = ImagePicker();
 
   static showSnakBar({required String msg, int? second}) {
     Get.showSnackbar(
@@ -37,6 +40,88 @@ class AppUtils {
           decoration: BoxDecoration(
               color: AppColor.white, borderRadius: BorderRadius.circular(25)),
           child: CircularProgressIndicator(),
+        ),
+      ),
+    );
+  }
+
+  //Image picker dailog
+  static imagePickerDailog({required Function(String image) seletedImage}) {
+    Get.dialog(
+      Center(
+        child: Container(
+          padding: EdgeInsets.all(16),
+          margin: EdgeInsets.all(36),
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            color: AppColor.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Material(
+            color: AppColor.transparent,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Kundan",
+                  style: Theme.of(Get.context!)
+                      .textTheme
+                      .headlineMedium!
+                      .copyWith(color: AppColor.black),
+                ),
+                SizedBox(height: h20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        await imagePicker
+                            .pickImage(source: ImageSource.camera)
+                            .then((value) {
+                          if (value != null) {
+                            seletedImage(value.path);
+                          }
+                          // print(value);
+                        });
+                      },
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: AppColor.grey200,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        alignment: Alignment.center,
+                        child: Icon(Icons.camera_alt, size: 50),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        await imagePicker
+                            .pickImage(source: ImageSource.gallery)
+                            .then((value) {
+                          if (value != null) {
+                            seletedImage(value.path);
+                          }
+                          // print(value);
+                        });
+                      },
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: AppColor.grey200,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        alignment: Alignment.center,
+                        child: Icon(Icons.image, size: 50),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
