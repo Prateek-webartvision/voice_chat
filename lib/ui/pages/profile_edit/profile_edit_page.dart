@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
@@ -22,7 +23,7 @@ class ProfileEditPage extends StatefulWidget {
 class _ProfileEditPageState extends State<ProfileEditPage> {
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
-  List gender = ["male", "femail", "others"];
+  List gender = ['male', 'female', 'other'];
 
   @override
   void initState() {
@@ -77,9 +78,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         InkWell(
                           onTap: () {
                             print("Get Image");
+                            //get and change image
                             AppUtils.imagePickerDailog(
                               seletedImage: (image) {
                                 print("object $image");
+                                AppUtils.closeDailog();
+                                ProfileRepository.instance
+                                    .updateProfile(image: image);
                               },
                             );
                           },
@@ -135,11 +140,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     SizedBox(height: h20),
-                                    Text("Edit Name",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineMedium!
-                                            .copyWith(color: AppColor.black)),
+                                    Text(
+                                      "Edit Name",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium!
+                                          .copyWith(color: AppColor.black),
+                                    ),
                                     SizedBox(height: h20),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -170,7 +177,24 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: MyGradientBtn(
                                           onPress: () {
-                                            // TODO add save api
+                                            if (firstName.text.isEmpty ||
+                                                lastName.text.isEmpty) {
+                                              AppUtils.showSnakBar(
+                                                  msg: "Enter Full Name");
+                                            } else {
+                                              if (Get.isBottomSheetOpen ==
+                                                  true) {
+                                                Get.back();
+                                              }
+                                              ProfileRepository.instance
+                                                  .updateProfile(
+                                                firstName: firstName.text,
+                                                lastName: lastName.text,
+                                              );
+
+                                              firstName.clear();
+                                              lastName.clear();
+                                            }
                                           },
                                           text: "Save"),
                                     )
@@ -223,7 +247,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(1900),
                                 lastDate: DateTime(3000),
-                              ).then((date) => print(date!.year));
+                              ).then((date) {
+                                ProfileRepository.instance
+                                    .updateProfile(dob: date.toString());
+                              });
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -264,8 +291,15 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           PopupMenuButton(
                             itemBuilder: (context) {
                               return gender
-                                  .map((e) => PopupMenuItem(child: Text(e)))
+                                  .map((e) => PopupMenuItem(
+                                        child: Text(e),
+                                        value: e,
+                                      ))
                                   .toList();
+                            },
+                            onSelected: (value) {
+                              ProfileRepository.instance
+                                  .updateProfile(gender: value.toString());
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -309,7 +343,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               showCountryPicker(
                                 context: context,
                                 onSelect: (value) {
-                                  AppUtils.showSnakBar(msg: value.toString());
+                                  print(value.name);
+                                  // AppUtils.showSnakBar(msg: value.toString());
+                                  ProfileRepository.instance
+                                      .updateProfile(country: value.name);
                                 },
                               );
                             },

@@ -79,7 +79,11 @@ class KTextField2 extends StatelessWidget {
       textInputAction: textInputAction,
       maxLines: maxLines ?? 1,
       minLines: minLines ?? 1,
-      onSubmitted: (value) => onSubmit!(value),
+      onSubmitted: (value) {
+        if (onSubmit != null) {
+          onSubmit!(value);
+        }
+      },
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderSide: BorderSide.none,

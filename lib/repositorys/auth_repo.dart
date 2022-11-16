@@ -77,7 +77,7 @@ class AuthRepository {
       },
     ).then((value) {
       AppUtils.closeDailog();
-
+      print(value);
       if (value['status'] == false) {
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
         isAccountCreated = false;
