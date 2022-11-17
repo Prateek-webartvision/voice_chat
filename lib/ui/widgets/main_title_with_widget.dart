@@ -54,32 +54,33 @@ class MainTitleWithWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            GestureDetector(
-              onTap: () => onTab(),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "more",
-                    style: TextStyle(color: AppColor.closeToPurple),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    height: 20,
-                    width: 20,
-                    decoration: BoxDecoration(
-                      gradient: AppColor.backgraundGradient(),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: AppColor.white,
-                      size: 16,
-                    ),
-                  )
-                ],
-              ),
-            )
+            //See more btn
+            // GestureDetector(
+            //   onTap: () => onTab(),
+            //   child: Row(
+            //     mainAxisSize: MainAxisSize.min,
+            //     children: [
+            //       Text(
+            //         "more",
+            //         style: TextStyle(color: AppColor.closeToPurple),
+            //       ),
+            //       const SizedBox(width: 10),
+            //       Container(
+            //         height: 20,
+            //         width: 20,
+            //         decoration: BoxDecoration(
+            //           gradient: AppColor.backgraundGradient(),
+            //           borderRadius: BorderRadius.circular(4),
+            //         ),
+            //         child: Icon(
+            //           Icons.arrow_forward_ios_rounded,
+            //           color: AppColor.white,
+            //           size: 16,
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // )
           ],
         ),
         const SizedBox(height: 12),

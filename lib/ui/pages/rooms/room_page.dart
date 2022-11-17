@@ -79,10 +79,10 @@ class _RoomPageState extends State<RoomPage> {
         body: Column(
           children: [
             //CustumAppBar
-            RoomAppBar(
-                name: widget.room.userName, userImage: widget.room.userProfile),
+            RoomAppBar(name: "widget.room.userName", userImage: null),
             //Room header
-            RoomHeaderUsers(testImage: widget.room.userProfile),
+            RoomHeaderUsers(testImage: null),
+
             //Chat List
             Flexible(child: GetBuilder<SocketIoController>(
               builder: (controller) {

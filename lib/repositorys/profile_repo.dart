@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:http/http.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/data/api_services.dart';
 import 'package:voice_chat/data/app_urls.dart';
+import 'package:voice_chat/models/profile_model.dart';
 import 'package:voice_chat/utils/app_utils.dart';
 
 class ProfileRepository {
@@ -45,16 +47,14 @@ class ProfileRepository {
     String? country,
   }) {
     AppUtils.progressDailog();
-    File? img;
-    List<int>? imgbty;
-    if (image != null) {
-      img = File(image);
-      imgbty = img.readAsBytesSync();
-    }
-
+    // if (image != null) {
+    //   print(base64Encode(File(image).readAsBytesSync()));
+    // }
     Map<String, dynamic> userData = {
       "first_name": firstName,
       "last_name": lastName,
+      "image":
+          (image != null) ? base64.encode(File(image).readAsBytesSync()) : null,
       // "image": (image != null)
       //     ? "data:image/png;base64,${base64Encode(imgbty!)}"
       //     : null,
@@ -73,5 +73,22 @@ class ProfileRepository {
     });
 
     print(" $image $firstName $lastName $dob, $gender $country");
+  }
+
+  //post with multipart
+  static Future postApiWithMultiPartProfile({
+    String? image,
+  }) async {
+    var res;
+    try {
+      var req = MultipartRequest("POST", Uri.parse(AppUrls.profileUpdate));
+      req.fields["token"] = UserController.instance.getToken;
+      req.files.add(await MultipartFile.fromPath("image", image!));
+      res = await req.send();
+      print(req);
+    } catch (e) {
+      print("object");
+    }
+    return "data";
   }
 }

@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -79,7 +81,6 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                     height: 100,
                                     width: 100,
                                     decoration: BoxDecoration(
-                                      color: Colors.green,
                                       gradient: AppColor.backgraundGradientV,
                                       borderRadius:
                                           BorderRadius.circular(100.r),
@@ -87,11 +88,14 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                     alignment: Alignment.center,
                                     child: (controller.profileData!.image !=
                                             null)
-                                        ? CachedNetworkImage(
-                                            imageUrl:
-                                                controller.profileData!.image,
-                                            fit: BoxFit.cover,
-                                          )
+                                        ? Text("I")
+                                        //     ? CachedNetworkImage(
+                                        //         imageUrl:
+                                        //             controller.profileData!.image,
+                                        //         fit: BoxFit.cover,
+                                        //       )
+                                        // ? Image.memory(base64Decode(
+                                        //     controller.profileData!.image))
                                         : Text(
                                             controller.profileData!.firstName!
                                                 .characters.first,

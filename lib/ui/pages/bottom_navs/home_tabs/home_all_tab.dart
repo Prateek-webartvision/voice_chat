@@ -97,76 +97,77 @@ class HomeAllFixedRoom extends StatelessWidget {
     return GetBuilder<RoomController>(builder: (controller) {
       return SizedBox(
         height: 140,
-        child: ListView.builder(
-          itemCount: controller.rooms.length > 6 ? 6 : controller.rooms.length,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            return Card(
-              clipBehavior: Clip.hardEdge,
-              child: InkWell(
-                onTap: () {
-                  Get.to(() => RoomPage(
-                        room: controller.rooms[index],
-                      ));
-                },
-                child: Container(
-                  width: 120,
-                  decoration: BoxDecoration(
-                    //Room Thumb
-                    image: DecorationImage(
-                      image: CachedNetworkImageProvider(
-                          controller.rooms[index].roomThum),
-                      fit: BoxFit.cover,
-                      colorFilter: ColorFilter.mode(
-                        AppColor.black.withOpacity(0.3),
-                        BlendMode.darken,
-                      ),
-                    ),
-                  ),
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      bottom: 10,
-                      left: 10,
-                      right: 10,
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 30,
-                          width: 30,
-                          decoration: BoxDecoration(
-                            //Avtar
-                            image: (controller.rooms[index].userProfile != null)
-                                ? DecorationImage(
-                                    image: CachedNetworkImageProvider(
-                                        controller.rooms[index].userProfile!),
-                                    fit: BoxFit.cover,
-                                  )
-                                : null,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            controller.rooms[index].userName,
-                            style: TextStyle(
-                              color: AppColor.white,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
+        child: Text("kundan"),
+        // child: ListView.builder(
+        //   itemCount: controller.rooms.length > 6 ? 6 : controller.rooms.length,
+        //   scrollDirection: Axis.horizontal,
+        //   itemBuilder: (context, index) {
+        //     return Card(
+        //       clipBehavior: Clip.hardEdge,
+        //       child: InkWell(
+        //         onTap: () {
+        //           Get.to(() => RoomPage(
+        //                 room: controller.rooms[index],
+        //               ));
+        //         },
+        //         child: Container(
+        //           width: 120,
+        //           decoration: BoxDecoration(
+        //             //Room Thumb
+        //             image: DecorationImage(
+        //               image: CachedNetworkImageProvider(
+        //                   controller.rooms[index].roomThum),
+        //               fit: BoxFit.cover,
+        //               colorFilter: ColorFilter.mode(
+        //                 AppColor.black.withOpacity(0.3),
+        //                 BlendMode.darken,
+        //               ),
+        //             ),
+        //           ),
+        //           alignment: Alignment.bottomCenter,
+        //           child: Padding(
+        //             padding: const EdgeInsets.only(
+        //               bottom: 10,
+        //               left: 10,
+        //               right: 10,
+        //             ),
+        //             child: Row(
+        //               children: [
+        //                 Container(
+        //                   height: 30,
+        //                   width: 30,
+        //                   decoration: BoxDecoration(
+        //                     //Avtar
+        //                     image: (controller.rooms[index].userProfile != null)
+        //                         ? DecorationImage(
+        //                             image: CachedNetworkImageProvider(
+        //                                 controller.rooms[index].userProfile!),
+        //                             fit: BoxFit.cover,
+        //                           )
+        //                         : null,
+        //                     borderRadius: BorderRadius.circular(30),
+        //                   ),
+        //                 ),
+        //                 const SizedBox(width: 10),
+        //                 Expanded(
+        //                   child: Text(
+        //                     controller.rooms[index].userName,
+        //                     style: TextStyle(
+        //                       color: AppColor.white,
+        //                       fontSize: 16.sp,
+        //                       fontWeight: FontWeight.w500,
+        //                     ),
+        //                     overflow: TextOverflow.ellipsis,
+        //                   ),
+        //                 )
+        //               ],
+        //             ),
+        //           ),
+        //         ),
+        //       ),
+        //     );
+        //   },
+        // ),
       );
     });
   }

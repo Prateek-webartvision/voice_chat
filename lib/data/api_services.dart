@@ -58,7 +58,7 @@ class ApiServices {
 
     return res;
   }
-  //pot
+
   //delete
 
   //Api for Http request

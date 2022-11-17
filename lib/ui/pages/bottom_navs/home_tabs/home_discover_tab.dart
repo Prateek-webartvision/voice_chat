@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/controllers/room_controller.dart';
 import 'package:voice_chat/models/countrys_flag_imoji_model.dart';
-import 'package:voice_chat/models/room_model.dart';
 import 'package:voice_chat/repositorys/room_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/pages/rooms/room_page.dart';
@@ -70,24 +69,27 @@ class Rooms extends StatelessWidget {
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (context, index) {
+          // return Text("data ${controller.rooms}");
           return Card(
             clipBehavior: Clip.hardEdge,
             child: InkWell(
               onTap: () {
-                Get.to(() => RoomPage(room: controller.rooms[index]));
+                // Get.to(() => RoomPage(room: controller.rooms[index]));
               },
               child: Container(
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: CachedNetworkImageProvider(
-                        controller.rooms[index].roomThum),
-                    fit: BoxFit.cover,
-                    colorFilter: ColorFilter.mode(
-                      AppColor.black.withOpacity(0.3),
-                      BlendMode.darken,
+                    //Bg image
+
+                    // image: DecorationImage(
+                    //   image: CachedNetworkImageProvider(
+                    //       controller.rooms[index].roomThum),
+                    //   fit: BoxFit.cover,
+                    //   colorFilter: ColorFilter.mode(
+                    //     AppColor.black.withOpacity(0.3),
+                    //     BlendMode.darken,
+                    //   ),
+                    // ),
                     ),
-                  ),
-                ),
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -96,35 +98,54 @@ class Rooms extends StatelessWidget {
                     right: 10,
                   ),
                   //user
-                  child: Row(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          gradient: AppColor.backgraundGradientV,
-                          image: (controller.rooms[index].userProfile != null)
-                              ? DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                      controller.rooms[index].userProfile!),
-                                  fit: BoxFit.cover,
-                                )
-                              : null,
-                          borderRadius: BorderRadius.circular(30),
+                      //Room name
+                      Text(
+                        controller.rooms[index].roomName!,
+                        style: TextStyle(
+                          color: AppColor.black,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          controller.rooms[index].userName,
-                          style: TextStyle(
-                            color: AppColor.white,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
+                      SizedBox(height: 10),
+                      //Creater Name and avtar
+                      Row(
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              gradient: AppColor.backgraundGradientV,
+                              // image: (controller.rooms[index].userProfile != null)
+                              //     ? DecorationImage(
+                              //         image: CachedNetworkImageProvider(
+                              //             controller.rooms[index].userProfile!),
+                              //         fit: BoxFit.cover,
+                              //       )
+                              //     : null,
+                              borderRadius: BorderRadius.circular(30),
+                            ),
                           ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      )
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              "controller.rooms[index].userName",
+                              style: TextStyle(
+                                color: AppColor.black,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),
