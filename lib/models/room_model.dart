@@ -44,26 +44,31 @@ class RoomModel {
 }
 
 class Room {
-  int? id;
-  String? roomName;
+  late int id;
+  late String roomName;
   String? users;
-  int? createdBy;
+  late int createdBy;
+  late String firstName;
+  late String lastName;
+  String? creatorImage;
   String? image;
   String? info;
-  bool? active;
-  String? createdAt;
-  String? updatedAt;
+  late bool active;
+  late String createdAt;
+  late String updatedAt;
 
   Room({
-    this.id,
-    this.roomName,
+    required this.id,
+    required this.roomName,
     this.users,
-    this.createdBy,
+    required this.createdBy,
+    required this.firstName,
+    this.creatorImage,
     this.image,
     this.info,
-    this.active,
-    this.createdAt,
-    this.updatedAt,
+    required this.active,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   Room.fromJson(Map<String, dynamic> json) {
@@ -72,6 +77,10 @@ class Room {
     roomName = json['room_name'];
     users = json['users'];
     createdBy = json['created_by'];
+    firstName = json['first_name'];
+    lastName = json['last_name'];
+    creatorImage = json['creator_image'];
+
     image = json['image'];
     info = json['info'];
     active = json['active'];
@@ -85,6 +94,9 @@ class Room {
     data['room_name'] = roomName;
     data['users'] = users;
     data['created_by'] = createdBy;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['creator_image'] = creatorImage;
     data['image'] = image;
     data['info'] = info;
     data['active'] = active;

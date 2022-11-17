@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/models/profile_model.dart';
 import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/repositorys/room_repo.dart';
+import 'package:voice_chat/repositorys/socket_io_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
@@ -165,11 +167,16 @@ class _CreateRoomTabPageState extends State<CreateRoomTabPage> {
     } else {
       RoomRepository.instance.createNewRoom(
         roomName: roomname.text,
+        userFirstName: userData.firstName!,
+        userLastName: userData.lastName!,
+        userProfileImage: "image",
+        image: "iamge1",
         createBy: userData.id.toString(),
         info: "sadasd",
       );
       // print("create ${roomname.text}");
       // AppUtils.showSnakBar(msg: "${roomname.text} Room Created ");
+
     }
   }
 

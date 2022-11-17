@@ -1,17 +1,15 @@
 import 'package:socket_io_client/socket_io_client.dart';
-import 'package:voice_chat/controllers/socket_io_controller.dart';
+import 'package:voice_chat/data/app_urls.dart';
 
 class SocketIoPrository {
   static SocketIoPrository instance = SocketIoPrository();
 
   Socket? socket;
-  // final skurl = "https://vc-app.herokuapp.com/";
-  final skurl = "http://199.192.24.175:3000/";
 
   // init
   initSocket() {
     socket = io(
-      skurl,
+      AppUrls.domain,
       OptionBuilder().setTransports(["websocket"]).disableAutoConnect().build(),
     );
   }
@@ -24,13 +22,23 @@ class SocketIoPrository {
       print("conneted");
     });
     socket!.onDisconnect((data) => print("disconnet"));
-    //  socket!.onDisconnect((_) => print('Connection Disconnection'));
+    socket!.onDisconnect((_) => print('Connection Disconnection'));
     socket!.onConnectError((err) => print("errpr; $err"));
     socket!.onError((err) => print(err));
   }
 
   sendMessage(String message) {
     socket!.emit('chat message', message);
+  }
+
+  crateRoom({
+    // required int userIs,
+    required String roomName,
+    // required String type,
+    // required String info,
+  }) {
+    print("from socket.io $roomName");
+    socket!.emit('room-created', roomName);
   }
 
   closeConnection() {

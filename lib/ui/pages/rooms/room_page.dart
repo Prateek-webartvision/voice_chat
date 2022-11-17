@@ -17,7 +17,7 @@ import 'package:voice_chat/utils/app_utils.dart';
 
 class RoomPage extends StatefulWidget {
   const RoomPage({super.key, required this.room});
-  final RoomModel room;
+  final Room room;
 
   @override
   State<RoomPage> createState() => _RoomPageState();

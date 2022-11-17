@@ -74,22 +74,23 @@ class Rooms extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             child: InkWell(
               onTap: () {
-                // Get.to(() => RoomPage(room: controller.rooms[index]));
+                Get.to(() => RoomPage(room: controller.rooms[index]));
               },
               child: Container(
                 decoration: BoxDecoration(
-                    //Bg image
+                  //Bg image
 
-                    // image: DecorationImage(
-                    //   image: CachedNetworkImageProvider(
-                    //       controller.rooms[index].roomThum),
-                    //   fit: BoxFit.cover,
-                    //   colorFilter: ColorFilter.mode(
-                    //     AppColor.black.withOpacity(0.3),
-                    //     BlendMode.darken,
-                    //   ),
-                    // ),
+                  image: DecorationImage(
+                    // image: CachedNetworkImageProvider(
+                    //     controller.rooms[index].roomThum),
+                    image: AssetImage("assets/images/bg.jpg"),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                      AppColor.black.withOpacity(0.3),
+                      BlendMode.darken,
                     ),
+                  ),
+                ),
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.only(
@@ -104,9 +105,9 @@ class Rooms extends StatelessWidget {
                     children: [
                       //Room name
                       Text(
-                        controller.rooms[index].roomName!,
+                        controller.rooms[index].roomName,
                         style: TextStyle(
-                          color: AppColor.black,
+                          color: AppColor.white,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                         ),
@@ -135,9 +136,9 @@ class Rooms extends StatelessWidget {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              "controller.rooms[index].userName",
+                              "${controller.rooms[index].firstName} ${controller.rooms[index].lastName}",
                               style: TextStyle(
-                                color: AppColor.black,
+                                color: AppColor.white,
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.bold,
                               ),

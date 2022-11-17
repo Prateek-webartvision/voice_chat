@@ -33,6 +33,7 @@ networkChecker() {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SocketIoPrository.instance.initSocket();
+  SocketIoPrository.instance.connect();
   await GetStorage.init();
   runApp(const MyApp());
 }
