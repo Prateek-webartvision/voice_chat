@@ -4,14 +4,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:voice_chat/controllers/socket_io_controller.dart';
-import 'package:voice_chat/data/app_urls.dart';
+import 'package:voice_chat/controllers/message_controller.dart';
+import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/models/room_model.dart';
+import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/repositorys/socket_io_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
-// import 'package:socket_io_client/socket_io_client.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/utils/app_utils.dart';
 
@@ -25,48 +24,38 @@ class RoomPage extends StatefulWidget {
 
 class _RoomPageState extends State<RoomPage> {
   TextEditingController message = TextEditingController();
-  // late Socket socket;
-  // Socket? socket;
-
-  // initSocket() {
-  //   print("object");
-
-  //   socket = io(
-  //       // AppUrls.domain,
-  //       "https://apichatapp.webartvision.in",
-  //       // "https://vc-app.herokuapp.com/",
-  //       OptionBuilder().setTransports(['websocket', 'polling']).build());
-  //   socket!.connect();
-  //   socket!.onConnect((_) {
-  //     print('Connection established');
-  //     socket!.emit("chat message", "hello world");
-  //   });
-
-  //   socket!.on("chat message", (data) {
-  //     print("$data");
-  //   });
-
-  //   socket!.onDisconnect((_) => print('Connection Disconnection'));
-  //   socket!.onConnectError((err) => print("errpr; $err"));
-  //   socket!.onError((err) => print(err));
-  // }
+  MessageController? messageController;
 
   @override
   void initState() {
-    // initSocket();
-    SocketIoPrository.instance.connect();
-    SocketIoPrository.instance.socket!.on('chat message', (data) {
-      SocketIoController.instance.addMessages(data);
-    });
+    Get.put(MessageController());
+    getUser();
     super.initState();
   }
-  //web socket working on
+
+  getUser() async {
+    await ProfileRepository.instance.getProfile();
+    SocketIoPrository.instance.connect();
+
+    //all chats lisen
+    SocketIoPrository.instance.chatMessages();
+    //connect User to room
+    SocketIoPrository.instance.joinRoom(
+      roomName: widget.room.roomName,
+      userName:
+          "${ProfileController.instance.profileData!.firstName} ${ProfileController.instance.profileData!.lastName}",
+    );
+    //     .on("chat-message", (data) => {print(data)});
+    // print(widget.room.roomName);
+    // print(ProfileController.instance.profileData?.firstName);
+  }
 
   @override
   void dispose() {
-    // socket.disconnect();
-    SocketIoPrository.instance.closeConnection();
-    // socket.dispose();
+    SocketIoPrository.instance.roomDisconnet();
+    if (messageController != null) {
+      messageController!.dispose();
+    }
     super.dispose();
   }
 
@@ -76,195 +65,219 @@ class _RoomPageState extends State<RoomPage> {
     return AuthBackgraundWidget(
       child: Scaffold(
         backgroundColor: AppColor.transparent,
-        body: Column(
-          children: [
-            //CustumAppBar
-            RoomAppBar(name: "widget.room.userName", userImage: null),
-            //Room header
-            RoomHeaderUsers(testImage: null),
-
-            //Chat List
-            Flexible(child: GetBuilder<SocketIoController>(
-              builder: (controller) {
-                return ListView.builder(
-                  itemCount: controller.socketMessages.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                        padding: EdgeInsets.all(8),
-                        margin: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            color: AppColor.white,
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Text(
-                          controller.socketMessages[index],
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineMedium!
-                              .copyWith(color: AppColor.black),
-                        ));
-                  },
+        body: GetBuilder<ProfileController>(
+          builder: (controller) {
+            if (controller.profileData == null) {
+              if (controller.error == null) {
+                return Center(child: CircularProgressIndicator());
+              } else {
+                return Center(
+                  child: Text(controller.error!),
                 );
-              },
-            )),
-
-            //chat text
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              }
+            } else {
+              return Column(
                 children: [
-                  //Gift
-                  Container(
-                    height: 35,
-                    width: 35,
-                    decoration: BoxDecoration(
-                      gradient: AppColor.backgraundGradientV,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: () {
-                        print("Gift");
-                      },
-                      child: Icon(
-                        Icons.card_giftcard,
-                        color: AppColor.white,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 35,
-                    width: 35,
-                    decoration: BoxDecoration(
-                      // gradient: AppColor.backgraundGradientV,
-                      color: AppColor.white.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: () {
-                        print("favorite");
-                      },
-                      child: Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 35,
-                    width: 35,
-                    decoration: BoxDecoration(
-                      // gradient: AppColor.backgraundGradientV,
-                      color: AppColor.white.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: () {
-                        print("favorite");
-                      },
-                      child: Icon(
-                        Icons.gamepad_rounded,
-                        color: AppColor.white,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 35,
-                    width: 35,
-                    decoration: BoxDecoration(
-                      // gradient: AppColor.backgraundGradientV,
-                      color: AppColor.white.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: () {
-                        print("favorite");
-                      },
-                      child: Icon(
-                        Icons.chat_outlined,
-                        color: AppColor.white,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 35,
-                    width: 35,
-                    decoration: BoxDecoration(
-                      // gradient: AppColor.backgraundGradientV,
-                      color: AppColor.white.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: () {
-                        print("favorite");
-                      },
-                      child: Icon(
-                        Icons.mic,
-                        color: AppColor.white,
-                      ),
-                    ),
-                  ),
+                  //CustumAppBar
+                  RoomAppBar(name: widget.room.roomName, userImage: null),
+                  //Room header
+                  RoomHeaderUsers(testImage: null),
 
-                  InkWell(
-                    onTap: () {
-                      // print("object");
-                      // socket!.emit("chat message", "hello world");
-                      Get.bottomSheet(Container(
-                        // height: 100,
-                        color: AppColor.white,
-                        padding: EdgeInsets.all(8),
-                        child: Row(
-                          children: [
-                            Flexible(
-                                child: KTextField2(
-                              hintText: "message",
-                              textEditingController: message,
-                            )),
-                            SizedBox(width: 20),
-                            IconButton(
-                              icon: Icon(Icons.send),
-                              onPressed: () {
-                                //socket messgaing
-                                if (message.text.isEmpty) {
-                                  print("send");
-                                  AppUtils.showSnakBar(msg: "Enter message");
-                                } else {
-                                  SocketIoPrository.instance
-                                      .sendMessage(message.text);
-
-                                  if (Get.isBottomSheetOpen == true) {
-                                    message.clear();
-                                    Get.back();
-                                  }
-                                }
-                              },
-                            )
-                          ],
-                        ),
-                      ));
+                  //Chat List
+                  Flexible(child: GetBuilder<MessageController>(
+                    builder: (controller) {
+                      return ListView.builder(
+                        itemCount: controller.messages.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                              padding: EdgeInsets.all(8),
+                              margin: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  color: AppColor.white,
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(controller.messages[index].name),
+                                  Text(
+                                    controller.messages[index].message,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium!
+                                        .copyWith(color: AppColor.black),
+                                  ),
+                                ],
+                              ));
+                        },
+                      );
                     },
-                    child: Container(
-                      height: 35,
-                      // width: 35,
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        // gradient: AppColor.backgraundGradientV,
-                        color: AppColor.white.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text("Write a message...      "),
+                  )),
+
+                  //chat text
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        //Gift
+                        Container(
+                          height: 35,
+                          width: 35,
+                          decoration: BoxDecoration(
+                            gradient: AppColor.backgraundGradientV,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          alignment: Alignment.center,
+                          child: InkWell(
+                            onTap: () {
+                              print("Gift");
+                            },
+                            child: Icon(
+                              Icons.card_giftcard,
+                              color: AppColor.white,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 35,
+                          width: 35,
+                          decoration: BoxDecoration(
+                            // gradient: AppColor.backgraundGradientV,
+                            color: AppColor.white.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          alignment: Alignment.center,
+                          child: InkWell(
+                            onTap: () {
+                              print("favorite");
+                            },
+                            child: Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 35,
+                          width: 35,
+                          decoration: BoxDecoration(
+                            // gradient: AppColor.backgraundGradientV,
+                            color: AppColor.white.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          alignment: Alignment.center,
+                          child: InkWell(
+                            onTap: () {
+                              print("favorite");
+                            },
+                            child: Icon(
+                              Icons.gamepad_rounded,
+                              color: AppColor.white,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 35,
+                          width: 35,
+                          decoration: BoxDecoration(
+                            // gradient: AppColor.backgraundGradientV,
+                            color: AppColor.white.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          alignment: Alignment.center,
+                          child: InkWell(
+                            onTap: () {
+                              print("favorite");
+                            },
+                            child: Icon(
+                              Icons.chat_outlined,
+                              color: AppColor.white,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 35,
+                          width: 35,
+                          decoration: BoxDecoration(
+                            // gradient: AppColor.backgraundGradientV,
+                            color: AppColor.white.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          alignment: Alignment.center,
+                          child: InkWell(
+                            onTap: () {
+                              print("favorite");
+                            },
+                            child: Icon(
+                              Icons.mic,
+                              color: AppColor.white,
+                            ),
+                          ),
+                        ),
+
+                        InkWell(
+                          onTap: () {
+                            // print("object");
+                            // socket!.emit("chat message", "hello world");
+                            Get.bottomSheet(Container(
+                              // height: 100,
+                              color: AppColor.white,
+                              padding: EdgeInsets.all(8),
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                      child: KTextField2(
+                                    hintText: "message",
+                                    textEditingController: message,
+                                  )),
+                                  SizedBox(width: 20),
+                                  IconButton(
+                                    icon: Icon(Icons.send),
+                                    onPressed: () {
+                                      //socket messgaing
+                                      if (message.text.isEmpty) {
+                                        AppUtils.showSnakBar(
+                                            msg: "Enter message");
+                                      } else {
+                                        SocketIoPrository.instance.sendMessage(
+                                          roomName: widget.room.roomName,
+                                          message: message.text,
+                                          userName:
+                                              "${ProfileController.instance.profileData!.firstName} ${ProfileController.instance.profileData!.lastName}",
+                                        );
+
+                                        if (Get.isBottomSheetOpen == true) {
+                                          message.clear();
+                                          Get.back();
+                                        }
+                                      }
+                                    },
+                                  )
+                                ],
+                              ),
+                            ));
+                          },
+                          child: Container(
+                            height: 35,
+                            // width: 35,
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              // gradient: AppColor.backgraundGradientV,
+                              color: AppColor.white.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text("Write a message...      "),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  // Center(child: Text(room.userName)),
                 ],
-              ),
-            ),
-            // Center(child: Text(room.userName)),
-          ],
+              );
+            }
+          },
         ),
       ),
     );

@@ -15,10 +15,13 @@ class RoomRepository {
       if (value['status'] == true) {
         RoomController.instance.getRooms(RoomModel.fromJson(value));
       } else {
+        //responce error
+        AppUtils.showSnakBar(msg: value['msg'], second: 2);
         print("fial");
       }
     }).onError((error, stackTrace) {
-      print(error);
+      // error message
+      AppUtils.showSnakBar(msg: error.toString(), second: 2);
     });
   }
 
@@ -41,7 +44,7 @@ class RoomRepository {
       "last_name": userLastName,
       "creator_image": userProfileImage
     }).then((value) {
-      print(value);
+      // print(value);
       if (value['status'] == true) {
         getAllRooms();
         AppUtils.showSnakBar(msg: "Room Created '$roomName'");
@@ -50,7 +53,8 @@ class RoomRepository {
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
       }
     }).onError((error, stackTrace) {
-      print(error);
+      // print(error);
+      AppUtils.showSnakBar(msg: error.toString(), second: 2);
     });
   }
 

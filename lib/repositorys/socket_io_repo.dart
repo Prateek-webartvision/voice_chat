@@ -1,4 +1,7 @@
+// ignore_for_file: avoid_print
+
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:voice_chat/controllers/message_controller.dart';
 import 'package:voice_chat/data/app_urls.dart';
 
 class SocketIoPrository {
@@ -16,7 +19,6 @@ class SocketIoPrository {
 
   //connect
   connect() {
-    print("object");
     socket!.connect();
     socket!.onConnect((data) {
       print("conneted");
@@ -27,8 +29,25 @@ class SocketIoPrository {
     socket!.onError((err) => print(err));
   }
 
-  sendMessage(String message) {
-    socket!.emit('chat message', message);
+  sendMessage(
+      {required String message,
+      required String roomName,
+      required String userName}) {
+    socket!.emit(SocketStrings.sendChatMessage, [roomName, message]);
+    MessageController.instance
+        .pushMessage(MessageModel(name: userName, message: message));
+  }
+
+  chatMessages() {
+    socket!.on(SocketStrings.chateMessages, (data) {
+      // print(data);
+      // send message to Messgae conroller
+      MessageController.instance.pushMessage(MessageModel.fromJson(data));
+    });
+  }
+
+  joinRoom({required String roomName, required String userName}) {
+    socket!.emit(SocketStrings.newUser, [roomName, userName]);
   }
 
   crateRoom({
@@ -41,9 +60,14 @@ class SocketIoPrository {
     socket!.emit('room-created', roomName);
   }
 
+  roomDisconnet() {
+    socket!.disconnect();
+    socket!.dispose();
+  }
+
   closeConnection() {
     // socket!.close();
-    socket!.disconnect();
+
     socket!.dispose();
   }
 }
