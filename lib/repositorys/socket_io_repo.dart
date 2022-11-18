@@ -38,14 +38,15 @@ class SocketIoPrository {
         .pushMessage(MessageModel(name: userName, message: message));
   }
 
+  // sync read all messages
   chatMessages() {
     socket!.on(SocketStrings.chateMessages, (data) {
-      // print(data);
       // send message to Messgae conroller
       MessageController.instance.pushMessage(MessageModel.fromJson(data));
     });
   }
 
+  // joining room
   joinRoom({required String roomName, required String userName}) {
     socket!.emit(SocketStrings.newUser, [roomName, userName]);
   }

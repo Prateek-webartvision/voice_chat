@@ -33,21 +33,23 @@ class _RoomPageState extends State<RoomPage> {
     super.initState();
   }
 
+  // get current user and connect to socket io
   getUser() async {
-    await ProfileRepository.instance.getProfile();
-    SocketIoPrository.instance.connect();
+    await ProfileRepository.instance.getProfile().then((v) {
+      if (v != null) {
+        SocketIoPrository.instance.connect();
 
-    //all chats lisen
-    SocketIoPrository.instance.chatMessages();
-    //connect User to room
-    SocketIoPrository.instance.joinRoom(
-      roomName: widget.room.roomName,
-      userName:
-          "${ProfileController.instance.profileData!.firstName} ${ProfileController.instance.profileData!.lastName}",
-    );
-    //     .on("chat-message", (data) => {print(data)});
-    // print(widget.room.roomName);
-    // print(ProfileController.instance.profileData?.firstName);
+        //all chats lisen
+        SocketIoPrository.instance.chatMessages();
+
+        //connect User to room
+        SocketIoPrository.instance.joinRoom(
+          roomName: widget.room.roomName,
+          userName:
+              "${ProfileController.instance.profileData!.firstName} ${ProfileController.instance.profileData!.lastName}",
+        );
+      }
+    });
   }
 
   @override
@@ -56,6 +58,7 @@ class _RoomPageState extends State<RoomPage> {
     if (messageController != null) {
       messageController!.dispose();
     }
+    message.dispose();
     super.dispose();
   }
 

@@ -36,6 +36,7 @@ class ProfileRepository {
         ProfileController.instance.setError(error.toString());
       },
     );
+    return ProfileController.instance.profileData;
   }
 
   updateProfile({

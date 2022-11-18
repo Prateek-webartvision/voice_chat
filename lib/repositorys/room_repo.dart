@@ -9,11 +9,14 @@ class RoomRepository {
   static RoomRepository instance = RoomRepository();
 
   //get all rooms
-  getAllRooms() {
+  getAllRooms() async {
     RoomController.instance.rooms.clear();
-    ApiServices.getApi(url: AppUrls.getAllRooms).then((value) {
+    List<Room> rooms = [];
+
+    await ApiServices.getApi(url: AppUrls.getAllRooms).then((value) {
       if (value['status'] == true) {
         RoomController.instance.getRooms(RoomModel.fromJson(value));
+        rooms = RoomController.instance.rooms;
       } else {
         //responce error
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
@@ -23,6 +26,8 @@ class RoomRepository {
       // error message
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
     });
+
+    return rooms;
   }
 
   //create new Room
@@ -34,27 +39,36 @@ class RoomRepository {
     required String userLastName,
     required String userProfileImage,
     required String image,
-  }) {
-    ApiServices.postApi(url: AppUrls.createNewRoom, mapData: {
+    Function(Room room)? onCreated,
+  }) async {
+    await ApiServices.postApi(url: AppUrls.createNewRoom, mapData: {
       "room_name": roomName,
       "users": null,
       "created_by": createBy,
       "info": info,
       "first_name": userFirstName,
       "last_name": userLastName,
-      "creator_image": userProfileImage
+      "creator_image": userProfileImage,
     }).then((value) {
-      // print(value);
       if (value['status'] == true) {
-        getAllRooms();
         AppUtils.showSnakBar(msg: "Room Created '$roomName'");
         SocketIoPrository.instance.crateRoom(roomName: roomName);
+        getAllRooms().then((v) {
+          v.forEach((Room e) {
+            if (e.roomName == roomName) {
+              // sendRoom To create Room Page
+              if (onCreated == null) {
+                onCreated!(e);
+              }
+            }
+          });
+        });
       } else {
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
       }
     }).onError((error, stackTrace) {
-      // print(error);
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
+      print("Form Create Room Repo $error");
     });
   }
 

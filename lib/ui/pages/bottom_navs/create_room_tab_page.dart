@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:socket_io_client/socket_io_client.dart';
+import 'package:http/http.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/models/profile_model.dart';
+import 'package:voice_chat/models/room_model.dart';
 import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/repositorys/room_repo.dart';
-import 'package:voice_chat/repositorys/socket_io_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
+import 'package:voice_chat/ui/pages/rooms/room_page.dart';
 import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/utils/app_utils.dart';
@@ -160,12 +161,12 @@ class _CreateRoomTabPageState extends State<CreateRoomTabPage> {
     );
   }
 
-  createRoom() {
+  createRoom() async {
     // print(userData.firstName);
     if (roomname.text.isEmpty) {
       AppUtils.showSnakBar(msg: "Enter Room name", second: 2);
     } else {
-      RoomRepository.instance.createNewRoom(
+      await RoomRepository.instance.createNewRoom(
         roomName: roomname.text,
         userFirstName: userData.firstName!,
         userLastName: userData.lastName!,
@@ -173,6 +174,11 @@ class _CreateRoomTabPageState extends State<CreateRoomTabPage> {
         image: "iamge1",
         createBy: userData.id.toString(),
         info: "sadasd",
+        onCreated: (Room room) {
+          print("room data ${room.roomName}");
+          // try to join room here
+          // Get.to(() => RoomPage(room: room));
+        },
       );
       // print("create ${roomname.text}");
       // AppUtils.showSnakBar(msg: "${roomname.text} Room Created ");
