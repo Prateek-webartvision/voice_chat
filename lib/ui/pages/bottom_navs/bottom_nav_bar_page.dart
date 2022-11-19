@@ -1,6 +1,10 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:voice_chat/controllers/profile_controller.dart';
+import 'package:voice_chat/controllers/user_controller.dart';
+import 'package:voice_chat/models/profile_model.dart';
+import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/account_tab_page.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/create_room_tab_page.dart';
@@ -24,6 +28,21 @@ class _BottomNavBarPageState extends State<BottomNavBarPage> {
     const MessagesTabPage(),
     const AccountTabPage(),
   ];
+
+  @override
+  void initState() {
+    getProfile();
+    super.initState();
+  }
+
+  getProfile() async {
+    await ProfileRepository.instance.getProfile();
+    if (ProfileController.instance.profileData != null) {
+      UserController.instance.setUserProfileData(
+          profileData: ProfileController.instance.profileData!);
+    }
+    // print(UserController.instance.getId);
+  }
 
   @override
   Widget build(BuildContext context) {

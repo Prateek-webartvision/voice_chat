@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tabbar_gradient_indicator/tabbar_gradient_indicator.dart';
 import 'package:voice_chat/res/app_color.dart';
+import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/post_tabs/create_post_page.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/post_tabs/post_friends_tab.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/post_tabs/post_suggested_tab.dart';
@@ -34,6 +35,7 @@ class _PostTabPageState extends State<PostTabPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //App bar
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
         child: Container(
@@ -45,6 +47,7 @@ class _PostTabPageState extends State<PostTabPage>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                // TabBar
                 SizedBox(
                   width: 200,
                   child: TabBar(
@@ -71,13 +74,14 @@ class _PostTabPageState extends State<PostTabPage>
                   ),
                 ),
                 const SizedBox(width: 10),
+                //Action Btns
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Center(
                       child: Container(
-                        height: 30.h,
-                        width: 30.h,
+                        height: h30,
+                        width: h30,
                         decoration: BoxDecoration(
                             gradient: AppColor.backgraundGradient(),
                             borderRadius: BorderRadius.circular(30.r)),
@@ -116,6 +120,7 @@ class _PostTabPageState extends State<PostTabPage>
           ),
         ),
       ),
+      // Body
       body: TabBarView(
         controller: tabController,
         children: postTabPages,

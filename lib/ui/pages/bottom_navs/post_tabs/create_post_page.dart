@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:voice_chat/repositorys/post_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:voice_chat/utils/app_utils.dart';
@@ -30,6 +31,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
   @override
   void initState() {
     ProfileRepository.instance.getProfile();
+
     super.initState();
   }
 
@@ -194,18 +196,23 @@ class _CreatePostPageState extends State<CreatePostPage> {
     } else {
       // print(messageTextController.text);
       // print(imageFile);
-      PostController.instance.addPost(
-        PostSeggestedModel(
-          userName: ProfileController.instance.profileData!.firstName!,
-          userProfile: "ProfileController.instance.profileData!.image",
-          image:
-              "https://i.pinimg.com/736x/fa/f1/f7/faf1f7f6e2e88bafc5b85fd3e9ecae76.jpg",
-          comment: messageTextController.text,
-          likes: 0,
-          comments: 0,
-          isfriend: false,
-          isLiked: false,
-        ),
+      // PostController.instance.addPost(
+      //   PostSeggestedModel(
+      //     userName: ProfileController.instance.profileData!.firstName!,
+      //     userProfile: "ProfileController.instance.profileData!.image",
+      //     image:
+      //         "https://i.pinimg.com/736x/fa/f1/f7/faf1f7f6e2e88bafc5b85fd3e9ecae76.jpg",
+      //     comment: messageTextController.text,
+      //     likes: 0,
+      //     comments: 0,
+      //     isfriend: false,
+      //     isLiked: false,
+      //   ),
+      // );
+      PostRepository.instance.createNewPost(
+        image: imageFile?.path,
+        postMessage: messageTextController.text,
+        tag: "",
       );
       AppUtils.showSnakBar(msg: "Your Moment is Posted");
     }
@@ -213,7 +220,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     messageTextController.dispose();
     super.dispose();
   }

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/models/profile_model.dart';
 
 class ProfileController extends GetxController {
@@ -8,7 +9,8 @@ class ProfileController extends GetxController {
 
   setProfileData(ProfileModel profileModel) {
     profileData = profileModel;
-    print(profileData?.image);
+    UserController.instance.setUserProfileData(profileData: profileModel);
+    // print(profileData?.id);
     update();
   }
 
