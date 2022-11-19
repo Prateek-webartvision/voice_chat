@@ -43,11 +43,8 @@ class _RoomPageState extends State<RoomPage> {
 
     print(widget.room.roomName);
 
-    // SocketIoPrository.instance;
+    mySocket.connect();
 
-    // //connet User
-    // SocketIoPrository.instance.connect();
-    // // // join Room
     mySocket.joinRoom(
       roomName: widget.room.roomName,
       userName:
@@ -60,9 +57,7 @@ class _RoomPageState extends State<RoomPage> {
 
   @override
   void dispose() {
-    mySocket.roomDisconnet(
-        userName:
-            "${UserController.instance.getFirstName} ${UserController.instance.getLastName}");
+    mySocket.roomDisconnet();
     // if (messageController != null) {
     //   messageController!.dispose();
     // }

@@ -15,22 +15,23 @@ class SocketIoPrository {
       AppUrls.domain,
       OptionBuilder().setTransports(["websocket"]).disableAutoConnect().build(),
     );
-    socket!.connect();
-    socket!.onConnect((data) => print("conneted"));
-    socket!.onDisconnect((data) => print("disconnet"));
-    socket!.onConnectError((err) => print("errpr; $err"));
-    socket!.onError((err) => print(err));
+    // socket!.connect();
+    // socket!.onConnect((data) => print("conneted"));
   }
 
   static SocketIoPrository get instance {
     _instance ??= SocketIoPrository.internal();
-    print(_instance);
+
     return _instance!;
   }
 
-  // Future connect({required Function(Socket socket) connectfun}) {
-  //   return  "";
-  // }
+  Future<void> connect() async {
+    socket!.connect();
+    socket!.onConnect((data) => print("connected"));
+    socket!.onDisconnect((data) => print("disconnet"));
+    socket!.onConnectError((err) => print("errpr; $err"));
+    socket!.onError((err) => print(err));
+  }
 
   sendMessage({
     required String message,
@@ -60,10 +61,10 @@ class SocketIoPrository {
     required String roomName,
   }) {}
 
-  roomDisconnet({required String userName}) {
+  roomDisconnet() {
     socket!.disconnect();
     socket!.dispose();
-    _instance = null;
+    // _instance = null;
     //   socket!.emit("user-disconnected", [userName]);
     // socket!.dispose();
   }

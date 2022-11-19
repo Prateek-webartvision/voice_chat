@@ -21,6 +21,7 @@ class PostRepository {
       "active": true
     }).then((value) {
       AppUtils.showSnakBar(msg: "Your Moment is Posted");
+      getAllPost();
     });
   }
 
@@ -29,7 +30,6 @@ class PostRepository {
     ApiServices.getApi(url: AppUrls.getAllPost).then((value) {
       if (value['status'] == true) {
         for (var element in value['data']) {
-          print(element);
           PostController.instance.addPost(PostSeggestedModel.formJson(element));
         }
       } else {
