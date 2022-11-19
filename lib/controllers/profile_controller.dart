@@ -8,7 +8,7 @@ class ProfileController extends GetxController {
 
   setProfileData(ProfileModel profileModel) {
     profileData = profileModel;
-    print(profileData?.firstName);
+    print(profileData?.image);
     update();
   }
 

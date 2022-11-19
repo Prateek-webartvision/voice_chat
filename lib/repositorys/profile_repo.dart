@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/data/api_services.dart';
@@ -77,19 +77,30 @@ class ProfileRepository {
   }
 
   //post with multipart
-  static Future postApiWithMultiPartProfile({
-    String? image,
+  Future postApiWithMultiPartProfile({
+    required File image,
   }) async {
-    var res;
+    var req;
     try {
-      var req = MultipartRequest("POST", Uri.parse(AppUrls.profileUpdate));
-      req.fields["token"] = UserController.instance.getToken;
-      req.files.add(await MultipartFile.fromPath("image", image!));
-      res = await req.send();
-      print(req);
+      print(base64.encode(image.readAsBytesSync()));
+      var request = http.MultipartRequest('POST',
+          Uri.parse('http://192.168.0.234:3000/api/users/update-profile'));
+      request.fields.addAll({
+        'token': UserController.instance.getToken,
+        "image_base64": base64.encode(image.readAsBytesSync()),
+      });
+      request.files.add(await http.MultipartFile.fromPath('image', image.path));
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        print("kk" + await response.stream.bytesToString());
+      } else {
+        print(response.reasonPhrase);
+      }
     } catch (e) {
-      print("object");
+      print("object $e");
     }
-    return "data";
+    // return "data";
   }
 }

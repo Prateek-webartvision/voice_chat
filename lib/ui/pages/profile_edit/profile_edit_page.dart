@@ -1,10 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
@@ -83,8 +84,12 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               seletedImage: (image) {
                                 print("object $image");
                                 AppUtils.closeDailog();
+                                // Get.dialog(Center(
+                                //   child: Image.file(File(image)),
+                                // ));
                                 ProfileRepository.instance
-                                    .updateProfile(image: image);
+                                    .postApiWithMultiPartProfile(
+                                        image: File(image));
                               },
                             );
                           },

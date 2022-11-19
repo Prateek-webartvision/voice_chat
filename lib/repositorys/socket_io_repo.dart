@@ -57,8 +57,8 @@ class SocketIoPrository {
     // required String type,
     // required String info,
   }) {
-    print("from socket.io $roomName");
-    socket!.emit('room-created', roomName);
+    // print("from socket.io $roomName");
+    // socket!.emit('room-created', roomName);
   }
 
   roomDisconnet() {

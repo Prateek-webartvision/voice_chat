@@ -24,17 +24,18 @@ class RoomPage extends StatefulWidget {
 
 class _RoomPageState extends State<RoomPage> {
   TextEditingController message = TextEditingController();
-  MessageController? messageController;
+  // MessageController? messageController;
 
   @override
   void initState() {
-    Get.put(MessageController());
+    // Get.put(MessageController());
     getUser();
     super.initState();
   }
 
-  // get current user and connect to socket io
+  // get current user and connect to socker
   getUser() async {
+    MessageController.instance.messages.clear();
     await ProfileRepository.instance.getProfile().then((v) {
       if (v != null) {
         SocketIoPrository.instance.connect();
@@ -55,9 +56,9 @@ class _RoomPageState extends State<RoomPage> {
   @override
   void dispose() {
     SocketIoPrository.instance.roomDisconnet();
-    if (messageController != null) {
-      messageController!.dispose();
-    }
+    // if (messageController != null) {
+    //   messageController!.dispose();
+    // }
     message.dispose();
     super.dispose();
   }

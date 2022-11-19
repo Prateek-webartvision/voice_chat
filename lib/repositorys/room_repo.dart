@@ -53,16 +53,17 @@ class RoomRepository {
       if (value['status'] == true) {
         AppUtils.showSnakBar(msg: "Room Created '$roomName'");
         SocketIoPrository.instance.crateRoom(roomName: roomName);
-        getAllRooms().then((v) {
-          v.forEach((Room e) {
-            if (e.roomName == roomName) {
-              // sendRoom To create Room Page
-              if (onCreated == null) {
-                onCreated!(e);
-              }
-            }
-          });
-        });
+        getAllRooms();
+        // .then((v) {
+        // v.forEach((Room e) {
+        //   if (e.roomName == roomName) {
+        //     // sendRoom To create Room Page
+        //     if (onCreated == null) {
+        //       onCreated!(e);
+        //     }
+        //   }
+        // });
+        // });
       } else {
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
       }

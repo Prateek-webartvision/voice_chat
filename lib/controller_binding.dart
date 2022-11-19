@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:http/http.dart';
+import 'package:voice_chat/controllers/message_controller.dart';
 import 'package:voice_chat/controllers/post_controller.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/controllers/room_controller.dart';
@@ -13,6 +15,7 @@ class ControllerBinding extends Bindings {
     Get.put(PostController());
     Get.put(RoomController());
     Get.put(SocketIoController());
+    Get.put(MessageController());
     // implement dependencies
   }
 }
