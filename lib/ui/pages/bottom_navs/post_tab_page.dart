@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tabbar_gradient_indicator/tabbar_gradient_indicator.dart';
+import 'package:voice_chat/repositorys/post_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/post_tabs/create_post_page.dart';
@@ -29,6 +30,8 @@ class _PostTabPageState extends State<PostTabPage>
   void initState() {
     tabController =
         TabController(length: 2, vsync: this, initialIndex: currentPage);
+    //
+    PostRepository.instance.getAllPost();
     super.initState();
   }
 

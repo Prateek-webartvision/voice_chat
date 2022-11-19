@@ -7,63 +7,74 @@ class UserController extends GetxController {
   static UserController instance = Get.find<UserController>();
   GetStorage userStorage = GetStorage();
 
-  String user = "user";
-  String token = "token";
+  final String _user = "user";
+  final String token = "token";
 
-  String userData = "userData";
-  String id = "id";
-  String firstName = "first_name";
-  String lastName = "last_name";
-  String mobile = "mobile";
-  String image = "image";
-  String gender = "gender";
-  String dob = "dob";
-  String country = "country";
+  final String _userData = "userData";
+  final String _id = "id";
+  final String _firstName = "first_name";
+  final String _lastName = "last_name";
+  final String _mobile = "mobile";
+  final String _image = "image";
+  final String _gender = "gender";
+  final String _dob = "dob";
+  final String _country = "country";
+  // int? id;
+  // String? firstName;
+  // String? lastName;
+  // String? mobile;
+  // String? image;
+  // String? gender;
+  // String? dob;
+  // String? country;
 
   setUser({required Map<String, dynamic> userData}) {
-    var v = userStorage.write(user, userData);
+    var v = userStorage.write(_user, userData);
     update();
     return v;
   }
 
   setUserProfileData({required ProfileModel profileData}) {
     print("User Upade Profile Call");
-    userStorage.write(userData, {
-      id: profileData.id,
-      firstName: profileData.firstName,
-      lastName: profileData.lastName,
-      mobile: profileData.mobile,
-      image: profileData.image,
-      gender: profileData.gender,
-      dob: profileData.dob,
-      country: profileData.country,
+    //set data
+    userStorage.write(_userData, {
+      _id: profileData.id,
+      _firstName: profileData.firstName,
+      _lastName: profileData.lastName,
+      _mobile: profileData.mobile,
+      _image: profileData.image,
+      _gender: profileData.gender,
+      _dob: profileData.dob,
+      _country: profileData.country,
     });
+
+    //  getData
+    // id = getId;
+    // firstName = getFirstName;
+    update();
   }
 
-  get _getUserProfileData => userStorage.read(userData);
-  get getId => _getUserProfileData[id];
-  get getFirstName => _getUserProfileData[firstName];
-  get getLastName => _getUserProfileData[lastName];
-  get getMobile => _getUserProfileData[mobile];
-  get getImage => _getUserProfileData[image];
-  get getGender => _getUserProfileData[gender];
-  get getDob => _getUserProfileData[dob];
-  get getCountry => _getUserProfileData[country];
+  get _getUserProfileData => userStorage.read(_userData);
+
+  get getId => _getUserProfileData[_id];
+  get getFirstName => _getUserProfileData[_firstName];
+  get getLastName => _getUserProfileData[_lastName];
+  get getMobile => _getUserProfileData[_mobile];
+  get getImage => _getUserProfileData[_image];
+  get getGender => _getUserProfileData[_gender];
+  get getDob => _getUserProfileData[_dob];
+  get getCountry => _getUserProfileData[_country];
 
   //delete user
   logoutUser() async {
-    var v = userStorage.remove(user);
+    var v = userStorage.remove(_user);
     update();
     return v;
   }
 
-  bool checkCurrentUser() => userStorage.read(user) == null ? false : true;
+  bool checkCurrentUser() => userStorage.read(_user) == null ? false : true;
 
   //user geters
-  get getUser => userStorage.read(user);
-  // get getId => getUser[id];
-  // get getFirstName => getUser[firstName];
-  // get getLastName => getUser[lastName];
-  // get getMobile => getUser[mobile];
+  get getUser => userStorage.read(_user);
   get getToken => getUser[token];
 }

@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/controllers/message_controller.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
+import 'package:voice_chat/controllers/user_controller.dart';
+import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/room_model.dart';
 import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/repositorys/socket_io_repo.dart';
@@ -24,38 +26,43 @@ class RoomPage extends StatefulWidget {
 
 class _RoomPageState extends State<RoomPage> {
   TextEditingController message = TextEditingController();
+  final SocketIoPrository mySocket = SocketIoPrository.instance;
   // MessageController? messageController;
 
   @override
   void initState() {
     // Get.put(MessageController());
+
     getUser();
     super.initState();
   }
 
   // get current user and connect to socker
-  getUser() async {
+  getUser() {
     MessageController.instance.messages.clear();
-    await ProfileRepository.instance.getProfile().then((v) {
-      if (v != null) {
-        SocketIoPrository.instance.connect();
 
-        //all chats lisen
-        SocketIoPrository.instance.chatMessages();
+    print(widget.room.roomName);
 
-        //connect User to room
-        SocketIoPrository.instance.joinRoom(
-          roomName: widget.room.roomName,
-          userName:
-              "${ProfileController.instance.profileData!.firstName} ${ProfileController.instance.profileData!.lastName}",
-        );
-      }
-    });
+    // SocketIoPrository.instance;
+
+    // //connet User
+    // SocketIoPrository.instance.connect();
+    // // // join Room
+    mySocket.joinRoom(
+      roomName: widget.room.roomName,
+      userName:
+          "${UserController.instance.getFirstName} ${UserController.instance.getLastName}",
+    );
+
+    // // read messages
+    mySocket.chatMessages();
   }
 
   @override
   void dispose() {
-    SocketIoPrository.instance.roomDisconnet();
+    mySocket.roomDisconnet(
+        userName:
+            "${UserController.instance.getFirstName} ${UserController.instance.getLastName}");
     // if (messageController != null) {
     //   messageController!.dispose();
     // }

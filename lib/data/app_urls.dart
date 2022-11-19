@@ -16,10 +16,11 @@ class AppUrls {
 
   //Post
   static const String createPost = "$_api/posts/add-post";
-
+  static const String getAllPost = "$_api/posts/get";
   //Room
   static const String getAllRooms = "$_api/rooms/get";
   static const String createNewRoom = "$_api/rooms/add-room";
+
   // static const deleteRoom = "$_api";
 }
 

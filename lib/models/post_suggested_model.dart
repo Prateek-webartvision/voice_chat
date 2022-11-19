@@ -18,4 +18,16 @@ class PostSeggestedModel {
     required this.isfriend,
     required this.isLiked,
   });
+
+  factory PostSeggestedModel.formJson(Map<String, dynamic> json) {
+    return PostSeggestedModel(
+      userName: "${json['first_name']} ${json['last_name']}",
+      comment: json['body'],
+      image: json['creator_image'],
+      likes: 2,
+      comments: 2,
+      isfriend: false,
+      isLiked: false,
+    );
+  }
 }

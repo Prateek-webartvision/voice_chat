@@ -214,7 +214,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
         postMessage: messageTextController.text,
         tag: "",
       );
-      AppUtils.showSnakBar(msg: "Your Moment is Posted");
     }
   }
 

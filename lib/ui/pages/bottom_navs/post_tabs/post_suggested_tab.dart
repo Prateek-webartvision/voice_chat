@@ -20,58 +20,62 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
   Widget build(BuildContext context) {
     return GetBuilder<PostController>(
       builder: (controller) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-          ),
-          // postList
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: controller.allPostList.length,
-                  itemBuilder: (context, index) {
-                    return PostCardWidget(
-                      cardData: controller.allPostList[index],
-                      onAddFriendTab: (friend) {
-                        AppUtils.showSnakBar(msg: "friends");
-                      },
-                      onLikeTab: (like) {
-                        AppUtils.showSnakBar(msg: "Like");
-                        setState(() {
-                          controller.allPostList[index].isLiked = like;
-                        });
-                      },
-                      onCommentTab: () {
-                        AppUtils.showSnakBar(msg: "Comment");
-                      },
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        const Divider(
-                          thickness: 2,
-                          endIndent: 40,
-                        ),
-                        SizedBox(
-                          height: h10,
-                        )
-                      ],
-                    );
-                  },
-                ),
-
-                //Space Sized
-                const SizedBox(
-                  height: 20,
-                )
-              ],
+        if (controller.allPostList.isEmpty) {
+          return Center(child: CircularProgressIndicator());
+        } else {
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
             ),
-          ),
-        );
+            // postList
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: controller.allPostList.length,
+                    itemBuilder: (context, index) {
+                      return PostCardWidget(
+                        cardData: controller.allPostList[index],
+                        onAddFriendTab: (friend) {
+                          AppUtils.showSnakBar(msg: "friends");
+                        },
+                        onLikeTab: (like) {
+                          AppUtils.showSnakBar(msg: "Like");
+                          setState(() {
+                            controller.allPostList[index].isLiked = like;
+                          });
+                        },
+                        onCommentTab: () {
+                          AppUtils.showSnakBar(msg: "Comment");
+                        },
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          const Divider(
+                            thickness: 2,
+                            endIndent: 40,
+                          ),
+                          SizedBox(
+                            height: h10,
+                          )
+                        ],
+                      );
+                    },
+                  ),
+
+                  //Space Sized
+                  const SizedBox(
+                    height: 20,
+                  )
+                ],
+              ),
+            ),
+          );
+        }
       },
     );
   }
@@ -122,6 +126,8 @@ class PostCardWidget extends StatelessWidget {
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w600,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             const SizedBox(width: 10),

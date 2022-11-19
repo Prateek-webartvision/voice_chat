@@ -5,34 +5,38 @@ import 'package:voice_chat/controllers/message_controller.dart';
 import 'package:voice_chat/data/app_urls.dart';
 
 class SocketIoPrository {
-  static SocketIoPrository instance = SocketIoPrository();
+  static SocketIoPrository? _instance;
 
   Socket? socket;
 
-  // init
-  initSocket() {
+  SocketIoPrository.internal() {
+    print("Hi socket");
     socket = io(
       AppUrls.domain,
       OptionBuilder().setTransports(["websocket"]).disableAutoConnect().build(),
     );
-  }
-
-  //connect
-  connect() {
     socket!.connect();
-    socket!.onConnect((data) {
-      print("conneted");
-    });
+    socket!.onConnect((data) => print("conneted"));
     socket!.onDisconnect((data) => print("disconnet"));
-    socket!.onDisconnect((_) => print('Connection Disconnection'));
     socket!.onConnectError((err) => print("errpr; $err"));
     socket!.onError((err) => print(err));
   }
 
-  sendMessage(
-      {required String message,
-      required String roomName,
-      required String userName}) {
+  static SocketIoPrository get instance {
+    _instance ??= SocketIoPrository.internal();
+    print(_instance);
+    return _instance!;
+  }
+
+  // Future connect({required Function(Socket socket) connectfun}) {
+  //   return  "";
+  // }
+
+  sendMessage({
+    required String message,
+    required String roomName,
+    required String userName,
+  }) {
     socket!.emit(SocketStrings.sendChatMessage, [roomName, message]);
     MessageController.instance
         .pushMessage(MessageModel(name: userName, message: message));
@@ -54,21 +58,17 @@ class SocketIoPrository {
   crateRoom({
     // required int userIs,
     required String roomName,
-    // required String type,
-    // required String info,
-  }) {
-    // print("from socket.io $roomName");
-    // socket!.emit('room-created', roomName);
-  }
+  }) {}
 
-  roomDisconnet() {
+  roomDisconnet({required String userName}) {
     socket!.disconnect();
     socket!.dispose();
+    _instance = null;
+    //   socket!.emit("user-disconnected", [userName]);
+    // socket!.dispose();
   }
 
   closeConnection() {
-    // socket!.close();
-
     socket!.dispose();
   }
 }
