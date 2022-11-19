@@ -80,27 +80,45 @@ class ProfileRepository {
   Future postApiWithMultiPartProfile({
     required File image,
   }) async {
-    var req;
-    try {
-      print(base64.encode(image.readAsBytesSync()));
-      var request = http.MultipartRequest('POST',
-          Uri.parse('http://192.168.0.234:3000/api/users/update-profile'));
-      request.fields.addAll({
-        'token': UserController.instance.getToken,
-        "image_base64": base64.encode(image.readAsBytesSync()),
-      });
-      request.files.add(await http.MultipartFile.fromPath('image', image.path));
+    // try {
+    // data:image/png;base64,
+    var ss = await image.readAsBytes();
+    String imagebase64data =
+        "data:image/${image.path.split(".").last};base64,${base64.encode(ss)}";
 
-      http.StreamedResponse response = await request.send();
+    ApiServices.postApi(
+        url: "http://192.168.0.234:3000/api/users/edit-profile",
+        mapData: {
+          "token": UserController.instance.getToken,
+          "image": base64.encode(ss).toString(),
+        }).then((value) {
+      AppUtils.closeDailog();
+      print(value);
+      getProfile();
+    });
 
-      if (response.statusCode == 200) {
-        print("kk" + await response.stream.bytesToString());
-      } else {
-        print(response.reasonPhrase);
-      }
-    } catch (e) {
-      print("object $e");
-    }
+    //   var request = http.MultipartRequest('POST',
+    //       Uri.parse('http://192.168.0.234:3000/api/users/update-profile'));
+    //   request.fields.addAll({
+    //     'token':
+    //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY2ODg1NTUxNSwiZXhwIjoxNjY5Mjg3NTE1fQ.J9HBGusmwd0yro4tJYCifw0odOUo6VZW9_j1j5FZQKY'
+    //   });
+    //   request.files.add(await http.MultipartFile.fromPath('image', image.path));
+
+    //   http.StreamedResponse response = await request.send();
+
+    //   var ss = await response.stream.bytesToString();
+
+    //   print("res: ${ss}");
+
+    //   // if (response.statusCode == 200) {
+    //   //   print(await response.stream.bytesToString());
+    //   // } else {
+    //   //   print(response.reasonPhrase);
+    //   // }
+    // } catch (e) {
+    //   print("object $e");
+    // }
     // return "data";
   }
 }

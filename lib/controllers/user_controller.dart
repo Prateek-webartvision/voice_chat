@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/models/profile_model.dart';
 
 class UserController extends GetxController {
@@ -11,6 +10,7 @@ class UserController extends GetxController {
   final String token = "token";
 
   final String _userData = "userData";
+
   final String _id = "id";
   final String _firstName = "first_name";
   final String _lastName = "last_name";

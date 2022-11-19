@@ -21,7 +21,7 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
     return GetBuilder<PostController>(
       builder: (controller) {
         if (controller.allPostList.isEmpty) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: Text("No Posts"));
         } else {
           return Padding(
             padding: const EdgeInsets.symmetric(

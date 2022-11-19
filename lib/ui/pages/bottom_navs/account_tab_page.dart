@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -39,6 +41,9 @@ class _AccountTabPageState extends State<AccountTabPage> {
         backgroundColor: AppColor.transparent,
         body: GetBuilder<ProfileController>(
           builder: (controller) {
+            // var img = controller.profileData!.image;
+            // var sl = img.toString().split(",").last;
+            // print(sl);
             //Loading and error
             if (controller.profileData == null) {
               if (controller.error == null) {
@@ -77,6 +82,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                   Container(
                                     height: 100,
                                     width: 100,
+                                    clipBehavior: Clip.hardEdge,
                                     decoration: BoxDecoration(
                                       gradient: AppColor.backgraundGradientV,
                                       borderRadius:
@@ -85,14 +91,22 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                     alignment: Alignment.center,
                                     child: (controller.profileData!.image !=
                                             null)
-                                        ? Text("I")
+                                        // ? Text("I")
                                         //     ? CachedNetworkImage(
                                         //         imageUrl:
                                         //             controller.profileData!.image,
                                         //         fit: BoxFit.cover,
                                         //       )
-                                        // ? Image.memory(base64Decode(
-                                        //     controller.profileData!.image))
+                                        ? Image.memory(
+                                            base64Decode(controller
+                                                .profileData!.image
+                                                .toString()
+                                                .split(",")
+                                                .last),
+                                            height: 100,
+                                            width: 100,
+                                            fit: BoxFit.cover,
+                                          )
                                         : Text(
                                             controller.profileData!.firstName!
                                                 .characters.first,

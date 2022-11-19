@@ -175,7 +175,6 @@ class _CreateRoomTabPageState extends State<CreateRoomTabPage> {
         createBy: userData.id.toString(),
         info: "sadasd",
         onCreated: (Room room) {
-          print("room data ${room.roomName}");
           // try to join room here
           Get.off(() => RoomPage(room: room));
         },

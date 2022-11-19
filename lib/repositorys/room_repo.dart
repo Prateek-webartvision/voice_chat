@@ -2,7 +2,6 @@ import 'package:voice_chat/controllers/room_controller.dart';
 import 'package:voice_chat/data/api_services.dart';
 import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/room_model.dart';
-import 'package:voice_chat/repositorys/socket_io_repo.dart';
 import 'package:voice_chat/utils/app_utils.dart';
 
 class RoomRepository {
@@ -41,6 +40,7 @@ class RoomRepository {
     required String image,
     Function(Room room)? onCreated,
   }) async {
+    AppUtils.progressDailog();
     await ApiServices.postApi(url: AppUrls.createNewRoom, mapData: {
       "room_name": roomName,
       "users": null,
@@ -50,6 +50,7 @@ class RoomRepository {
       "last_name": userLastName,
       "creator_image": userProfileImage,
     }).then((value) {
+      AppUtils.closeDailog();
       if (value['status'] == true) {
         // print(value["data"]);
         AppUtils.showSnakBar(msg: "Room Created '$roomName'");
@@ -67,8 +68,8 @@ class RoomRepository {
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
       }
     }).onError((error, stackTrace) {
+      AppUtils.closeDailog();
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
-      print("Form Create Room Repo $error");
     });
   }
 
