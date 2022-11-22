@@ -2,10 +2,12 @@
 
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
+import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
@@ -41,9 +43,6 @@ class _AccountTabPageState extends State<AccountTabPage> {
         backgroundColor: AppColor.transparent,
         body: GetBuilder<ProfileController>(
           builder: (controller) {
-            // var img = controller.profileData!.image;
-            // var sl = img.toString().split(",").last;
-            // print(sl);
             //Loading and error
             if (controller.profileData == null) {
               if (controller.error == null) {
@@ -89,33 +88,27 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                           BorderRadius.circular(100.r),
                                     ),
                                     alignment: Alignment.center,
-                                    child: (controller.profileData!.image !=
-                                            null)
-                                        // ? Text("I")
-                                        //     ? CachedNetworkImage(
-                                        //         imageUrl:
-                                        //             controller.profileData!.image,
-                                        //         fit: BoxFit.cover,
-                                        //       )
-                                        ? Image.memory(
-                                            base64Decode(controller
-                                                .profileData!.image
-                                                .toString()
-                                                .split(",")
-                                                .last),
-                                            height: 100,
-                                            width: 100,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Text(
-                                            controller.profileData!.firstName!
-                                                .characters.first,
-                                            style: TextStyle(
-                                              color: AppColor.white,
-                                              fontSize: 50.sp,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
+                                    child:
+                                        (controller.profileData!.image != null)
+                                            ? CachedNetworkImage(
+                                                imageUrl:
+                                                    "${ApiImagePath.profile}${controller.profileData!.image}",
+                                                height: 100,
+                                                width: 100,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Text(
+                                                controller
+                                                    .profileData!
+                                                    .firstName!
+                                                    .characters
+                                                    .first,
+                                                style: TextStyle(
+                                                  color: AppColor.white,
+                                                  fontSize: 50.sp,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
                                   ),
                                   SizedBox(width: h20),
                                   Expanded(

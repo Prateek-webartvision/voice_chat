@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
+import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
@@ -94,17 +95,17 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             color: AppColor.white,
                             gradient: AppColor.backgraundGradientV,
                             borderRadius: BorderRadius.circular(25),
-                            // image: (controller.profileData!.image != null)
-                            //     ? DecorationImage(
-                            //         //Come here user profile pic
-                            //         image: CachedNetworkImageProvider(
-                            //             "https://preview.keenthemes.com/metronic-v4/theme/assets/pages/media/profile/profile_user.jpg"),
-                            //         fit: BoxFit.cover,
-                            //         colorFilter: ColorFilter.mode(
-                            //             AppColor.black.withOpacity(0.2),
-                            //             BlendMode.darken),
-                            //       )
-                            //     : null,
+                            image: (userProfile.getImage != null)
+                                ? DecorationImage(
+                                    //Come here user profile pic
+                                    image: CachedNetworkImageProvider(
+                                        "${ApiImagePath.profile}${UserController.instance.getImage}"),
+                                    fit: BoxFit.cover,
+                                    colorFilter: ColorFilter.mode(
+                                        AppColor.black.withOpacity(0.2),
+                                        BlendMode.darken),
+                                  )
+                                : null,
                           ),
                           child: Icon(Icons.camera_alt_outlined,
                               color: AppColor.white),

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
-import 'package:voice_chat/models/profile_model.dart';
 import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/account_tab_page.dart';
