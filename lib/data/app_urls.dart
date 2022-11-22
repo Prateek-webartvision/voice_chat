@@ -1,7 +1,7 @@
 class AppUrls {
   // static const String domain = "http://apichatapp.webartvision.in";
-  // static const String domain = "http://199.192.24.175:3000";
-  static const String domain = "http://192.168.0.234:3000";
+  static const String domain = "http://199.192.24.175:3000";
+  // static const String domain = "http://192.168.0.234:3000";
   static const String _api = "$domain/api";
 
   //
