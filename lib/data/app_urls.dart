@@ -33,4 +33,5 @@ class SocketStrings {
 
 class ApiImagePath {
   static const String profile = "${AppUrls.domain}/media/profiles/";
+  static const String post = "${AppUrls.domain}/media/posts/";
 }

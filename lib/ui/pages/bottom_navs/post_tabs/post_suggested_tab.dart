@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/controllers/post_controller.dart';
+import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/post_suggested_model.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
@@ -24,15 +27,14 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
           return Center(child: Text("No Posts"));
         } else {
           return Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             // postList
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   ListView.separated(
                     shrinkWrap: true,
+                    reverse: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: controller.allPostList.length,
                     itemBuilder: (context, index) {
@@ -110,8 +112,8 @@ class PostCardWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(40),
                 image: (cardData.userProfile != null)
                     ? DecorationImage(
-                        image:
-                            CachedNetworkImageProvider(cardData.userProfile!),
+                        image: CachedNetworkImageProvider(
+                            "${ApiImagePath.profile}${cardData.userProfile!}"),
                         fit: BoxFit.cover,
                       )
                     : null,
@@ -156,7 +158,7 @@ class PostCardWidget extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                (cardData.comment != null) ? cardData.comment! : "",
+                (cardData.messageBody != null) ? cardData.messageBody! : "",
               ),
             ),
           ],
@@ -166,7 +168,8 @@ class PostCardWidget extends StatelessWidget {
         (cardData.image != null)
             ? ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: CachedNetworkImage(imageUrl: cardData.image!))
+                child: CachedNetworkImage(
+                    imageUrl: "${ApiImagePath.post}${cardData.image!}"))
             : const SizedBox(),
         (cardData.image != null) ? SizedBox(height: h10) : const SizedBox(),
 

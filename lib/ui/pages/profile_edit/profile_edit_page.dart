@@ -69,11 +69,11 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       ),
                       InkWell(
                         onTap: () {
-                          print("Get Image");
+                          // print("Get Image");
                           //get and change image
                           AppUtils.imagePickerDailog(
                             seletedImage: (image) {
-                              print("object $image");
+                              // print("object $image");
                               AppUtils.closeDailog();
                               // Get.dialog(Center(
                               //   child: Image.file(File(image)),

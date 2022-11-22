@@ -13,12 +13,14 @@ class MessageController extends GetxController {
 class MessageModel {
   final String message;
   final String name;
+  String? profilePic;
 
-  MessageModel({required this.name, required this.message});
+  MessageModel({required this.name, required this.message, this.profilePic});
 
   factory MessageModel.fromJson(Map<String, dynamic> map) {
     return MessageModel(
       name: map['name'],
+      profilePic: null,
       message: map['message'],
     );
   }

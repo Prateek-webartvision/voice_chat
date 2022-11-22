@@ -1,5 +1,4 @@
 import 'package:voice_chat/controllers/post_controller.dart';
-import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/data/api_services.dart';
 import 'package:voice_chat/data/app_urls.dart';
@@ -10,18 +9,27 @@ class PostRepository {
   static PostRepository instance = PostRepository();
 
   createNewPost({String? postMessage, String? tag, String? image}) {
-    ApiServices.postApi(url: AppUrls.createPost, mapData: {
-      "title": "?",
-      "body": postMessage!,
-      "created_by": UserController.instance.getId,
-      "first_name": UserController.instance.getFirstName,
-      "last_name": UserController.instance.getLastName,
-      "creator_image": UserController.instance.getImage,
-      "image": null,
-      "active": true
-    }).then((value) {
-      AppUtils.showSnakBar(msg: "Your Moment is Posted");
+    AppUtils.progressDailog();
+    ApiServices.multifilePost(
+      url: AppUrls.createPost,
+      mapData: {
+        "token": UserController.instance.getToken,
+        "body": postMessage ?? "",
+        "title": "dsadsa",
+      },
+      imageData: (image != null)
+          ? {
+              "key": "post_image",
+              "path": image,
+            }
+          : null,
+    ).then((value) {
+      AppUtils.closeDailog();
+      AppUtils.showSnakBar(msg: value['msg']);
       getAllPost();
+    }).onError((error, stackTrace) {
+      AppUtils.closeDailog();
+      AppUtils.showSnakBar(msg: error.toString());
     });
   }
 

@@ -6,22 +6,17 @@ import 'package:voice_chat/data/app_urls.dart';
 
 class SocketIoPrository {
   static SocketIoPrository? _instance;
-
   Socket? socket;
 
   SocketIoPrository.internal() {
-    print("Hi socket");
     socket = io(
       AppUrls.domain,
       OptionBuilder().setTransports(["websocket"]).disableAutoConnect().build(),
     );
-    // socket!.connect();
-    // socket!.onConnect((data) => print("conneted"));
   }
 
   static SocketIoPrository get instance {
     _instance ??= SocketIoPrository.internal();
-
     return _instance!;
   }
 
@@ -34,13 +29,15 @@ class SocketIoPrository {
   }
 
   sendMessage({
+    String? profilePic,
     required String message,
     required String roomName,
     required String userName,
   }) {
+    // TODO message socket add images
     socket!.emit(SocketStrings.sendChatMessage, [roomName, message]);
-    MessageController.instance
-        .pushMessage(MessageModel(name: userName, message: message));
+    MessageController.instance.pushMessage(
+        MessageModel(name: userName, message: message, profilePic: profilePic));
   }
 
   // sync read all messages
@@ -64,9 +61,6 @@ class SocketIoPrository {
   roomDisconnet() {
     socket!.disconnect();
     socket!.dispose();
-    // _instance = null;
-    //   socket!.emit("user-disconnected", [userName]);
-    // socket!.dispose();
   }
 
   closeConnection() {

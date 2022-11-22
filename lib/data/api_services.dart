@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:voice_chat/utils/app_utils.dart';
 import 'excaption_app.dart';
 
 class ApiServices {
@@ -62,6 +63,50 @@ class ApiServices {
   //delete
 
   //Api for Http request
+  static Future multifilePost({
+    required String url,
+    required Map<String, String> mapData,
+    Map<String, String>? imageData,
+  }) async {
+    dynamic res;
+
+    try {
+      http.MultipartRequest request =
+          http.MultipartRequest("POST", Uri.parse(url));
+
+      request.fields.addAll(mapData);
+
+      if (imageData != null) {
+        // List<int> d = imageData.map((e) => print(e)).toList();
+        var image = await http.MultipartFile.fromPath(
+            imageData['key']!, imageData['path']!);
+        request.files.add(image);
+      }
+
+      await request.send().then((value) async {
+        res = _checkResponceCode(await http.Response.fromStream(value));
+      });
+
+      // print(_checkResponceCode(await http.Response.fromStream(response)));
+
+      // if (response.statusCode == 200) {
+      //   // getProfile();
+      //   var res = await http.Response.fromStream(response);
+      //   print(res.body);
+      //   // print(await response.stream.bytesToString());
+      // } else {
+      //   // AppUtils.closeDailog();
+      //   print(response.reasonPhrase);
+      // }
+      return res;
+    } on SocketException {
+      throw FetchDataExcaption();
+    } on TimeoutException {
+      throw AppExcaption(errorMessage: "Request TimeOut");
+    } on Exception catch (e) {
+      throw BadRequestExcaption();
+    }
+  }
 
   //CheckResponceCode
   static _checkResponceCode(http.Response response) {

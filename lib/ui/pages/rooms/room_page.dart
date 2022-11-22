@@ -9,7 +9,6 @@ import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/room_model.dart';
-import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/repositorys/socket_io_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
@@ -41,7 +40,7 @@ class _RoomPageState extends State<RoomPage> {
   getUser() {
     MessageController.instance.messages.clear();
 
-    print(widget.room.roomName);
+    print(widget.room.creatorImage);
 
     mySocket.connect();
 
@@ -58,9 +57,6 @@ class _RoomPageState extends State<RoomPage> {
   @override
   void dispose() {
     mySocket.roomDisconnet();
-    // if (messageController != null) {
-    //   messageController!.dispose();
-    // }
     message.dispose();
     super.dispose();
   }
@@ -85,7 +81,9 @@ class _RoomPageState extends State<RoomPage> {
               return Column(
                 children: [
                   //CustumAppBar
-                  RoomAppBar(name: widget.room.roomName, userImage: null),
+                  RoomAppBar(
+                      name: widget.room.roomName,
+                      userImage: widget.room.creatorImage),
                   //Room header
                   RoomHeaderUsers(testImage: null),
 
@@ -95,25 +93,9 @@ class _RoomPageState extends State<RoomPage> {
                       return ListView.builder(
                         itemCount: controller.messages.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                              padding: EdgeInsets.all(8),
-                              margin: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                  color: AppColor.white,
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(controller.messages[index].name),
-                                  Text(
-                                    controller.messages[index].message,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium!
-                                        .copyWith(color: AppColor.black),
-                                  ),
-                                ],
-                              ));
+                          return RoomChatCard(
+                            messages: controller.messages[index],
+                          );
                         },
                       );
                     },
@@ -248,6 +230,8 @@ class _RoomPageState extends State<RoomPage> {
                                         SocketIoPrository.instance.sendMessage(
                                           roomName: widget.room.roomName,
                                           message: message.text,
+                                          profilePic:
+                                              UserController.instance.getImage,
                                           userName:
                                               "${ProfileController.instance.profileData!.firstName} ${ProfileController.instance.profileData!.lastName}",
                                         );
@@ -287,6 +271,61 @@ class _RoomPageState extends State<RoomPage> {
         ),
       ),
     );
+  }
+}
+
+//Messages chard
+class RoomChatCard extends StatelessWidget {
+  const RoomChatCard({
+    Key? key,
+    required this.messages,
+  }) : super(key: key);
+  final MessageModel messages;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.all(8),
+        margin: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          // color: AppColor.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: 25,
+                  width: 25,
+                  decoration: BoxDecoration(
+                      color: Colors.green,
+                      gradient: AppColor.backgraundGradientV,
+                      borderRadius: BorderRadius.circular(15),
+                      image: (messages.profilePic != null)
+                          ? DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                  "${ApiImagePath.profile}${messages.profilePic!}"),
+                              fit: BoxFit.cover,
+                            )
+                          : null),
+                ),
+                SizedBox(width: 6),
+                Text(messages.name,
+                    style: TextStyle(color: AppColor.white, fontSize: 10)),
+              ],
+            ),
+            SizedBox(height: 6),
+            Text(
+              messages.message,
+              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                    color: AppColor.white,
+                    fontSize: 16,
+                  ),
+            ),
+          ],
+        ));
   }
 }
 
@@ -394,7 +433,8 @@ class RoomAppBar extends StatelessWidget {
                           gradient: AppColor.backgraundGradientV,
                           image: (userImage != null)
                               ? DecorationImage(
-                                  image: CachedNetworkImageProvider(userImage!),
+                                  image: CachedNetworkImageProvider(
+                                      "${ApiImagePath.profile}$userImage"),
                                   fit: BoxFit.cover,
                                 )
                               : null,
@@ -459,23 +499,23 @@ class RoomAppBar extends StatelessWidget {
                       CircleAvatar(
                         radius: 12,
                         backgroundColor: AppColor.white,
-                        foregroundImage: (userImage != null)
-                            ? CachedNetworkImageProvider(userImage!)
-                            : null,
+                        // foregroundImage: (userImage != null)
+                        //     ? CachedNetworkImageProvider(userImage!)
+                        //     : null,
                       ),
                       CircleAvatar(
                         radius: 12,
                         backgroundColor: AppColor.white,
-                        foregroundImage: (userImage != null)
-                            ? CachedNetworkImageProvider(userImage!)
-                            : null,
+                        // foregroundImage: (userImage != null)
+                        //     ? CachedNetworkImageProvider(userImage!)
+                        //     : null,
                       ),
                       CircleAvatar(
                         radius: 12,
                         backgroundColor: AppColor.white,
-                        foregroundImage: (userImage != null)
-                            ? CachedNetworkImageProvider(userImage!)
-                            : null,
+                        // foregroundImage: (userImage != null)
+                        //     ? CachedNetworkImageProvider(userImage!)
+                        //     : null,
                       ),
                     ],
                   ),

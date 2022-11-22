@@ -162,7 +162,6 @@ class _CreateRoomTabPageState extends State<CreateRoomTabPage> {
   }
 
   createRoom() async {
-    // print(userData.firstName);
     if (roomname.text.isEmpty) {
       AppUtils.showSnakBar(msg: "Enter Room name", second: 2);
     } else {
@@ -170,12 +169,13 @@ class _CreateRoomTabPageState extends State<CreateRoomTabPage> {
         roomName: roomname.text,
         userFirstName: userData.firstName!,
         userLastName: userData.lastName!,
-        userProfileImage: "image",
+        userProfileImage: userData.image!,
         image: "iamge1",
         createBy: userData.id.toString(),
         info: "sadasd",
         onCreated: (Room room) {
           // try to join room here
+
           Get.off(() => RoomPage(room: room));
         },
       );
