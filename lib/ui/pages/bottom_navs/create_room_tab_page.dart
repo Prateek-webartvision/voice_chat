@@ -169,12 +169,13 @@ class _CreateRoomTabPageState extends State<CreateRoomTabPage> {
         roomName: roomname.text,
         userFirstName: userData.firstName!,
         userLastName: userData.lastName!,
-        userProfileImage: userData.image!,
+        userProfileImage: userData.image,
         image: "iamge1",
         createBy: userData.id.toString(),
         info: "sadasd",
         onCreated: (Room room) {
           // try to join room here
+          print("Room message : ${room.roomName}");
 
           Get.off(() => RoomPage(room: room));
         },

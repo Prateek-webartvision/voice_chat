@@ -17,19 +17,6 @@ class RoomModel {
         rooms.add(Room.fromJson(v));
       });
     }
-    // print(Room.fromJson());
-    // rooms = (json['data'] != null)
-    //     ? json['data'].forEach((v) {
-    //         Room.fromJson(v);
-    //       })
-    //     : [];
-    // if (json['data'] != null) {
-    //   json['data'].forEach((v) {
-    //     rooms?.add(
-    //       Room.fromJson(v),
-    //     );
-    //   });
-    // }
   }
 
   // Map<String, dynamic> toJson() {
@@ -76,11 +63,10 @@ class Room {
     id = json['id'];
     roomName = json['room_name'];
     users = json['users'];
-    createdBy = json['created_by'];
+    createdBy = int.parse("${json['created_by']}");
     firstName = json['first_name'];
     lastName = json['last_name'];
     creatorImage = json['creator_image'];
-
     image = json['image'];
     info = json['info'];
     active = json['active'];

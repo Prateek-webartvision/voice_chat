@@ -36,9 +36,9 @@ class RoomRepository {
     required String info,
     required String userFirstName,
     required String userLastName,
-    required String userProfileImage,
-    required String image,
-    Function(Room room)? onCreated,
+    required String? userProfileImage,
+    required String? image,
+    required Function(Room room) onCreated,
   }) async {
     AppUtils.progressDailog();
     await ApiServices.postApi(url: AppUrls.createNewRoom, mapData: {
@@ -50,23 +50,26 @@ class RoomRepository {
       "last_name": userLastName,
       "creator_image": userProfileImage,
     }).then((value) {
+      // print(value);
       AppUtils.closeDailog();
-      if (value['status'] == true) {
-        // print(value["data"]);
-        AppUtils.showSnakBar(msg: "Room Created '$roomName'");
-        //   SocketIoPrository.instance.crateRoom(roomName: roomName);
-        getAllRooms().then((v) {
-          if (onCreated != null) {
-            v.forEach((Room e) {
-              if (e.roomName == roomName) {
-                onCreated(e);
-              }
-            });
-          }
-        });
-      } else {
-        AppUtils.showSnakBar(msg: value['msg'], second: 2);
-      }
+      AppUtils.showSnakBar(msg: value['msg'], second: 2);
+      onCreated(Room.fromJson(value['data']));
+      // if (value['status'] == true) {
+      //   // print(value["data"]);
+      //   AppUtils.showSnakBar(msg: "Room Created '$roomName'");
+      //   //   SocketIoPrository.instance.crateRoom(roomName: roomName);
+      //   // getAllRooms().then((v) {
+      //   //   if (onCreated != null) {
+      //   //     v.forEach((Room e) {
+      //   //       if (e.roomName == roomName) {
+      //   //         onCreated(e);
+      //   //       }
+      //   //     });
+      //   //   }
+      //   // });
+      // } else {
+      //   AppUtils.showSnakBar(msg: value['msg'], second: 2);
+      // }
     }).onError((error, stackTrace) {
       AppUtils.closeDailog();
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
