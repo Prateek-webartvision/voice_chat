@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:voice_chat/controllers/message_controller.dart';
 import 'package:voice_chat/controllers/post_controller.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/data/api_services.dart';
@@ -12,7 +11,7 @@ class PostRepository {
 
   //get All Posts
   getAllPost() {
-    print("Get Post");
+    // print("Get Post");
     PostController.instance.clearAllData();
 
     ApiServices.getApi(url: AppUrls.getAllPost).then((value) {

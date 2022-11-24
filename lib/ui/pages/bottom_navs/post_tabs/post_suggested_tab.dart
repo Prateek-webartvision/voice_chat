@@ -21,6 +21,11 @@ class PostSuggestedTab extends StatefulWidget {
 }
 
 class _PostSuggestedTabState extends State<PostSuggestedTab> {
+  //Refresh indictor fun
+  Future refreshFun() async {
+    await PostRepository.instance.getAllPost();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PostController>(
@@ -35,45 +40,47 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
           }
         } else {
           // postList
-          return ListView.separated(
-            shrinkWrap: true,
-            // reverse: true,
-            padding: EdgeInsets.only(bottom: 20, left: 16, right: 16),
-            itemCount: controller.allPostList.length,
-            itemBuilder: (context, index) {
-              return PostCardWidget(
-                  cardData: controller.allPostList[index],
-                  onAddFriendTab: (friend) {
-                    AppUtils.showSnakBar(msg: "friends");
-                  },
-                  // likeBtn
-                  onLikeTab: (like) {
-                    PostController.instance
-                        .likePost(postId: controller.allPostList[index].id);
-                  },
-                  //comment btn
-                  onCommentTab: () {
-                    // AppUtils.showSnakBar(msg: "Comment");
-                    Get.bottomSheet(
-                        PostCommentCard(
-                            postId: controller.allPostList[index].id),
-                        isScrollControlled: true);
-                  });
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return Column(
-                children: [
-                  const Divider(
-                    thickness: 2,
-                    endIndent: 40,
-                  ),
-                  SizedBox(
-                    height: h10,
-                  )
-                ],
-              );
-            },
-          );
+          return RefreshIndicator(
+              onRefresh: refreshFun,
+              child: ListView.separated(
+                shrinkWrap: true,
+                // reverse: true,
+                padding: EdgeInsets.only(bottom: 20, left: 16, right: 16),
+                itemCount: controller.allPostList.length,
+                itemBuilder: (context, index) {
+                  return PostCardWidget(
+                      cardData: controller.allPostList[index],
+                      onAddFriendTab: (friend) {
+                        AppUtils.showSnakBar(msg: "friends");
+                      },
+                      // likeBtn
+                      onLikeTab: (like) {
+                        PostController.instance
+                            .likePost(postId: controller.allPostList[index].id);
+                      },
+                      //comment btn
+                      onCommentTab: () {
+                        // AppUtils.showSnakBar(msg: "Comment");
+                        Get.bottomSheet(
+                            PostCommentCard(
+                                postId: controller.allPostList[index].id),
+                            isScrollControlled: true);
+                      });
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return Column(
+                    children: [
+                      const Divider(
+                        thickness: 2,
+                        endIndent: 40,
+                      ),
+                      SizedBox(
+                        height: h10,
+                      )
+                    ],
+                  );
+                },
+              ));
         }
       },
     );
