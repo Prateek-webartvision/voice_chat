@@ -1,14 +1,62 @@
 import 'package:get/get.dart';
-import 'package:voice_chat/models/post_suggested_model.dart';
+import 'package:voice_chat/models/post_model.dart';
+import 'package:voice_chat/repositorys/post_repo.dart';
 
 class PostController extends GetxController {
   static PostController instance = Get.find<PostController>();
 
-  List<PostSeggestedModel> allPostList = [];
+  List<PostModel> allPostList = [];
+  String? erroMessage;
+  late bool isUser;
+  late int index;
 
-  addPost(PostSeggestedModel post) {
-    // print(post.id);
+  addPost(PostModel post) {
     allPostList.add(post);
     update();
+  }
+
+  setError(String error) {
+    erroMessage = error;
+    update();
+  }
+
+  clearAllData() {
+    erroMessage = null;
+    allPostList.clear();
+  }
+
+  // Like Post fun
+  likePost({required int postId}) async {
+    await PostRepository.instance.addPostLike(postId: postId).then((v) {
+      for (var element in allPostList) {
+        if (element.id == postId) {
+          if (element.isLiked == true) {
+            // print(true);
+            element.isLiked = false;
+            element.likeCount = element.likeCount - 1;
+          } else {
+            // print(false);
+            element.isLiked = true;
+            element.likeCount = element.likeCount + 1;
+          }
+        }
+      }
+    });
+    update();
+  }
+
+  //Post comment
+  commentPost({required PostCommentModel comment, required int postId}) {
+    PostModel postData = allPostList.where((element) {
+      if (element.id == postId) {
+        return true;
+      } else {
+        return false;
+      }
+    }).first;
+    postData.comments.add(comment);
+    // postData.
+    update();
+    // print("${comment.message} $postId ${postData.comments}");
   }
 }

@@ -4,6 +4,7 @@ class MessageController extends GetxController {
   static MessageController instance = Get.find<MessageController>();
   List<MessageModel> messages = [];
 
+  //update chat messages
   pushMessage(MessageModel data) {
     messages.add(data);
     update();

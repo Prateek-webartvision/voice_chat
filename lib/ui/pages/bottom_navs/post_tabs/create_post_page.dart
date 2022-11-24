@@ -4,15 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:voice_chat/repositorys/post_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:voice_chat/utils/app_utils.dart';
 import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/ui/widgets/my_login_btn.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:voice_chat/models/post_suggested_model.dart';
-import 'package:voice_chat/controllers/post_controller.dart';
-import 'package:voice_chat/controllers/profile_controller.dart';
 
 import '../../../widgets/gradient_icon_widget.dart';
 
@@ -190,32 +186,11 @@ class _CreatePostPageState extends State<CreatePostPage> {
   }
 
   //sedPost
-  sedPost() {
-    if (messageTextController.text.isEmpty) {
-      AppUtils.showSnakBar(msg: "Type your moment");
-    } else {
-      // print(messageTextController.text);
-      // print(imageFile);
-      // PostController.instance.addPost(
-      //   PostSeggestedModel(
-      //     userName: ProfileController.instance.profileData!.firstName!,
-      //     userProfile: "ProfileController.instance.profileData!.image",
-      //     image:
-      //         "https://i.pinimg.com/736x/fa/f1/f7/faf1f7f6e2e88bafc5b85fd3e9ecae76.jpg",
-      //     comment: messageTextController.text,
-      //     likes: 0,
-      //     comments: 0,
-      //     isfriend: false,
-      //     isLiked: false,
-      //   ),
-      // );
-      PostRepository.instance.createNewPost(
+  sedPost() => PostRepository.instance.createNewPost(
         image: imageFile?.path,
         postMessage: messageTextController.text,
         tag: "",
       );
-    }
-  }
 
   @override
   void dispose() {

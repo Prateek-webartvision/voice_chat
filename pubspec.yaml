@@ -53,6 +53,7 @@ dependencies:
  
   # Socket.io
   socket_io_client: ^2.0.0
+  collection: ^1.16.0
 
  
 
