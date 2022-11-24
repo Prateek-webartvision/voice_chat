@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:voice_chat/res/app_color.dart';
+import 'package:voice_chat/ui/pages/bottom_navs/messgaes_tabs/friend_request_list_page.dart';
 
 class MessagesTabPage extends StatelessWidget {
   const MessagesTabPage({super.key});
@@ -23,6 +25,7 @@ class MessagesTabPage extends StatelessWidget {
                   .copyWith(color: AppColor.black),
             ),
           ),
+          //body
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -36,8 +39,9 @@ class MessagesTabPage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    Container(),
+                    // message tile
                     ListTile(
+                      onTap: () => Get.to(() => FriendRequestListPage()),
                       leading: Container(
                         height: 50.h,
                         width: 50.h,

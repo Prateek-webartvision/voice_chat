@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:voice_chat/controllers/post_controller.dart';
 import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/post_model.dart';
+import 'package:voice_chat/repositorys/friend_repo.dart';
 import 'package:voice_chat/repositorys/post_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
@@ -51,7 +52,10 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
                   return PostCardWidget(
                       cardData: controller.allPostList[index],
                       onAddFriendTab: (friend) {
-                        AppUtils.showSnakBar(msg: "friends");
+                        // AppUtils.showSnakBar(msg: "friends");
+                        FriendRepository.instance.sendFriendRequest(
+                          friendId: controller.allPostList[index].id,
+                        );
                       },
                       // likeBtn
                       onLikeTab: (like) {

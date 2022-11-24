@@ -10,11 +10,11 @@ class PostRepository {
   static PostRepository instance = PostRepository();
 
   //get All Posts
-  getAllPost() {
+  Future getAllPost() async {
     // print("Get Post");
     PostController.instance.clearAllData();
 
-    ApiServices.getApi(url: AppUrls.getAllPost).then((value) {
+    var data = await ApiServices.getApi(url: AppUrls.getAllPost).then((value) {
       if (value['status'] == true) {
         for (var element in value['data']) {
           PostController.instance.addPost(PostModel.formJson(element));
@@ -27,6 +27,7 @@ class PostRepository {
       AppUtils.showSnakBar(msg: error.toString());
       PostController.instance.setError(error.toString());
     });
+    return data;
   }
 
   // Create new Post
