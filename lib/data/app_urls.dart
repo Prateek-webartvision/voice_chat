@@ -21,6 +21,7 @@ class AppUrls {
   static const String createPost = "$_api/posts/add-post";
   static const String removePost = "$_api/posts/remove-post";
   static const String addPostComment = "$_api/posts/add-comment";
+  static const String remocePostComment = "$_api/posts/remove-comment";
   static const String addPostlike = "$_api/posts/add-like";
 
   //friends

@@ -82,6 +82,28 @@ class PostRepository {
     });
   }
 
+  // Remove comment from post
+  removeComment({required String commentId, required int postId}) {
+    // print("$commentId $postId");
+    AppUtils.progressDailog();
+    ApiServices.postApi(url: AppUrls.remocePostComment, mapData: {
+      "postid": postId,
+      "commentid": commentId,
+    }).then((value) {
+      AppUtils.closeDailog();
+      if (value['status'] == true) {
+        PostController.instance
+            .removeCommentPost(postId: postId, commentId: commentId);
+        AppUtils.showSnakBar(msg: value['msg'], second: 2);
+      } else {
+        AppUtils.showSnakBar(msg: value['msg'], second: 2);
+      }
+    }).onError((error, stackTrace) {
+      AppUtils.closeDailog();
+      AppUtils.showSnakBar(msg: error.toString(), second: 2);
+    });
+  }
+
   // add Comment to post
   Future addPostComment(
       {required int postId, required String postMessage}) async {
@@ -95,9 +117,10 @@ class PostRepository {
     var d = await ApiServices.postApi(
             url: AppUrls.addPostComment, mapData: commentData)
         .then((value) {
+      print(value);
       if (value['status'] == true) {
         // print(value['data']);
-        PostController.instance.commentPost(
+        PostController.instance.addCommentPost(
             comment: PostCommentModel.fromJson(value['data']), postId: postId);
       } else {
         // status = false

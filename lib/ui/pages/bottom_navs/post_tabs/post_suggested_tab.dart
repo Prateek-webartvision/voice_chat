@@ -144,7 +144,13 @@ class _PostCommentCardState extends State<PostCommentCard> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   // return Text("data");
-                  return commentCard(post.comments[index]);
+                  return commentCard(
+                      postComment: post.comments[index],
+                      // Delete Comment
+                      onDelete: (String commentId) {
+                        PostRepository.instance.removeComment(
+                            commentId: commentId, postId: post.id);
+                      });
                 },
               );
             }),
@@ -187,8 +193,11 @@ class _PostCommentCardState extends State<PostCommentCard> {
     );
   }
 
-  //Post message card
-  Widget commentCard(PostCommentModel postComment) {
+  //Post comment  card
+  Widget commentCard({
+    required PostCommentModel postComment,
+    required Function(String commentId) onDelete,
+  }) {
     return Container(
       margin: EdgeInsets.all(8),
       // color: AppColor.grey200,
@@ -215,14 +224,29 @@ class _PostCommentCardState extends State<PostCommentCard> {
                 ),
               ),
               SizedBox(width: 6),
-              Text(
-                "${postComment.firstName} ${postComment.lastName}",
-                style: TextStyle(
-                  color: AppColor.black,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+              Expanded(
+                child: Text(
+                  "${postComment.firstName} ${postComment.lastName}",
+                  style: TextStyle(
+                    color: AppColor.black,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  overflow: TextOverflow.clip,
                 ),
-              )
+              ),
+              (postComment.userid == UserController.instance.getId)
+                  ? SizedBox(width: 6)
+                  : SizedBox(),
+              //Delete btn
+              (postComment.userid == UserController.instance.getId)
+                  ? IconButton(
+                      onPressed: () => onDelete(postComment.commentId!),
+                      icon: Icon(
+                        Icons.delete_rounded,
+                        size: 20,
+                      ))
+                  : SizedBox(),
             ],
           ),
           SizedBox(height: 10),
@@ -247,13 +271,14 @@ class _PostCommentCardState extends State<PostCommentCard> {
 }
 
 class PostCardWidget extends StatelessWidget {
-  const PostCardWidget(
-      {super.key,
-      required this.cardData,
-      required this.onLikeTab,
-      required this.onCommentTab,
-      required this.onAddFriendTab,
-      required this.deletePost});
+  const PostCardWidget({
+    super.key,
+    required this.cardData,
+    required this.onLikeTab,
+    required this.onCommentTab,
+    required this.onAddFriendTab,
+    required this.deletePost,
+  });
   final PostModel cardData;
   final Function(bool like) onLikeTab;
   final Function onCommentTab;
@@ -297,29 +322,12 @@ class PostCardWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            //Add Btn
-            Container(
-              height: 30,
-              width: 40,
-              decoration: BoxDecoration(
-                // color: AppColor.closeToPurple,
-                gradient: AppColor.backgraundGradient(),
-                borderRadius: BorderRadius.circular(40),
-              ),
-              child: InkWell(
-                onTap: () => onAddFriendTab(!cardData.isfriend),
-                child: Icon(
-                  Icons.add,
-                  color: AppColor.white,
-                ),
-              ),
-            ),
 
             //delete Btn
             // Text(cardData.createdBy.toString()),
-            (cardData.createdBy == UserController.instance.getId)
-                ? const SizedBox(width: 10)
-                : SizedBox(),
+            // (cardData.createdBy == UserController.instance.getId)
+            //     ? const SizedBox(width: 10)
+            // : SizedBox(),
             (cardData.createdBy == UserController.instance.getId)
                 ? Container(
                     height: 30,
@@ -337,7 +345,23 @@ class PostCardWidget extends StatelessWidget {
                       ),
                     ),
                   )
-                : SizedBox(),
+                : //Add Btn
+                Container(
+                    height: 30,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      // color: AppColor.closeToPurple,
+                      gradient: AppColor.backgraundGradient(),
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: InkWell(
+                      onTap: () => onAddFriendTab(!cardData.isfriend),
+                      child: Icon(
+                        Icons.add,
+                        color: AppColor.white,
+                      ),
+                    ),
+                  ),
           ],
         ),
         SizedBox(height: h10),

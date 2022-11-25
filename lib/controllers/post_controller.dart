@@ -46,7 +46,7 @@ class PostController extends GetxController {
   }
 
   //Post comment
-  commentPost({required PostCommentModel comment, required int postId}) {
+  addCommentPost({required PostCommentModel comment, required int postId}) {
     PostModel postData = allPostList.where((element) {
       if (element.id == postId) {
         return true;
@@ -58,5 +58,29 @@ class PostController extends GetxController {
     // postData.
     update();
     // print("${comment.message} $postId ${postData.comments}");
+  }
+
+  // post comment remove
+  removeCommentPost({required int postId, required String commentId}) {
+    PostModel postData = allPostList.where((element) {
+      if (element.id == postId) {
+        return true;
+      } else {
+        return false;
+      }
+    }).first;
+
+    PostCommentModel commentModel = postData.comments.where(
+      (element) {
+        if (element.commentId == commentId) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+    ).first;
+
+    postData.comments.remove(commentModel);
+    update();
   }
 }

@@ -122,7 +122,8 @@ class PostCommentModel {
   final int userid;
   final String firstName;
   final String lastName;
-  final String? image;
+  String? commentId;
+  String? image;
   final String createdAt;
   final String updatedAt;
   final String message;
@@ -133,6 +134,7 @@ class PostCommentModel {
     required this.firstName,
     required this.lastName,
     required this.image,
+    required this.commentId,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -140,6 +142,7 @@ class PostCommentModel {
   factory PostCommentModel.fromJson(Map<String, dynamic> json) {
     return PostCommentModel(
       userid: json['userid'],
+      commentId: json['comment_id'],
       message: json['message'],
       firstName: json['first_name'],
       lastName: json['last_name'],
