@@ -14,15 +14,18 @@ class FriendRepository {
       "token": UserController.instance.getToken,
       "friend_id": friendId,
     };
+    AppUtils.progressDailog();
     ApiServices.postApi(url: AppUrls.sendFriendRequest, mapData: requestData)
         .then((response) {
-      print(response);
       if (response['status']) {
+        AppUtils.closeDailog();
         AppUtils.showSnakBar(msg: response["msg"], second: 2);
       } else {
+        AppUtils.closeDailog();
         AppUtils.showSnakBar(msg: response["msg"], second: 2);
       }
     }).onError((error, stackTrace) {
+      AppUtils.closeDailog();
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
     });
   }

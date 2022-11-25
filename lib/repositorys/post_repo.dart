@@ -61,6 +61,27 @@ class PostRepository {
     }
   }
 
+  //remove Post
+  Future removePost({required int postId}) async {
+    Map<String, dynamic> removePostData = {
+      "token": UserController.instance.getToken,
+      "postid": postId,
+    };
+    // print(removePostData);
+    AppUtils.progressDailog();
+    ApiServices.postApi(url: AppUrls.removePost, mapData: removePostData)
+        .then((value) {
+      AppUtils.closeDailog();
+      AppUtils.showSnakBar(msg: value['msg']);
+      getAllPost();
+      print(value);
+    }).onError((error, stackTrace) {
+      AppUtils.closeDailog();
+      AppUtils.showSnakBar(msg: error.toString());
+      print(error);
+    });
+  }
+
   // add Comment to post
   Future addPostComment(
       {required int postId, required String postMessage}) async {

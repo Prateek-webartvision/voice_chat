@@ -30,19 +30,21 @@ class AppUtils {
 
   //progressDailog
   static progressDailog() {
-    Get.dialog(
-      barrierDismissible: false,
-      Center(
-        child: Container(
-          height: 50,
-          width: 50,
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              color: AppColor.white, borderRadius: BorderRadius.circular(25)),
-          child: CircularProgressIndicator(),
+    if (Get.isSnackbarOpen != true) {
+      Get.dialog(
+        barrierDismissible: false,
+        Center(
+          child: Container(
+            height: 50,
+            width: 50,
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: AppColor.white, borderRadius: BorderRadius.circular(25)),
+            child: CircularProgressIndicator(),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   //Image picker dailog

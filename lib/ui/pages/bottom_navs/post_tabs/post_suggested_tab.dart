@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/controllers/post_controller.dart';
+import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/post_model.dart';
 import 'package:voice_chat/repositorys/friend_repo.dart';
@@ -50,26 +51,32 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
                 itemCount: controller.allPostList.length,
                 itemBuilder: (context, index) {
                   return PostCardWidget(
-                      cardData: controller.allPostList[index],
-                      onAddFriendTab: (friend) {
-                        // AppUtils.showSnakBar(msg: "friends");
-                        FriendRepository.instance.sendFriendRequest(
-                          friendId: controller.allPostList[index].id,
-                        );
-                      },
-                      // likeBtn
-                      onLikeTab: (like) {
-                        PostController.instance
-                            .likePost(postId: controller.allPostList[index].id);
-                      },
-                      //comment btn
-                      onCommentTab: () {
-                        // AppUtils.showSnakBar(msg: "Comment");
-                        Get.bottomSheet(
-                            PostCommentCard(
-                                postId: controller.allPostList[index].id),
-                            isScrollControlled: true);
-                      });
+                    cardData: controller.allPostList[index],
+                    onAddFriendTab: (friend) {
+                      // AppUtils.showSnakBar(msg: "friends");
+                      FriendRepository.instance.sendFriendRequest(
+                        friendId: controller.allPostList[index].id,
+                      );
+                    },
+                    // likeBtn
+                    onLikeTab: (like) {
+                      PostController.instance
+                          .likePost(postId: controller.allPostList[index].id);
+                    },
+                    //comment btn
+                    onCommentTab: () {
+                      Get.bottomSheet(
+                          PostCommentCard(
+                              postId: controller.allPostList[index].id),
+                          isScrollControlled: true);
+                    },
+
+                    //Delete Post
+                    deletePost: () {
+                      PostRepository.instance
+                          .removePost(postId: controller.allPostList[index].id);
+                    },
+                  );
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return Column(
@@ -238,25 +245,20 @@ class _PostCommentCardState extends State<PostCommentCard> {
 }
 
 class PostCardWidget extends StatelessWidget {
-  const PostCardWidget({
-    super.key,
-    required this.cardData,
-    required this.onLikeTab,
-    required this.onCommentTab,
-    required this.onAddFriendTab,
-    // required this.postLikeData,
-    // required this.postCommentData,
-  });
+  const PostCardWidget(
+      {super.key,
+      required this.cardData,
+      required this.onLikeTab,
+      required this.onCommentTab,
+      required this.onAddFriendTab,
+      required this.deletePost});
   final PostModel cardData;
-  // final List<PostLikeModel> postLikeData;
-  // final List<PostCommentModel> postCommentData;
   final Function(bool like) onLikeTab;
   final Function onCommentTab;
   final Function(bool friend) onAddFriendTab;
+  final Function() deletePost;
   @override
   Widget build(BuildContext context) {
-    bool islike = false;
-
     final avtarSize = 40.h;
     return Column(
       children: [
@@ -309,7 +311,31 @@ class PostCardWidget extends StatelessWidget {
                   color: AppColor.white,
                 ),
               ),
-            )
+            ),
+
+            //delete Btn
+            // Text(cardData.createdBy.toString()),
+            (cardData.createdBy == UserController.instance.getId)
+                ? const SizedBox(width: 10)
+                : SizedBox(),
+            (cardData.createdBy == UserController.instance.getId)
+                ? Container(
+                    height: 30,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      // color: AppColor.closeToPurple,
+                      gradient: AppColor.backgraundGradient(),
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: InkWell(
+                      onTap: deletePost,
+                      child: Icon(
+                        Icons.delete_rounded,
+                        color: AppColor.white,
+                      ),
+                    ),
+                  )
+                : SizedBox(),
           ],
         ),
         SizedBox(height: h10),
