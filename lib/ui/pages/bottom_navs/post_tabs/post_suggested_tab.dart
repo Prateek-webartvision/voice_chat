@@ -46,7 +46,7 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
               onRefresh: refreshFun,
               child: ListView.separated(
                 shrinkWrap: true,
-                // reverse: true,
+                reverse: true,
                 padding: EdgeInsets.only(bottom: 20, left: 16, right: 16),
                 itemCount: controller.allPostList.length,
                 itemBuilder: (context, index) {
@@ -125,7 +125,9 @@ class _PostCommentCardState extends State<PostCommentCard> {
         children: [
           Container(
             padding: EdgeInsets.all(8),
-            constraints: BoxConstraints(maxHeight: 300, minHeight: 50),
+            constraints: BoxConstraints(
+              maxHeight: 300,
+            ),
             child: GetBuilder<PostController>(builder: (postController) {
               // get post data
               PostModel post = postController.allPostList.where((element) {
