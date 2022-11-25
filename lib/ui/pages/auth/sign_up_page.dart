@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:voice_chat/repositorys/auth_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
+import 'package:voice_chat/ui/pages/auth/sign_in_with_id_page.dart';
 import 'package:voice_chat/ui/widgets/app_logo_widget.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/ui/widgets/my_login_btn.dart';
@@ -120,12 +121,13 @@ class _SignUpPageState extends State<SignUpPage> {
         password: _password.text,
       )
           .then((v) {
-        if (v == true) {
-          _firstName.clear();
-          _lastName.clear();
-          _password.clear();
-          _phone.clear();
-        }
+        Get.off(() => SignInWithIDPage());
+        // if (v == true) {
+        //   _firstName.clear();
+        //   _lastName.clear();
+        //   _password.clear();
+        //   _phone.clear();
+        // }
       });
     }
   }

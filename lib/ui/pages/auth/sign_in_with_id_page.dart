@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:voice_chat/repositorys/auth_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
+import 'package:voice_chat/ui/pages/auth/sign_up_page.dart';
 import 'package:voice_chat/ui/widgets/app_logo_widget.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/ui/widgets/my_login_btn.dart';
@@ -73,11 +75,29 @@ class _SignInWithIDPageState extends State<SignInWithIDPage> {
                     isPassword: true,
                   ),
                   SizedBox(height: h10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            // TODO Forgot Password
+                            print("Forgot password");
+                          },
+                          child: Text("Forgot Password")),
+                    ],
+                  ),
+                  SizedBox(height: h20),
                   //Login Btn
                   MyGradientBtn(
                     onPress: () => loginBtn(),
                     text: "Sign In".toUpperCase(),
-                  )
+                  ),
+                  SizedBox(height: h20),
+                  TextButton(
+                      onPressed: () {
+                        Get.off(() => SignUpPage());
+                      },
+                      child: Text("Sign up"))
                 ],
               ),
             ),
@@ -128,8 +148,6 @@ class _SignInWithIDPageState extends State<SignInWithIDPage> {
 
 // Login
   loginBtn() {
-    // print(phoneNumberController.text);
-
     if (phoneNumberController.text.isEmpty || passwordController.text.isEmpty) {
       AppUtils.showSnakBar(msg: "Field is Empty", second: 2);
     } else {
