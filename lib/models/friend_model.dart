@@ -48,6 +48,7 @@ class RequestSent {
   final String firstName;
   final String lastName;
   String? image;
+  final int id;
   final String createdAt;
   final String updatedAt;
 
@@ -55,6 +56,7 @@ class RequestSent {
     required this.firstName,
     required this.lastName,
     required this.image,
+    required this.id,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -64,6 +66,7 @@ class RequestSent {
         firstName: json['first_name'],
         lastName: json['last_name'],
         image: json['image'],
+        id: json['userid'],
         createdAt: json['createdAt'],
         updatedAt: json['updatedAt']);
   }
@@ -73,6 +76,7 @@ class RequestReceived {
   final String firstName;
   final String lastName;
   String? image;
+  final int id;
   final String createdAt;
   final String updatedAt;
 
@@ -80,6 +84,7 @@ class RequestReceived {
     required this.firstName,
     required this.lastName,
     required this.image,
+    required this.id,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -89,6 +94,7 @@ class RequestReceived {
         firstName: json['first_name'],
         lastName: json['last_name'],
         image: json['image'],
+        id: json['userid'],
         createdAt: json['createdAt'],
         updatedAt: json['updatedAt']);
   }

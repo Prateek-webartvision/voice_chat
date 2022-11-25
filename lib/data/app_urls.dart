@@ -25,6 +25,8 @@ class AppUrls {
   //friends
   static const String sendFriendRequest = "$_api/friends/request-friendship";
   static const String getFriendsRquestList = "$_api/friends/get-request-list";
+  static const String respondFriendRequest =
+      "$_api/friends/response-friendship";
 
   //Room
   static const String getAllRooms = "$_api/rooms/get";
