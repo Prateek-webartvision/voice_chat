@@ -27,6 +27,7 @@ class FriendRepository {
     });
   }
 
+  //get all friend requests
   getFriendRequest() {
     FriendRequestController.instance.firendsmodelList = null;
     ApiServices.postApi(
@@ -36,7 +37,35 @@ class FriendRepository {
       FriendRequestController.instance
           .friendRequestFun(FirendModel.fromJson(value));
     }).onError((error, stackTrace) {
-      print(error);
+      AppUtils.showSnakBar(msg: error.toString(), second: 2);
     });
+  }
+
+  //respond Friend Request
+  Future respondFriendRequest(
+      {required int requestedById, required bool accept}) async {
+    Map<String, dynamic> respondData = {
+      "token": UserController.instance.getToken,
+      "requested_by": requestedById,
+      "accept": accept
+    };
+    AppUtils.progressDailog();
+    var data = await ApiServices.postApi(
+            url: AppUrls.respondFriendRequest, mapData: respondData)
+        .then((value) {
+      AppUtils.closeDailog();
+      if (value['status'] == true) {
+        AppUtils.showSnakBar(msg: value['msg'], second: 2);
+      } else {
+        AppUtils.showSnakBar(msg: value['msg'], second: 2);
+      }
+      return value;
+    }).onError((error, stackTrace) {
+      AppUtils.closeDailog();
+      AppUtils.showSnakBar(msg: error.toString(), second: 2);
+      return null;
+    });
+
+    return data;
   }
 }
