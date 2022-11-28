@@ -55,7 +55,7 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
                     onAddFriendTab: (friend) {
                       // AppUtils.showSnakBar(msg: "friends");
                       FriendRepository.instance.sendFriendRequest(
-                        friendId: controller.allPostList[index].id,
+                        friendId: controller.allPostList[index].createdBy,
                       );
                     },
                     // likeBtn
@@ -145,26 +145,30 @@ class _PostCommentCardState extends State<PostCommentCard> {
                 itemBuilder: (context, index) {
                   // return Text("data");
                   return commentCard(
-                      postComment: post.comments[index],
-                      // Delete Comment
-                      onDelete: (String commentId) {
-                        PostRepository.instance.removeComment(
-                            commentId: commentId, postId: post.id);
-                      });
+                    postComment: post.comments[index],
+                    postPostedById: post.createdBy,
+                    // Delete Comment
+                    onDelete: (String commentId) {
+                      PostRepository.instance
+                          .removeComment(commentId: commentId, postId: post.id);
+                    },
+                  );
                 },
               );
             }),
           ),
+
           //Comment area
           Row(
             children: [
               Expanded(
-                  child: KTextField2(
-                hintText: "Write your comment...",
-                textEditingController: commentMessageController,
-                maxLines: 2,
-                minLines: 1,
-              )),
+                child: KTextField2(
+                  hintText: "Write your comment...",
+                  textEditingController: commentMessageController,
+                  maxLines: 2,
+                  minLines: 1,
+                ),
+              ),
               //send comment
               IconButton(
                   onPressed: () async {
@@ -196,6 +200,7 @@ class _PostCommentCardState extends State<PostCommentCard> {
   //Post comment  card
   Widget commentCard({
     required PostCommentModel postComment,
+    required int postPostedById,
     required Function(String commentId) onDelete,
   }) {
     return Container(
@@ -224,6 +229,7 @@ class _PostCommentCardState extends State<PostCommentCard> {
                 ),
               ),
               SizedBox(width: 6),
+              //Name
               Expanded(
                 child: Text(
                   "${postComment.firstName} ${postComment.lastName}",
@@ -238,8 +244,11 @@ class _PostCommentCardState extends State<PostCommentCard> {
               (postComment.userid == UserController.instance.getId)
                   ? SizedBox(width: 6)
                   : SizedBox(),
+              SizedBox(width: 6),
               //Delete btn
-              (postComment.userid == UserController.instance.getId)
+              //check if post owner delete all commnet
+              (postPostedById == UserController.instance.getId ||
+                      postComment.userid == UserController.instance.getId)
                   ? IconButton(
                       onPressed: () => onDelete(postComment.commentId!),
                       icon: Icon(

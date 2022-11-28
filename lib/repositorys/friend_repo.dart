@@ -14,6 +14,9 @@ class FriendRepository {
       "token": UserController.instance.getToken,
       "friend_id": friendId,
     };
+
+    print(requestData);
+
     AppUtils.progressDailog();
     ApiServices.postApi(url: AppUrls.sendFriendRequest, mapData: requestData)
         .then((response) {

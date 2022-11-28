@@ -11,18 +11,24 @@ class PostRepository {
 
   //get All Posts
   Future getAllPost() async {
-    // print("Get Post");
+    print("Get Post");
     PostController.instance.clearAllData();
 
     var data = await ApiServices.getApi(url: AppUrls.getAllPost).then((value) {
       if (value['status'] == true) {
-        for (var element in value['data']) {
-          PostController.instance.addPost(PostModel.formJson(element));
+        // Test Base
+        if (value['data'].isNotEmpty) {
+          for (var element in value['data']) {
+            PostController.instance.addPost(PostModel.formJson(element));
+          }
+        } else {
+          PostController.instance.addPost(PostModel.formJson(value['data']));
         }
       } else {
         AppUtils.showSnakBar(msg: value['msg']);
         PostController.instance.setError(value['msg']);
       }
+      // print(value);
     }).onError((error, stackTrace) {
       AppUtils.showSnakBar(msg: error.toString());
       PostController.instance.setError(error.toString());
@@ -89,6 +95,7 @@ class PostRepository {
     ApiServices.postApi(url: AppUrls.remocePostComment, mapData: {
       "postid": postId,
       "commentid": commentId,
+      "token": UserController.instance.getToken,
     }).then((value) {
       AppUtils.closeDailog();
       if (value['status'] == true) {
@@ -108,6 +115,7 @@ class PostRepository {
   Future addPostComment(
       {required int postId, required String postMessage}) async {
     AppUtils.progressDailog();
+
     Map<String, dynamic> commentData = {
       "postid": postId,
       "userid": UserController.instance.getId,
