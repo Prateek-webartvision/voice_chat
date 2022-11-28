@@ -16,8 +16,7 @@ class PostTabPage extends StatefulWidget {
   State<PostTabPage> createState() => _PostTabPageState();
 }
 
-class _PostTabPageState extends State<PostTabPage>
-    with TickerProviderStateMixin {
+class _PostTabPageState extends State<PostTabPage> with TickerProviderStateMixin {
   late TabController tabController;
   int currentPage = 0;
 
@@ -28,10 +27,11 @@ class _PostTabPageState extends State<PostTabPage>
 
   @override
   void initState() {
-    tabController =
-        TabController(length: 2, vsync: this, initialIndex: currentPage);
+    tabController = TabController(length: 2, vsync: this, initialIndex: currentPage);
     //
     PostRepository.instance.getAllPost();
+    // PostRepository.instance.grtAllFriendsPost();
+
     super.initState();
   }
 
@@ -59,10 +59,7 @@ class _PostTabPageState extends State<PostTabPage>
                     unselectedLabelColor: AppColor.black54,
                     indicatorSize: TabBarIndicatorSize.label,
                     indicator: const TabBarGradientIndicator(
-                      gradientColor: [
-                        AppColor.closeToBlue,
-                        AppColor.closeToPurple
-                      ],
+                      gradientColor: [AppColor.closeToBlue, AppColor.closeToPurple],
                       indicatorWidth: 3,
                     ),
                     onTap: (value) {
@@ -85,9 +82,7 @@ class _PostTabPageState extends State<PostTabPage>
                       child: Container(
                         height: h30,
                         width: h30,
-                        decoration: BoxDecoration(
-                            gradient: AppColor.backgraundGradient(),
-                            borderRadius: BorderRadius.circular(30.r)),
+                        decoration: BoxDecoration(gradient: AppColor.backgraundGradient(), borderRadius: BorderRadius.circular(30.r)),
                         alignment: Alignment.center,
                         child: InkWell(
                           onTap: () {

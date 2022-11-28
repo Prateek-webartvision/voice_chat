@@ -61,6 +61,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
               //Success
               return SafeArea(
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
                     child: Column(

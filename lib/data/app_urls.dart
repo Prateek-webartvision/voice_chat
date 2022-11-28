@@ -18,6 +18,7 @@ class AppUrls {
 
   //Post
   static const String getAllPost = "$_api/posts/get";
+  static const String getMyFriendsPost = "$_api/posts/get-my-friends-post";
   static const String createPost = "$_api/posts/add-post";
   static const String removePost = "$_api/posts/remove-post";
   static const String addPostComment = "$_api/posts/add-comment";

@@ -45,6 +45,7 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
           return RefreshIndicator(
               onRefresh: refreshFun,
               child: ListView.separated(
+                physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 reverse: true,
                 padding: EdgeInsets.only(bottom: 20, left: 16, right: 16),
@@ -60,21 +61,16 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
                     },
                     // likeBtn
                     onLikeTab: (like) {
-                      PostController.instance
-                          .likePost(postId: controller.allPostList[index].id);
+                      PostController.instance.likePost(postId: controller.allPostList[index].id);
                     },
                     //comment btn
                     onCommentTab: () {
-                      Get.bottomSheet(
-                          PostCommentCard(
-                              postId: controller.allPostList[index].id),
-                          isScrollControlled: true);
+                      Get.bottomSheet(PostCommentCard(postId: controller.allPostList[index].id), isScrollControlled: true);
                     },
 
                     //Delete Post
                     deletePost: () {
-                      PostRepository.instance
-                          .removePost(postId: controller.allPostList[index].id);
+                      PostRepository.instance.removePost(postId: controller.allPostList[index].id);
                     },
                   );
                 },
@@ -149,8 +145,7 @@ class _PostCommentCardState extends State<PostCommentCard> {
                     postPostedById: post.createdBy,
                     // Delete Comment
                     onDelete: (String commentId) {
-                      PostRepository.instance
-                          .removeComment(commentId: commentId, postId: post.id);
+                      PostRepository.instance.removeComment(commentId: commentId, postId: post.id);
                     },
                   );
                 },
@@ -174,8 +169,7 @@ class _PostCommentCardState extends State<PostCommentCard> {
                   onPressed: () async {
                     // PostController.instance.findPost(widget.postId);
                     if (commentMessageController.text.isEmpty) {
-                      AppUtils.showSnakBar(
-                          msg: "Enter Your Comment", second: 2);
+                      AppUtils.showSnakBar(msg: "Enter Your Comment", second: 2);
                     } else {
                       await PostRepository.instance
                           .addPostComment(
@@ -183,8 +177,7 @@ class _PostCommentCardState extends State<PostCommentCard> {
                         postMessage: commentMessageController.text,
                       )
                           .then((value) {
-                        commentScrollController.jumpTo(
-                            commentScrollController.position.maxScrollExtent);
+                        commentScrollController.jumpTo(commentScrollController.position.maxScrollExtent);
                         commentMessageController.clear();
                       });
                     }
@@ -222,8 +215,7 @@ class _PostCommentCardState extends State<PostCommentCard> {
                   image: (postComment.image == null)
                       ? null
                       : DecorationImage(
-                          image: CachedNetworkImageProvider(
-                              "${ApiImagePath.profile}${postComment.image}"),
+                          image: CachedNetworkImageProvider("${ApiImagePath.profile}${postComment.image}"),
                           fit: BoxFit.cover,
                         ),
                 ),
@@ -241,14 +233,11 @@ class _PostCommentCardState extends State<PostCommentCard> {
                   overflow: TextOverflow.clip,
                 ),
               ),
-              (postComment.userid == UserController.instance.getId)
-                  ? SizedBox(width: 6)
-                  : SizedBox(),
+              (postComment.userid == UserController.instance.getId) ? SizedBox(width: 6) : SizedBox(),
               SizedBox(width: 6),
               //Delete btn
               //check if post owner delete all commnet
-              (postPostedById == UserController.instance.getId ||
-                      postComment.userid == UserController.instance.getId)
+              (postPostedById == UserController.instance.getId || postComment.userid == UserController.instance.getId)
                   ? IconButton(
                       onPressed: () => onDelete(postComment.commentId!),
                       icon: Icon(
@@ -310,8 +299,7 @@ class PostCardWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(40),
                 image: (cardData.userProfile != null)
                     ? DecorationImage(
-                        image: CachedNetworkImageProvider(
-                            "${ApiImagePath.profile}${cardData.userProfile!}"),
+                        image: CachedNetworkImageProvider("${ApiImagePath.profile}${cardData.userProfile!}"),
                         fit: BoxFit.cover,
                       )
                     : null,
@@ -389,8 +377,7 @@ class PostCardWidget extends StatelessWidget {
         (cardData.image != null)
             ? ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: CachedNetworkImage(
-                    imageUrl: "${ApiImagePath.post}${cardData.image!}"),
+                child: CachedNetworkImage(imageUrl: "${ApiImagePath.post}${cardData.image!}"),
               )
             : const SizedBox(),
         (cardData.image != null) ? SizedBox(height: h10) : const SizedBox(),
@@ -406,9 +393,7 @@ class PostCardWidget extends StatelessWidget {
                   onTap: () => onLikeTab(true),
                   child: Icon(
                     Icons.favorite,
-                    color: (cardData.isLiked == false)
-                        ? AppColor.black54
-                        : Colors.red,
+                    color: (cardData.isLiked == false) ? AppColor.black54 : Colors.red,
                   ),
                 ),
                 const SizedBox(width: 10),

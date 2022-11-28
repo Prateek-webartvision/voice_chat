@@ -35,6 +35,35 @@ class PostRepository {
     return data;
   }
 
+  //get All Posts
+  Future grtAllFriendsPost() async {
+    print("Get Post");
+    // PostController.instance.clearAllData();
+
+    var data = await ApiServices.postApi(url: AppUrls.getMyFriendsPost, mapData: {
+      "token": UserController.instance.getToken,
+    }).then((value) {
+      print(value);
+      // if (value['status'] == true) {
+      //   for (var element in value['data']) {
+      //     PostController.instance.addFirendsPost(PostModel.formJson(element));
+      //   }
+
+      //   // } else {
+      //   //   PostController.instance.addPost(PostModel.formJson(value['data']));
+      //   // }
+      // } else {
+      //   AppUtils.showSnakBar(msg: value['msg']);
+      //   PostController.instance.setError(value['msg']);
+      // }
+      // print(value);
+    }).onError((error, stackTrace) {
+      AppUtils.showSnakBar(msg: error.toString());
+      PostController.instance.setError(error.toString());
+    });
+    return data;
+  }
+
   // Create new Post
   createNewPost({String? postMessage, String? tag, String? image}) {
     if (postMessage!.isNotEmpty || image != null) {

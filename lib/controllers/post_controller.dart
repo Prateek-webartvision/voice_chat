@@ -6,12 +6,19 @@ class PostController extends GetxController {
   static PostController instance = Get.find<PostController>();
 
   List<PostModel> allPostList = [];
+  List<PostModel> allFriendsPostList = [];
+
   String? erroMessage;
   late bool isUser;
   late int index;
 
   addPost(PostModel post) {
     allPostList.add(post);
+    update();
+  }
+
+  addFirendsPost(PostModel post) {
+    allFriendsPostList.add(post);
     update();
   }
 

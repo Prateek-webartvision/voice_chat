@@ -12,7 +12,7 @@ class FriendsAndFollowersModel {
   });
 
   factory FriendsAndFollowersModel.fromJson(Map<String, dynamic> json) {
-    // print(json);
+    print(json);
     List<FriendUserModel> tempFriends = [];
     if (json['friends'] != null) {
       for (var element in json['friends']) {
@@ -31,9 +31,9 @@ class FriendsAndFollowersModel {
     List<FriendUserModel> tempFollowers = [];
     if (json['followers'] != null) {
       for (var element in json['followers']) {
-        tempFriends.add(
+        tempFollowers.add(
           FriendUserModel(
-            id: element['friend_id'],
+            id: element['follower_id'],
             firstName: element['first_name'],
             lastName: element['last_name'],
             image: element['image'],
@@ -46,9 +46,9 @@ class FriendsAndFollowersModel {
     List<FriendUserModel> tempFollowings = [];
     if (json['following'] != null) {
       for (var element in json['following']) {
-        tempFriends.add(
+        tempFollowings.add(
           FriendUserModel(
-            id: element['friend_id'],
+            id: element['followed_id'],
             firstName: element['first_name'],
             lastName: element['last_name'],
             image: element['image'],
