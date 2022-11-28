@@ -30,7 +30,7 @@ class _PostTabPageState extends State<PostTabPage> with TickerProviderStateMixin
     tabController = TabController(length: 2, vsync: this, initialIndex: currentPage);
     //
     PostRepository.instance.getAllPost();
-    // PostRepository.instance.grtAllFriendsPost();
+    PostRepository.instance.grtAllFriendsPost();
 
     super.initState();
   }

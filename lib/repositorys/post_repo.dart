@@ -13,6 +13,7 @@ class PostRepository {
   Future getAllPost() async {
     print("Get Post");
     PostController.instance.clearAllData();
+    PostController.instance.allPostList.clear();
 
     var data = await ApiServices.getApi(url: AppUrls.getAllPost).then((value) {
       if (value['status'] == true) {
@@ -38,24 +39,25 @@ class PostRepository {
   //get All Posts
   Future grtAllFriendsPost() async {
     print("Get Post");
-    // PostController.instance.clearAllData();
+    PostController.instance.clearAllData();
+    PostController.instance.allFriendsPostList.clear();
 
     var data = await ApiServices.postApi(url: AppUrls.getMyFriendsPost, mapData: {
       "token": UserController.instance.getToken,
     }).then((value) {
-      print(value);
-      // if (value['status'] == true) {
-      //   for (var element in value['data']) {
-      //     PostController.instance.addFirendsPost(PostModel.formJson(element));
-      //   }
+      // print(value);
+      if (value['status'] == true) {
+        for (var element in value['data']) {
+          PostController.instance.addFirendsPost(PostModel.formJson(element));
+        }
 
-      //   // } else {
-      //   //   PostController.instance.addPost(PostModel.formJson(value['data']));
-      //   // }
-      // } else {
-      //   AppUtils.showSnakBar(msg: value['msg']);
-      //   PostController.instance.setError(value['msg']);
-      // }
+        // } else {
+        //   PostController.instance.addPost(PostModel.formJson(value['data']));
+        // }
+      } else {
+        AppUtils.showSnakBar(msg: value['msg']);
+        PostController.instance.setError(value['msg']);
+      }
       // print(value);
     }).onError((error, stackTrace) {
       AppUtils.showSnakBar(msg: error.toString());

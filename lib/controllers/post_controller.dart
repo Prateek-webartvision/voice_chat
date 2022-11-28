@@ -19,6 +19,7 @@ class PostController extends GetxController {
 
   addFirendsPost(PostModel post) {
     allFriendsPostList.add(post);
+    // print(allFriendsPostList.length);
     update();
   }
 
@@ -29,7 +30,6 @@ class PostController extends GetxController {
 
   clearAllData() {
     erroMessage = null;
-    allPostList.clear();
   }
 
   // Like Post fun

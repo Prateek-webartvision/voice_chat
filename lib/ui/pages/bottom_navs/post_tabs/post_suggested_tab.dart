@@ -45,7 +45,7 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
           return RefreshIndicator(
               onRefresh: refreshFun,
               child: ListView.separated(
-                physics: BouncingScrollPhysics(),
+                // physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
                 reverse: true,
                 padding: EdgeInsets.only(bottom: 20, left: 16, right: 16),
