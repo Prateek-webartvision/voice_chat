@@ -3,12 +3,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:voice_chat/controllers/friend_request_controller.dart';
+import 'package:voice_chat/controllers/friend_controller.dart';
 import 'package:voice_chat/data/app_urls.dart';
-import 'package:voice_chat/models/friend_model.dart';
+import 'package:voice_chat/models/friends_models/friend_user_model.dart';
 import 'package:voice_chat/repositorys/friend_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
-import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/utils/app_utils.dart';
 
 class FriendRequestListPage extends StatefulWidget {
@@ -37,18 +36,14 @@ class _FriendRequestListPageState extends State<FriendRequestListPage> {
               padding: const EdgeInsets.all(16),
               child: Text(
                 "Request",
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineMedium!
-                    .copyWith(color: AppColor.black),
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: AppColor.black),
               ),
             ),
             SizedBox(height: 20),
-            GetBuilder<FriendRequestController>(
+            GetBuilder<FriendsController>(
               builder: (friendReq) {
                 if (friendReq.firendsmodelList == null) {
-                  return Expanded(
-                      child: Center(child: CircularProgressIndicator()));
+                  return Expanded(child: Center(child: CircularProgressIndicator()));
                 }
                 if (friendReq.firendsmodelList!.data.requestReceived.isEmpty) {
                   return Expanded(child: Center(child: Text("No Request")));
@@ -56,12 +51,10 @@ class _FriendRequestListPageState extends State<FriendRequestListPage> {
                 return ListView.builder(
                   shrinkWrap: true,
                   padding: EdgeInsets.symmetric(horizontal: 16),
-                  itemCount:
-                      friendReq.firendsmodelList?.data.requestReceived.length,
+                  itemCount: friendReq.firendsmodelList?.data.requestReceived.length,
                   itemBuilder: (context, index) {
                     return requestReceivedCard(
-                        req: friendReq
-                            .firendsmodelList!.data.requestReceived[index],
+                        req: friendReq.firendsmodelList!.data.requestReceived[index],
                         onRespond: () {
                           // on respond
                           Get.dialog(Center(
@@ -81,15 +74,10 @@ class _FriendRequestListPageState extends State<FriendRequestListPage> {
                                           Align(
                                             alignment: Alignment.center,
                                             child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: const EdgeInsets.all(8.0),
                                               child: Text(
                                                 "Respond",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineMedium!
-                                                    .copyWith(
-                                                        color: AppColor.black),
+                                                style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: AppColor.black),
                                                 textAlign: TextAlign.center,
                                               ),
                                             ),
@@ -109,35 +97,21 @@ class _FriendRequestListPageState extends State<FriendRequestListPage> {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
                                             //reject
                                             Container(
                                               decoration: BoxDecoration(
-                                                gradient: AppColor
-                                                    .backgraundGradientV,
-                                                borderRadius:
-                                                    BorderRadius.circular(16),
+                                                gradient: AppColor.backgraundGradientV,
+                                                borderRadius: BorderRadius.circular(16),
                                               ),
                                               child: InkWell(
-                                                onTap: () => reject(
-                                                    requestById: friendReq
-                                                        .firendsmodelList!
-                                                        .data
-                                                        .requestReceived[index]
-                                                        .id),
+                                                onTap: () => reject(requestById: friendReq.firendsmodelList!.data.requestReceived[index].id),
                                                 child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 8.0,
-                                                      horizontal: 16),
+                                                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
                                                   child: Text(
                                                     "reject",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headlineMedium!
-                                                        .copyWith(fontSize: 14),
+                                                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 14),
                                                   ),
                                                 ),
                                               ),
@@ -145,30 +119,17 @@ class _FriendRequestListPageState extends State<FriendRequestListPage> {
                                             //Accept
                                             Container(
                                               decoration: BoxDecoration(
-                                                gradient: AppColor
-                                                    .backgraundGradientV,
-                                                borderRadius:
-                                                    BorderRadius.circular(16),
+                                                gradient: AppColor.backgraundGradientV,
+                                                borderRadius: BorderRadius.circular(16),
                                               ),
                                               child: InkWell(
                                                 //
-                                                onTap: () => accept(
-                                                    requestById: friendReq
-                                                        .firendsmodelList!
-                                                        .data
-                                                        .requestReceived[index]
-                                                        .id),
+                                                onTap: () => accept(requestById: friendReq.firendsmodelList!.data.requestReceived[index].id),
                                                 child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 8.0,
-                                                      horizontal: 16),
+                                                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
                                                   child: Text(
                                                     "accept",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headlineMedium!
-                                                        .copyWith(fontSize: 14),
+                                                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 14),
                                                   ),
                                                 ),
                                               ),
@@ -192,8 +153,7 @@ class _FriendRequestListPageState extends State<FriendRequestListPage> {
   }
 
   // friend request card
-  Widget requestReceivedCard(
-      {required RequestReceived req, required Function() onRespond}) {
+  Widget requestReceivedCard({required FriendUserModel req, required Function() onRespond}) {
     return ListTile(
       tileColor: AppColor.white,
       shape: RoundedRectangleBorder(
@@ -206,12 +166,7 @@ class _FriendRequestListPageState extends State<FriendRequestListPage> {
         height: 50,
         decoration: BoxDecoration(
           gradient: AppColor.backgraundGradientV,
-          image: (req.image != null)
-              ? DecorationImage(
-                  image: CachedNetworkImageProvider(
-                      "${ApiImagePath.profile}${req.image}"),
-                  fit: BoxFit.cover)
-              : null,
+          image: (req.image != null) ? DecorationImage(image: CachedNetworkImageProvider("${ApiImagePath.profile}${req.image}"), fit: BoxFit.cover) : null,
           borderRadius: BorderRadius.circular(25),
         ),
       ),
@@ -230,10 +185,7 @@ class _FriendRequestListPageState extends State<FriendRequestListPage> {
             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
             child: Text(
               "Respond",
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineMedium!
-                  .copyWith(fontSize: 14),
+              style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 14),
             ),
           ),
         ),
@@ -243,9 +195,7 @@ class _FriendRequestListPageState extends State<FriendRequestListPage> {
 
   void accept({required int requestById}) {
     AppUtils.closeDailog();
-    FriendRepository.instance
-        .respondFriendRequest(accept: true, requestedById: requestById)
-        .then((value) {
+    FriendRepository.instance.respondFriendRequest(accept: true, requestedById: requestById).then((value) {
       if (value != null) {
         FriendRepository.instance.getFriendRequest();
       }
@@ -254,9 +204,7 @@ class _FriendRequestListPageState extends State<FriendRequestListPage> {
 
   void reject({required int requestById}) {
     AppUtils.closeDailog();
-    FriendRepository.instance
-        .respondFriendRequest(accept: false, requestedById: requestById)
-        .then((value) {
+    FriendRepository.instance.respondFriendRequest(accept: false, requestedById: requestById).then((value) {
       if (value != null) {
         FriendRepository.instance.getFriendRequest();
       }

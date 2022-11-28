@@ -6,12 +6,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:voice_chat/controllers/friend_controller.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
 import 'package:voice_chat/data/app_urls.dart';
+import 'package:voice_chat/models/friends_models/friends_and_followers_model.dart';
+import 'package:voice_chat/repositorys/friend_repo.dart';
 import 'package:voice_chat/repositorys/profile_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/ui/pages/Collectibles/my_collectibles_page.dart';
+import 'package:voice_chat/ui/pages/bottom_navs/account_tabs/friend_follow_page.dart';
 import 'package:voice_chat/ui/pages/check_name/check_name_page.dart';
 import 'package:voice_chat/ui/pages/error_report/error_reporting_page.dart';
 import 'package:voice_chat/ui/pages/profile_edit/profile_edit_page.dart';
@@ -32,6 +36,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
   @override
   void initState() {
     ProfileRepository.instance.getProfile();
+    FriendRepository.instance.getFriendsAndFollowers();
 
     super.initState();
   }
@@ -57,8 +62,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
               return SafeArea(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
                     child: Column(
                       children: [
                         const SizedBox(height: 70),
@@ -74,8 +78,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
                             children: [
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   //Avatr
                                   Container(
@@ -84,43 +87,34 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                     clipBehavior: Clip.hardEdge,
                                     decoration: BoxDecoration(
                                       gradient: AppColor.backgraundGradientV,
-                                      borderRadius:
-                                          BorderRadius.circular(100.r),
+                                      borderRadius: BorderRadius.circular(100.r),
                                     ),
                                     alignment: Alignment.center,
-                                    child:
-                                        (controller.profileData!.image != null)
-                                            ? CachedNetworkImage(
-                                                imageUrl:
-                                                    "${ApiImagePath.profile}${controller.profileData!.image}",
-                                                height: 100,
-                                                width: 100,
-                                                fit: BoxFit.cover,
-                                              )
-                                            : Text(
-                                                controller
-                                                    .profileData!
-                                                    .firstName!
-                                                    .characters
-                                                    .first,
-                                                style: TextStyle(
-                                                  color: AppColor.white,
-                                                  fontSize: 50.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
+                                    child: (controller.profileData!.image != null)
+                                        ? CachedNetworkImage(
+                                            imageUrl: "${ApiImagePath.profile}${controller.profileData!.image}",
+                                            height: 100,
+                                            width: 100,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Text(
+                                            controller.profileData!.firstName!.characters.first,
+                                            style: TextStyle(
+                                              color: AppColor.white,
+                                              fontSize: 50.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                   ),
                                   SizedBox(width: h20),
                                   Expanded(
                                       child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(height: h20),
                                       //name and id
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
                                           Text(
                                             //put user name
@@ -148,10 +142,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                       // user id or phone number
                                       Text(
                                         controller.profileData!.mobile!,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineMedium!
-                                            .copyWith(color: AppColor.black54),
+                                        style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: AppColor.black54),
                                         textAlign: TextAlign.center,
                                       ),
                                     ],
@@ -160,75 +151,83 @@ class _AccountTabPageState extends State<AccountTabPage> {
                               ),
                               SizedBox(height: h10),
                               const Divider(thickness: 2),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  //Following
-                                  Column(
+
+                              // Friends Follower Following
+                              GetBuilder<FriendsController>(builder: (friendsController) {
+                                FriendsAndFollowersModel? _v = friendsController.friendsAndFollowersData;
+
+                                return InkWell(
+                                  onTap: () => Get.to(() => FriendFollowPage()),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
-                                      Text(
-                                        "0",
-                                        style: TextStyle(
-                                          color: AppColor.black,
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                      //Following
+                                      Column(
+                                        children: [
+                                          Text(
+                                            (_v != null) ? _v.followings.length.toString() : "0",
+                                            style: TextStyle(
+                                              color: AppColor.black,
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            "Following",
+                                            style: TextStyle(
+                                              color: AppColor.black,
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        "Following",
-                                        style: TextStyle(
-                                          color: AppColor.black,
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                      //Followers
+                                      Column(
+                                        children: [
+                                          Text(
+                                            (_v != null) ? _v.followers.length.toString() : "0",
+                                            style: TextStyle(
+                                              color: AppColor.black,
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            "Followers",
+                                            style: TextStyle(
+                                              color: AppColor.black,
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
                                       ),
+                                      //friends
+                                      Column(
+                                        children: [
+                                          Text(
+                                            (_v != null) ? _v.friends.length.toString() : "0",
+                                            style: TextStyle(
+                                              color: AppColor.black,
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            "Friends",
+                                            style: TextStyle(
+                                              color: AppColor.black,
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      )
                                     ],
                                   ),
-                                  //Followers
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "0",
-                                        style: TextStyle(
-                                          color: AppColor.black,
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Followers",
-                                        style: TextStyle(
-                                          color: AppColor.black,
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  //friends
-                                  Column(
-                                    children: [
-                                      Text(
-                                        "0",
-                                        style: TextStyle(
-                                          color: AppColor.black,
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Friends",
-                                        style: TextStyle(
-                                          color: AppColor.black,
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
+                                );
+                              })
                             ],
                           ),
                         ),
@@ -243,8 +242,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
                             children: [
                               //Level
                               ListTile(
-                                leading: GradientIcon(Icons.reviews, 25,
-                                    AppColor.backgraundGradientV),
+                                leading: GradientIcon(Icons.reviews, 25, AppColor.backgraundGradientV),
                                 title: Text(
                                   "Level",
                                   style: TextStyle(
@@ -253,8 +251,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                trailing:
-                                    const Icon(Icons.arrow_forward_ios_rounded),
+                                trailing: const Icon(Icons.arrow_forward_ios_rounded),
                               ),
                               const Divider(
                                 thickness: 1.5,
@@ -264,8 +261,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                 onTap: () {
                                   Get.to(() => WalletPage());
                                 },
-                                leading: GradientIcon(Icons.wallet, 25,
-                                    AppColor.backgraundGradientV),
+                                leading: GradientIcon(Icons.wallet, 25, AppColor.backgraundGradientV),
                                 title: Text(
                                   "Wallet",
                                   style: TextStyle(
@@ -306,8 +302,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                trailing:
-                                    const Icon(Icons.arrow_forward_ios_rounded),
+                                trailing: const Icon(Icons.arrow_forward_ios_rounded),
                               ),
                             ],
                           ),
@@ -315,15 +310,12 @@ class _AccountTabPageState extends State<AccountTabPage> {
                         const SizedBox(height: 20),
                         //setting2
                         Container(
-                          decoration: BoxDecoration(
-                              color: AppColor.white,
-                              borderRadius: BorderRadius.circular(16)),
+                          decoration: BoxDecoration(color: AppColor.white, borderRadius: BorderRadius.circular(16)),
                           child: Column(
                             children: [
                               //Mamilies
                               ListTile(
-                                leading: GradientIcon(Icons.safety_check, 25,
-                                    AppColor.backgraundGradientV),
+                                leading: GradientIcon(Icons.safety_check, 25, AppColor.backgraundGradientV),
                                 title: Text(
                                   "Mamilies",
                                   style: TextStyle(
@@ -332,16 +324,14 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                trailing:
-                                    const Icon(Icons.arrow_forward_ios_rounded),
+                                trailing: const Icon(Icons.arrow_forward_ios_rounded),
                               ),
                               const Divider(
                                 thickness: 1.5,
                               ),
                               //My Collectibles
                               ListTile(
-                                leading: GradientIcon(Icons.hexagon_outlined,
-                                    25, AppColor.backgraundGradientV),
+                                leading: GradientIcon(Icons.hexagon_outlined, 25, AppColor.backgraundGradientV),
                                 onTap: () {
                                   Get.to(() => MyCollectiblesPage());
                                 },
@@ -353,8 +343,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                trailing:
-                                    const Icon(Icons.arrow_forward_ios_rounded),
+                                trailing: const Icon(Icons.arrow_forward_ios_rounded),
                               ),
                               const Divider(
                                 thickness: 1.5,
@@ -364,8 +353,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                 onTap: () {
                                   Get.to(() => ErrorReportingPage());
                                 },
-                                leading: GradientIcon(Icons.file_present_sharp,
-                                    25, AppColor.backgraundGradientV),
+                                leading: GradientIcon(Icons.file_present_sharp, 25, AppColor.backgraundGradientV),
                                 title: Text(
                                   "Error Reporting",
                                   style: TextStyle(
@@ -374,8 +362,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                trailing:
-                                    const Icon(Icons.arrow_forward_ios_rounded),
+                                trailing: const Icon(Icons.arrow_forward_ios_rounded),
                               ),
                               const Divider(
                                 thickness: 1.5,
@@ -386,8 +373,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                 onTap: () {
                                   Get.to(() => CheckNamePage());
                                 },
-                                leading: GradientIcon(Icons.file_present_sharp,
-                                    25, AppColor.backgraundGradientV),
+                                leading: GradientIcon(Icons.file_present_sharp, 25, AppColor.backgraundGradientV),
                                 title: Text(
                                   "Check Name",
                                   style: TextStyle(
@@ -396,8 +382,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                trailing:
-                                    const Icon(Icons.arrow_forward_ios_rounded),
+                                trailing: const Icon(Icons.arrow_forward_ios_rounded),
                               ),
                               //setting
                               const Divider(
@@ -420,8 +405,7 @@ class _AccountTabPageState extends State<AccountTabPage> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                trailing:
-                                    const Icon(Icons.arrow_forward_ios_rounded),
+                                trailing: const Icon(Icons.arrow_forward_ios_rounded),
                               ),
                             ],
                           ),

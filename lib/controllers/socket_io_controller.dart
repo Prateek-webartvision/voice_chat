@@ -2,10 +2,10 @@ import 'package:get/get.dart';
 
 class SocketIoController extends GetxController {
   static SocketIoController instance = Get.find<SocketIoController>();
-  List<String> socketMessages = [];
+  List<String> socketRoomMessages = [];
 
-  addMessages(String message) {
-    socketMessages.add(message);
+  pushRoomMessages(String message) {
+    socketRoomMessages.add(message);
     update();
   }
 }

@@ -10,13 +10,11 @@ class ProfileController extends GetxController {
   setProfileData(ProfileModel profileModel) {
     profileData = profileModel;
     UserController.instance.setUserProfileData(profileData: profileModel);
-    // print(profileData?.id);
     update();
   }
 
   setError(String errorMessage) {
     error = errorMessage;
-    print(errorMessage);
     update();
   }
 }

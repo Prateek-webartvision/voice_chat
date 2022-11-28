@@ -16,14 +16,13 @@ class PostRepository {
 
     var data = await ApiServices.getApi(url: AppUrls.getAllPost).then((value) {
       if (value['status'] == true) {
-        // Test Base
-        if (value['data'].isNotEmpty) {
-          for (var element in value['data']) {
-            PostController.instance.addPost(PostModel.formJson(element));
-          }
-        } else {
-          PostController.instance.addPost(PostModel.formJson(value['data']));
+        for (var element in value['data']) {
+          PostController.instance.addPost(PostModel.formJson(element));
         }
+
+        // } else {
+        //   PostController.instance.addPost(PostModel.formJson(value['data']));
+        // }
       } else {
         AppUtils.showSnakBar(msg: value['msg']);
         PostController.instance.setError(value['msg']);
@@ -75,8 +74,7 @@ class PostRepository {
     };
     // print(removePostData);
     AppUtils.progressDailog();
-    ApiServices.postApi(url: AppUrls.removePost, mapData: removePostData)
-        .then((value) {
+    ApiServices.postApi(url: AppUrls.removePost, mapData: removePostData).then((value) {
       AppUtils.closeDailog();
       AppUtils.showSnakBar(msg: value['msg']);
       getAllPost();
@@ -99,12 +97,12 @@ class PostRepository {
     }).then((value) {
       AppUtils.closeDailog();
       if (value['status'] == true) {
-        PostController.instance
-            .removeCommentPost(postId: postId, commentId: commentId);
+        PostController.instance.removeCommentPost(postId: postId, commentId: commentId);
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
       } else {
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
       }
+      // print(value);
     }).onError((error, stackTrace) {
       AppUtils.closeDailog();
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
@@ -112,29 +110,27 @@ class PostRepository {
   }
 
   // add Comment to post
-  Future addPostComment(
-      {required int postId, required String postMessage}) async {
+  Future addPostComment({required int postId, required String postMessage}) async {
     AppUtils.progressDailog();
 
     Map<String, dynamic> commentData = {
       "postid": postId,
-      "userid": UserController.instance.getId,
+      // "userid": UserController.instance.getId,
+      "token": UserController.instance.getToken,
       "message": postMessage
     };
 
-    var d = await ApiServices.postApi(
-            url: AppUrls.addPostComment, mapData: commentData)
-        .then((value) {
+    var d = await ApiServices.postApi(url: AppUrls.addPostComment, mapData: commentData).then((value) {
       print(value);
+      AppUtils.closeDailog();
       if (value['status'] == true) {
         // print(value['data']);
-        PostController.instance.addCommentPost(
-            comment: PostCommentModel.fromJson(value['data']), postId: postId);
+        PostController.instance.addCommentPost(comment: PostCommentModel.fromJson(value['data']), postId: postId);
       } else {
         // status = false
         AppUtils.showSnakBar(msg: value["msg"]);
       }
-      AppUtils.closeDailog();
+
       return value;
     }).onError((error, stackTrace) {
       // print(error);
@@ -150,13 +146,8 @@ class PostRepository {
   Future addPostLike({required int postId}) async {
     AppUtils.progressDailog();
 
-    Map<String, dynamic> likeData = {
-      "postid": postId,
-      "userid": UserController.instance.getId
-    };
-    var value =
-        await ApiServices.postApi(url: AppUrls.addPostlike, mapData: likeData)
-            .then((value) {
+    Map<String, dynamic> likeData = {"postid": postId, "userid": UserController.instance.getId};
+    var value = await ApiServices.postApi(url: AppUrls.addPostlike, mapData: likeData).then((value) {
       AppUtils.closeDailog();
       return value;
     }).onError((error, stackTrace) {
