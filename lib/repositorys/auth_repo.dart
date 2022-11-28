@@ -17,15 +17,10 @@ class AuthRepository {
     required String password,
   }) {
     AppUtils.progressDailog();
-    Map<String, dynamic> userData = (kDebugMode == true)
-        ? {
-            "mobile": "12",
-            "password": "12",
-          }
-        : {
-            "mobile": phone,
-            "password": password,
-          };
+    Map<String, dynamic> userData = {
+      "mobile": phone,
+      "password": password,
+    };
 
     ApiServices.postApi(url: AppUrls.signInWithId, mapData: userData).then(
       (value) {
@@ -82,8 +77,7 @@ class AuthRepository {
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
         isAccountCreated = false;
       } else {
-        AppUtils.showSnakBar(
-            msg: "${value['msg']} go to signin page", second: 2);
+        AppUtils.showSnakBar(msg: "${value['msg']} go to signin page", second: 2);
         isAccountCreated = true;
       }
     }).onError((error, stackTrace) {

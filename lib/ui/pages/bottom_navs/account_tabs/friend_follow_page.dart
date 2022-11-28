@@ -114,6 +114,7 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
     );
   }
 
+  // Friend Tile
   Widget friendUserTile(FriendUserModel friendUserData) {
     return ListTile(
       //Image
@@ -136,7 +137,7 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
       trailing: IconButton(
           icon: Icon(Icons.delete),
           onPressed: () {
-            print("delete");
+            FriendRepository.instance.unFriend(friendUserData.id);
           }),
     );
   }

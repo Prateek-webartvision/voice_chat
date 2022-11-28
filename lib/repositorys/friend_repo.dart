@@ -79,4 +79,25 @@ class FriendRepository {
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
     });
   }
+
+  unFriend(int friendId) {
+    Map<String, dynamic> unfriendData = {
+      "token": UserController.instance.getToken,
+      "friend_id": friendId,
+    };
+    AppUtils.progressDailog();
+    ApiServices.postApi(url: AppUrls.unFriend, mapData: unfriendData).then((value) {
+      AppUtils.closeDailog();
+      if (value["status"] == true) {
+        AppUtils.showSnakBar(msg: value["msg"], second: 2);
+        FriendsController.instance.unfriendUser(friendId);
+      } else {
+        AppUtils.showSnakBar(msg: value["msg"], second: 2);
+      }
+    }).onError((error, stackTrace) {
+      AppUtils.closeDailog();
+      AppUtils.showSnakBar(msg: error.toString(), second: 2);
+    });
+    // print(unfriendData);
+  }
 }
