@@ -1,69 +1,62 @@
 import 'package:get/get.dart';
-import 'package:voice_chat/controllers/post_controller.dart';
+import 'package:voice_chat/controllers/post_friends_controller.dart';
+import 'package:voice_chat/controllers/post_suggested_controller.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/data/api_services.dart';
+import 'package:voice_chat/data/app_enums.dart';
 import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/post_model.dart';
 import 'package:voice_chat/utils/app_utils.dart';
 
 class PostRepository {
   static PostRepository instance = PostRepository();
+  static final PostSuggestedController _postController = PostSuggestedController.instance;
+  static final PostFriendsController _postFriendsController = PostFriendsController.instance;
 
   //get All Posts
   Future getAllPost() async {
-    print("Get Post");
-    PostController.instance.clearAllData();
-    PostController.instance.allPostList.clear();
-
-    var data = await ApiServices.getApi(url: AppUrls.getAllPost).then((value) {
+    print("post call");
+    _postController.setPostStatus(ApiStatusEnum.loading);
+    _postController.allPostList.clear();
+    await ApiServices.getApi(url: AppUrls.getAllPost).then((value) {
       if (value['status'] == true) {
+        _postController.setPostStatus(ApiStatusEnum.success);
+        // print("Post s:  $value");
         for (var element in value['data']) {
-          PostController.instance.addPost(PostModel.formJson(element));
+          _postController.addPost(PostModel.formJson(element));
         }
-
-        // } else {
-        //   PostController.instance.addPost(PostModel.formJson(value['data']));
-        // }
       } else {
-        AppUtils.showSnakBar(msg: value['msg']);
-        PostController.instance.setError(value['msg']);
+        _postController.setPostStatus(ApiStatusEnum.error);
+        _postController.setError(value['msg']);
       }
       // print(value);
     }).onError((error, stackTrace) {
-      AppUtils.showSnakBar(msg: error.toString());
-      PostController.instance.setError(error.toString());
+      _postController.setPostStatus(ApiStatusEnum.error);
+      _postController.setError(error.toString());
     });
-    return data;
   }
 
-  //get All Posts
+  // get All friends Posts
   Future grtAllFriendsPost() async {
-    print("Get Post");
-    PostController.instance.clearAllData();
-    PostController.instance.allFriendsPostList.clear();
+    print("post f call");
+    _postFriendsController.setPostStatus(ApiStatusEnum.loading);
+    _postFriendsController.allFriendsPostList.clear();
 
-    var data = await ApiServices.postApi(url: AppUrls.getMyFriendsPost, mapData: {
-      "token": UserController.instance.getToken,
-    }).then((value) {
-      // print(value);
+    await ApiServices.postApi(url: AppUrls.getMyFriendsPost, mapData: {"token": UserController.instance.getToken}).then((value) {
       if (value['status'] == true) {
+        _postFriendsController.setPostStatus(ApiStatusEnum.success);
         for (var element in value['data']) {
-          PostController.instance.addFirendsPost(PostModel.formJson(element));
+          _postFriendsController.addPost(PostModel.formJson(element));
         }
-
-        // } else {
-        //   PostController.instance.addPost(PostModel.formJson(value['data']));
-        // }
       } else {
-        AppUtils.showSnakBar(msg: value['msg']);
-        PostController.instance.setError(value['msg']);
+        _postFriendsController.setPostStatus(ApiStatusEnum.error);
+        _postFriendsController.setError(value['msg']);
       }
       // print(value);
     }).onError((error, stackTrace) {
-      AppUtils.showSnakBar(msg: error.toString());
-      PostController.instance.setError(error.toString());
+      _postFriendsController.setPostStatus(ApiStatusEnum.error);
+      _postFriendsController.setError(error.toString());
     });
-    return data;
   }
 
   // Create new Post
@@ -128,12 +121,36 @@ class PostRepository {
     }).then((value) {
       AppUtils.closeDailog();
       if (value['status'] == true) {
-        PostController.instance.removeCommentPost(postId: postId, commentId: commentId);
+        PostSuggestedController.instance.removeCommentPost(postId: postId, commentId: commentId);
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
       } else {
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
       }
       // print(value);
+    }).onError((error, stackTrace) {
+      AppUtils.closeDailog();
+      AppUtils.showSnakBar(msg: error.toString(), second: 2);
+    });
+  }
+
+  // Remove comment from post
+  removeFriendsPostComment({required String commentId, required int postId}) {
+    // print("$commentId $postId");
+    AppUtils.progressDailog();
+    ApiServices.postApi(url: AppUrls.remocePostComment, mapData: {
+      "postid": postId,
+      "commentid": commentId,
+      "token": UserController.instance.getToken,
+    }).then((value) {
+      AppUtils.closeDailog();
+      // print(value);
+      if (value['status'] == true) {
+        PostFriendsController.instance.removeCommentPost(postId: postId, commentId: commentId);
+        AppUtils.showSnakBar(msg: value['msg'], second: 2);
+      } else {
+        AppUtils.showSnakBar(msg: value['msg'], second: 2);
+      }
+      //   // print(value);
     }).onError((error, stackTrace) {
       AppUtils.closeDailog();
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
@@ -156,7 +173,40 @@ class PostRepository {
       AppUtils.closeDailog();
       if (value['status'] == true) {
         // print(value['data']);
-        PostController.instance.addCommentPost(comment: PostCommentModel.fromJson(value['data']), postId: postId);
+        PostSuggestedController.instance.addCommentPost(comment: PostCommentModel.fromJson(value['data']), postId: postId);
+      } else {
+        // status = false
+        AppUtils.showSnakBar(msg: value["msg"]);
+      }
+
+      return value;
+    }).onError((error, stackTrace) {
+      // print(error);
+      AppUtils.showSnakBar(msg: error.toString());
+      AppUtils.closeDailog();
+      return null;
+    });
+
+    return d; // print(commentData);
+  }
+
+  // add Comment to post
+  Future addPostFriendsComment({required int postId, required String postMessage}) async {
+    AppUtils.progressDailog();
+
+    Map<String, dynamic> commentData = {
+      "postid": postId,
+      // "userid": UserController.instance.getId,
+      "token": UserController.instance.getToken,
+      "message": postMessage
+    };
+
+    var d = await ApiServices.postApi(url: AppUrls.addPostComment, mapData: commentData).then((value) {
+      print(value);
+      AppUtils.closeDailog();
+      if (value['status'] == true) {
+        // print(value['data']);
+        _postFriendsController.addCommentPost(comment: PostCommentModel.fromJson(value['data']), postId: postId);
       } else {
         // status = false
         AppUtils.showSnakBar(msg: value["msg"]);

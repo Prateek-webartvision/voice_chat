@@ -1,25 +1,18 @@
 import 'package:get/get.dart';
+import 'package:voice_chat/data/app_enums.dart';
 import 'package:voice_chat/models/post_model.dart';
 import 'package:voice_chat/repositorys/post_repo.dart';
 
-class PostController extends GetxController {
-  static PostController instance = Get.find<PostController>();
+class PostFriendsController extends GetxController {
+  static PostFriendsController instance = Get.find<PostFriendsController>();
 
-  List<PostModel> allPostList = [];
   List<PostModel> allFriendsPostList = [];
-
   String? erroMessage;
-  late bool isUser;
-  late int index;
 
-  addPost(PostModel post) {
-    allPostList.add(post);
-    update();
-  }
+  ApiStatusEnum postEnum = ApiStatusEnum.loading;
 
-  addFirendsPost(PostModel post) {
-    allFriendsPostList.add(post);
-    // print(allFriendsPostList.length);
+  setPostStatus(ApiStatusEnum postEnum) {
+    this.postEnum = postEnum;
     update();
   }
 
@@ -28,14 +21,14 @@ class PostController extends GetxController {
     update();
   }
 
-  clearAllData() {
-    erroMessage = null;
+  addPost(PostModel post) {
+    allFriendsPostList.add(post);
+    update();
   }
 
-  // Like Post fun
   likePost({required int postId}) async {
     await PostRepository.instance.addPostLike(postId: postId).then((v) {
-      for (var element in allPostList) {
+      for (var element in allFriendsPostList) {
         if (element.id == postId) {
           if (element.isLiked == true) {
             // print(true);
@@ -54,7 +47,7 @@ class PostController extends GetxController {
 
   //Post comment
   addCommentPost({required PostCommentModel comment, required int postId}) {
-    PostModel postData = allPostList.where((element) {
+    PostModel postData = allFriendsPostList.where((element) {
       if (element.id == postId) {
         return true;
       } else {
@@ -69,7 +62,7 @@ class PostController extends GetxController {
 
   // post comment remove
   removeCommentPost({required int postId, required String commentId}) {
-    PostModel postData = allPostList.where((element) {
+    PostModel postData = allFriendsPostList.where((element) {
       if (element.id == postId) {
         return true;
       } else {
