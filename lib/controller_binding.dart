@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:voice_chat/controllers/friend_controller.dart';
+import 'package:voice_chat/controllers/home_controller.dart';
 import 'package:voice_chat/controllers/message_controller.dart';
 import 'package:voice_chat/controllers/post_suggested_controller.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
@@ -17,6 +18,7 @@ class ControllerBinding extends Bindings {
     Get.put(SocketIoController());
     Get.put(MessageController());
     Get.put(FriendsController());
+    Get.put(HomeController());
     // implement dependencies
   }
 }

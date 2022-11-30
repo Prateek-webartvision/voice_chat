@@ -1,3 +1,5 @@
+import 'package:voice_chat/ui/pages/bottom_navs/home_tabs/home_all_tab.dart';
+
 class AppUrls {
   // static const String domain = "http://apichatapp.webartvision.in";
   static const String domain = "http://199.192.24.175:3000"; // web
@@ -13,6 +15,10 @@ class AppUrls {
   static const String signUpWithPhoneAndPassword = "$_api/users/signup";
   static const String getCurrentUserBytoken = "$_api/users/login-via-token";
 
+  //Home
+  static const String homeBanner = "$_api/gallery/app-banners";
+
+  //Profile
   static const String profileUpdate = "$_api/users/update-profile";
   static const String profileUpdateNew = "$_api/users/profile-upload";
 
@@ -48,4 +54,5 @@ class SocketStrings {
 class ApiImagePath {
   static const String profile = "${AppUrls.domain}/media/profiles/";
   static const String post = "${AppUrls.domain}/media/posts/";
+  static const String banner = "${AppUrls.domain}/media/gallery/";
 }

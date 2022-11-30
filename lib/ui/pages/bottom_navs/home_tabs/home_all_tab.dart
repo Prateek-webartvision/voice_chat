@@ -1,12 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:voice_chat/controllers/home_controller.dart';
 import 'package:voice_chat/controllers/room_controller.dart';
+import 'package:voice_chat/data/app_urls.dart';
+import 'package:voice_chat/repositorys/home_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/home_tabs/home_discover_tab.dart';
-import 'package:voice_chat/ui/pages/rooms/room_page.dart';
 import 'package:voice_chat/ui/widgets/main_title_with_widget.dart';
 
 class HomeAllTab extends StatefulWidget {
@@ -173,21 +177,73 @@ class HomeAllFixedRoom extends StatelessWidget {
   }
 }
 
-class Banner extends StatelessWidget {
+class Banner extends StatefulWidget {
   const Banner({super.key});
 
   @override
+  State<Banner> createState() => _BannerState();
+}
+
+class _BannerState extends State<Banner> {
+  int pageIndex = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    HomeRepository.getHomeBanner();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 140,
-      decoration: BoxDecoration(
-          color: Colors.green,
-          borderRadius: BorderRadius.circular(16),
-          image: const DecorationImage(
-            image: CachedNetworkImageProvider(
-                "https://indiater.com/wp-content/uploads/2021/06/free-cover-banner-for-season-x-fortnite-game-psd-template-scaled.jpg"),
-            fit: BoxFit.cover,
-          )),
+    return GetBuilder<HomeController>(
+      builder: (controller) {
+        if (controller.banners.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return Column(
+            children: [
+              CarouselSlider.builder(
+                itemCount: controller.banners.length,
+                itemBuilder: (context, index, realIndex) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider("${ApiImagePath.banner}${controller.banners[index]}"),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                },
+                options: CarouselOptions(
+                  height: 140,
+                  viewportFraction: 1,
+                  autoPlay: true,
+                  initialPage: pageIndex,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      pageIndex = index;
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(height: 10),
+              AnimatedSmoothIndicator(
+                activeIndex: pageIndex,
+                count: controller.banners.length,
+                effect: WormEffect(
+                  dotHeight: 10,
+                  dotWidth: 10,
+                  dotColor: AppColor.closeToPurple.withOpacity(0.3),
+                  activeDotColor: AppColor.closeToPurple,
+                ),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 }
