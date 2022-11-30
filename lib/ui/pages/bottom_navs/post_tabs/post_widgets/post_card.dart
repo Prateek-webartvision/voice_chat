@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/post_model.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
+import 'package:voice_chat/ui/pages/friends_profile/friend_profile_page.dart';
 
 class PostCardWidget extends StatelessWidget {
   const PostCardWidget({
@@ -22,6 +24,7 @@ class PostCardWidget extends StatelessWidget {
   final Function() onCommentTab;
   final Function(bool friend) onAddFriendTab;
   final Function() deletePost;
+
   @override
   Widget build(BuildContext context) {
     final avtarSize = 40.h;
@@ -31,18 +34,22 @@ class PostCardWidget extends StatelessWidget {
         Row(
           children: [
             //avtar
-            Container(
-              height: avtarSize,
-              width: avtarSize,
-              decoration: BoxDecoration(
-                gradient: AppColor.backgraundGradientV,
-                borderRadius: BorderRadius.circular(40),
-                image: (cardData.userProfile != null)
-                    ? DecorationImage(
-                        image: CachedNetworkImageProvider("${ApiImagePath.profile}${cardData.userProfile!}"),
-                        fit: BoxFit.cover,
-                      )
-                    : null,
+            InkWell(
+              //Nivigate to friend profile page
+              onTap: () => Get.to(() => FriendProfilePage(friendId: cardData.createdBy)),
+              child: Container(
+                height: avtarSize,
+                width: avtarSize,
+                decoration: BoxDecoration(
+                  gradient: AppColor.backgraundGradientV,
+                  borderRadius: BorderRadius.circular(40),
+                  image: (cardData.userProfile != null)
+                      ? DecorationImage(
+                          image: CachedNetworkImageProvider("${ApiImagePath.profile}${cardData.userProfile!}"),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
+                ),
               ),
             ),
             const SizedBox(width: 10),
@@ -59,12 +66,6 @@ class PostCardWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-
-            //delete Btn
-            // Text(cardData.createdBy.toString()),
-            // (cardData.createdBy == UserController.instance.getId)
-            //     ? const SizedBox(width: 10)
-            // : SizedBox(),
             (cardData.createdBy == UserController.instance.getId)
                 ? Container(
                     height: 30,

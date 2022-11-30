@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
           home: GetBuilder<UserController>(
             builder: (user) {
               //check internet
-              networkChecker();
+              // networkChecker();
               if (user.getUser != null) {
                 return const BottomNavBarPage();
               } else {

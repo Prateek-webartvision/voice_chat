@@ -57,55 +57,55 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
             ),
           );
         } else {
-          // postList
+          //Success
           return RefreshIndicator(
-              onRefresh: refreshFun,
-              child: ListView.separated(
-                // physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                // reverse: true,
-                padding: EdgeInsets.only(bottom: 20, left: 16, right: 16),
-                itemCount: controller.allPostList.length,
-                itemBuilder: (context, index) {
-                  int reversedIndex = controller.allPostList.length - 1 - index;
+            onRefresh: refreshFun,
+            child: ListView.separated(
+              // physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              // reverse: true,
+              padding: EdgeInsets.only(bottom: 20, left: 16, right: 16),
+              itemCount: controller.allPostList.length,
+              itemBuilder: (context, index) {
+                int reversedIndex = controller.allPostList.length - 1 - index;
 
-                  return PostCardWidget(
-                    cardData: controller.allPostList[reversedIndex],
-                    onAddFriendTab: (friend) {
-                      // AppUtils.showSnakBar(msg: "friends");
-                      FriendRepository.instance.sendFriendRequest(
-                        friendId: controller.allPostList[reversedIndex].createdBy,
-                      );
-                    },
-                    // likeBtn
-                    onLikeTab: (like) {
-                      PostSuggestedController.instance.likePost(postId: controller.allPostList[reversedIndex].id);
-                    },
-                    //comment btn
-                    onCommentTab: () {
-                      Get.bottomSheet(PostSuggestedCommentCard(postId: controller.allPostList[reversedIndex].id), isScrollControlled: true);
-                    },
+                return PostCardWidget(
+                  cardData: controller.allPostList[reversedIndex],
 
-                    //Delete Post
-                    deletePost: () {
-                      PostRepository.instance.removePost(postId: controller.allPostList[reversedIndex].id);
-                    },
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: [
-                      const Divider(
-                        thickness: 2,
-                        endIndent: 40,
-                      ),
-                      SizedBox(
-                        height: h10,
-                      )
-                    ],
-                  );
-                },
-              ));
+                  //AddFrinetBtn
+                  onAddFriendTab: (friend) {
+                    FriendRepository.instance.sendFriendRequest(friendId: controller.allPostList[reversedIndex].createdBy);
+                  },
+                  // likeBtn
+                  onLikeTab: (like) {
+                    PostSuggestedController.instance.likePost(postId: controller.allPostList[reversedIndex].id);
+                  },
+                  //comment btn
+                  onCommentTab: () {
+                    Get.bottomSheet(PostSuggestedCommentCard(postId: controller.allPostList[reversedIndex].id), isScrollControlled: true);
+                  },
+
+                  //Delete Post
+                  deletePost: () {
+                    PostRepository.instance.removePost(postId: controller.allPostList[reversedIndex].id);
+                  },
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    const Divider(
+                      thickness: 2,
+                      endIndent: 40,
+                    ),
+                    SizedBox(
+                      height: h10,
+                    )
+                  ],
+                );
+              },
+            ),
+          );
         }
       },
     );

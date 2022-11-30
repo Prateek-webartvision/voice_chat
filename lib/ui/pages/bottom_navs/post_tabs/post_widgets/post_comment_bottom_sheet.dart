@@ -7,6 +7,7 @@ import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/post_model.dart';
 import 'package:voice_chat/repositorys/post_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
+import 'package:voice_chat/ui/pages/friends_profile/friend_profile_page.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/utils/app_utils.dart';
 
@@ -117,19 +118,23 @@ class _PostSuggestedCommentCardState extends State<PostSuggestedCommentCard> {
         children: [
           Row(
             children: [
-              Container(
-                height: 25,
-                width: 25,
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  gradient: AppColor.backgraundGradientV,
-                  borderRadius: BorderRadius.circular(16),
-                  image: (postComment.image == null)
-                      ? null
-                      : DecorationImage(
-                          image: CachedNetworkImageProvider("${ApiImagePath.profile}${postComment.image}"),
-                          fit: BoxFit.cover,
-                        ),
+              //Avatr
+              InkWell(
+                onTap: () => Get.to(() => FriendProfilePage(friendId: postComment.userid)),
+                child: Container(
+                  height: 25,
+                  width: 25,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    gradient: AppColor.backgraundGradientV,
+                    borderRadius: BorderRadius.circular(16),
+                    image: (postComment.image == null)
+                        ? null
+                        : DecorationImage(
+                            image: CachedNetworkImageProvider("${ApiImagePath.profile}${postComment.image}"),
+                            fit: BoxFit.cover,
+                          ),
+                  ),
                 ),
               ),
               const SizedBox(width: 6),

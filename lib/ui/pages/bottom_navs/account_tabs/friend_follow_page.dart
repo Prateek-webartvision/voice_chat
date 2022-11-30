@@ -127,7 +127,8 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
           borderRadius: BorderRadius.circular(20),
           image: (friendUserData.image != null)
               ? DecorationImage(
-                  image: CachedNetworkImageProvider("$ApiImagePath${friendUserData.image}"),
+                  image: CachedNetworkImageProvider("${ApiImagePath.profile}${friendUserData.image}"),
+                  fit: BoxFit.cover,
                 )
               : null,
         ),
