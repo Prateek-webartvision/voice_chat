@@ -1,5 +1,3 @@
-import 'package:voice_chat/ui/pages/bottom_navs/home_tabs/home_all_tab.dart';
-
 class AppUrls {
   // static const String domain = "http://apichatapp.webartvision.in";
   static const String domain = "http://199.192.24.175:3000"; // web
@@ -24,6 +22,7 @@ class AppUrls {
 
   //Post
   static const String getAllPost = "$_api/posts/get";
+  static const String getAllPost2 = "$_api/posts/get-all";
   static const String getMyFriendsPost = "$_api/posts/get-my-friends-post";
   static const String createPost = "$_api/posts/add-post";
   static const String removePost = "$_api/posts/remove-post";

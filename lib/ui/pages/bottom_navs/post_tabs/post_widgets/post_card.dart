@@ -84,22 +84,24 @@ class PostCardWidget extends StatelessWidget {
                     ),
                   )
                 : //Add Btn
-                Container(
-                    height: 30,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      // color: AppColor.closeToPurple,
-                      gradient: AppColor.backgraundGradient(),
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: InkWell(
-                      onTap: () => onAddFriendTab(!cardData.isfriend),
-                      child: Icon(
-                        Icons.add,
-                        color: AppColor.white,
+                (cardData.isfriend == true)
+                    ? SizedBox()
+                    : Container(
+                        height: 30,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          // color: AppColor.closeToPurple,
+                          gradient: AppColor.backgraundGradient(),
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: InkWell(
+                          onTap: () => onAddFriendTab(!cardData.isfriend),
+                          child: Icon(
+                            Icons.add,
+                            color: AppColor.white,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
           ],
         ),
         SizedBox(height: h10),

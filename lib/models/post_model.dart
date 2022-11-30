@@ -74,7 +74,7 @@ class PostModel {
       active: json['active'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
-      isfriend: false,
+      isfriend: json['is_friend'] ?? false,
       likes: _likes,
       comments: _commnet,
       isLiked: isliked,

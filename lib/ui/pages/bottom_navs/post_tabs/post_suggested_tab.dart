@@ -24,12 +24,14 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
   void initState() {
     Get.lazyPut(() => PostSuggestedController());
     refreshFun();
+    // PostRepository.instance.testPostApidata();
     super.initState();
   }
 
   //Refresh indictor fun
   Future refreshFun() async {
-    await PostRepository.instance.getAllPost();
+    // await PostRepository.instance.getAllPost();
+    PostRepository.instance.testPostApidata();
   }
 
   @override
