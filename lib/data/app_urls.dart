@@ -13,12 +13,15 @@ class AppUrls {
   static const String signUpWithPhoneAndPassword = "$_api/users/signup";
   static const String getCurrentUserBytoken = "$_api/users/login-via-token";
 
+  static const String getUserProfileById = "$_api/users/get-profile";
+
   //Home
   static const String homeBanner = "$_api/gallery/app-banners";
 
   //Profile
   static const String profileUpdate = "$_api/users/update-profile";
   static const String profileUpdateNew = "$_api/users/profile-upload";
+  static const String profileCoverUpdate = "$_api/users/cover-upload";
 
   //Post
   static const String getAllPost = "$_api/posts/get";
@@ -52,6 +55,7 @@ class SocketStrings {
 
 class ApiImagePath {
   static const String profile = "${AppUrls.domain}/media/profiles/";
+  static const String cover = "${AppUrls.domain}/media/covers/";
   static const String post = "${AppUrls.domain}/media/posts/";
   static const String banner = "${AppUrls.domain}/media/gallery/";
 }

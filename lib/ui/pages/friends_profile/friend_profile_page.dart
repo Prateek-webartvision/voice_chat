@@ -1,10 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tabbar_gradient_indicator/tabbar_gradient_indicator.dart';
+import 'package:voice_chat/controllers/friend_profile_controller.dart';
+import 'package:voice_chat/data/app_enums.dart';
+import 'package:voice_chat/data/app_urls.dart';
+import 'package:voice_chat/repositorys/friend_profile_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 
@@ -24,6 +28,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> with TickerProvid
   @override
   void initState() {
     _tabController = TabController(length: tabBarList.length, vsync: this);
+    FirendProfileRepository().getUserById(widget.friendId);
     scrollSetting();
     super.initState();
   }
@@ -184,96 +189,132 @@ class _FriendProfilePageState extends State<FriendProfilePage> with TickerProvid
       ),
 
       //Body
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        physics: NeverScrollableScrollPhysics(),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BgWithAvtar(),
+      body: GetBuilder<FriendProfileController>(
+        builder: (friendData) {
+          if (friendData.apiStatus == ApiStatusEnum.loading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (friendData.apiStatus == ApiStatusEnum.error) {
+            return Center(child: Text(friendData.error!));
+          } else {
+            return SingleChildScrollView(
+              controller: _scrollController,
+              physics: NeverScrollableScrollPhysics(),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Cover Image
+                  BgWithAvtar(
+                    coverImage: (friendData.friendProfile!.coverImage != null) ? "${ApiImagePath.cover}${friendData.friendProfile!.coverImage}" : null,
+                    profileImage: (friendData.friendProfile!.image != null) ? "${ApiImagePath.profile}${friendData.friendProfile!.image}" : null,
+                    userName: "${friendData.friendProfile!.firstName} ${friendData.friendProfile!.lastName}",
+                    friendsCount: friendData.friendProfile!.friendsCount,
+                    followersCount: friendData.friendProfile!.followersCount,
+                    followingsCount: friendData.friendProfile!.followingCount,
+                  ),
 
-            // Tab Bar
-            Container(
-              alignment: Alignment.centerLeft,
-              color: AppColor.white,
-              child: TabBar(
-                controller: _tabController,
-                labelColor: AppColor.closeToPurple,
-                indicator: const TabBarGradientIndicator(
-                  gradientColor: [AppColor.closeToBlue, AppColor.closeToPurple],
-                  indicatorWidth: 3,
-                ),
-                indicatorSize: TabBarIndicatorSize.label,
-                isScrollable: true,
-                tabs: tabBarList.map((e) => Tab(text: e)).toList(),
-              ),
-            ),
+                  // Tab Bar
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    color: AppColor.white,
+                    child: TabBar(
+                      controller: _tabController,
+                      labelColor: AppColor.closeToPurple,
+                      indicator: const TabBarGradientIndicator(
+                        gradientColor: [AppColor.closeToBlue, AppColor.closeToPurple],
+                        indicatorWidth: 3,
+                      ),
+                      indicatorSize: TabBarIndicatorSize.label,
+                      isScrollable: true,
+                      tabs: tabBarList.map((e) => Tab(text: e)).toList(),
+                    ),
+                  ),
 
-            //Tab View
-            Container(
-              constraints: BoxConstraints(maxHeight: 460.h, minHeight: 200),
-              child: TabBarView(
-                physics: BouncingScrollPhysics(),
-                controller: _tabController,
-                children: tabPages,
+                  //Tab View
+                  Container(
+                    constraints: BoxConstraints(maxHeight: 460.h, minHeight: 200),
+                    child: TabBarView(
+                      physics: BouncingScrollPhysics(),
+                      controller: _tabController,
+                      children: tabPages,
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        ),
+            );
+          }
+        },
       ),
 
       //Bottom btn
-      bottomNavigationBar: Container(
-        width: Get.width,
-        height: 60,
-        // color: AppColor.grey400,
-        alignment: Alignment.topCenter,
-        padding: EdgeInsets.all(8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            // add friend or chat
-            Container(
-              width: 135,
-              height: 40,
-              decoration: BoxDecoration(gradient: AppColor.backgraundGradientV, borderRadius: BorderRadius.circular(40)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.add_circle_outline_sharp, color: AppColor.white),
-                  SizedBox(width: 8),
-                  Text("Add Friend",
-                      style: TextStyle(
-                        color: AppColor.white,
-                        fontWeight: FontWeight.bold,
-                      )),
-                ],
-              ),
-            ),
+      bottomNavigationBar: GetBuilder<FriendProfileController>(builder: (friendData) {
+        return (friendData.apiStatus != ApiStatusEnum.success)
+            ? SizedBox()
+            : Container(
+                width: Get.width,
+                height: 60,
+                // color: AppColor.grey400,
+                alignment: Alignment.topCenter,
+                padding: EdgeInsets.all(8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // add friend or chat
+                    Container(
+                      width: 135,
+                      height: 40,
+                      decoration: BoxDecoration(gradient: AppColor.backgraundGradientV, borderRadius: BorderRadius.circular(40)),
+                      child: InkWell(
+                        onTap: () {
+                          friendData.changeIsFriend(!friendData.friendProfile!.isFriend);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon((friendData.friendProfile!.isFriend == true) ? Icons.chat : Icons.add_circle_outline_sharp, color: AppColor.white),
+                            SizedBox(width: 8),
+                            Text(
+                              (friendData.friendProfile!.isFriend == true) ? "chat" : "Add Friend",
+                              style: TextStyle(
+                                color: AppColor.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
 
-            // follow and unfollow
-            Container(
-              width: 135,
-              height: 40,
-              decoration: BoxDecoration(gradient: AppColor.backgraundGradientV, borderRadius: BorderRadius.circular(40)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.favorite, color: AppColor.white),
-                  SizedBox(width: 8),
-                  Text("Follow",
-                      style: TextStyle(
-                        color: AppColor.white,
-                        fontWeight: FontWeight.bold,
-                      )),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+                    // follow and unfollow
+                    Container(
+                      width: 135,
+                      height: 40,
+                      decoration: BoxDecoration(gradient: AppColor.backgraundGradientV, borderRadius: BorderRadius.circular(40)),
+                      child: InkWell(
+                        onTap: () {
+                          friendData.changeIsFollowing(!friendData.friendProfile!.isFollowing);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.favorite, color: AppColor.white),
+                            SizedBox(width: 8),
+                            Text(
+                              (friendData.friendProfile!.isFollowing == true) ? "UnFollow" : "Follow",
+                              style: TextStyle(
+                                color: AppColor.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+      }),
     );
   }
 
@@ -443,20 +484,44 @@ class InfoTabPage extends StatelessWidget {
 }
 
 class BgWithAvtar extends StatelessWidget {
-  const BgWithAvtar({
+  BgWithAvtar({
     Key? key,
+    this.coverImage,
+    this.profileImage,
+    required this.userName,
+    required this.friendsCount,
+    required this.followersCount,
+    required this.followingsCount,
   }) : super(key: key);
+
+  final String? coverImage;
+  final String? profileImage;
+  final String userName;
+  final int friendsCount;
+  final int followersCount;
+  final int followingsCount;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.asset(
-          "assets/images/bg.jpg",
+        //Cover Image
+        Container(
           height: 200,
           width: double.maxFinite,
-          fit: BoxFit.cover,
+          decoration: BoxDecoration(
+            gradient: AppColor.backgraundGradientV,
+            image: (coverImage != null)
+                ? DecorationImage(
+                    image: CachedNetworkImageProvider(
+                      coverImage!,
+                    ),
+                    fit: BoxFit.cover,
+                  )
+                : null,
+          ),
         ),
+
         Column(
           children: [
             SizedBox(height: 160),
@@ -483,13 +548,21 @@ class BgWithAvtar extends StatelessWidget {
                           width: 120,
                           decoration: BoxDecoration(
                             gradient: AppColor.backgraundGradientV,
+                            image: (profileImage != null)
+                                ? DecorationImage(
+                                    image: CachedNetworkImageProvider(
+                                      profileImage!,
+                                    ),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
                             borderRadius: BorderRadius.circular(60),
                           ),
                         ),
                         //
                         SizedBox(height: 6),
                         Text(
-                          "User name",
+                          userName,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -508,14 +581,14 @@ class BgWithAvtar extends StatelessWidget {
                         Column(
                           children: [
                             Text(
-                              "0",
+                              "$followingsCount",
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                             Text(
-                              "Follow",
+                              "Following",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -528,7 +601,7 @@ class BgWithAvtar extends StatelessWidget {
                         Column(
                           children: [
                             Text(
-                              "0",
+                              "$followersCount",
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w600,
@@ -536,6 +609,26 @@ class BgWithAvtar extends StatelessWidget {
                             ),
                             Text(
                               "Followers",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 20),
+                        //Friends
+                        Column(
+                          children: [
+                            Text(
+                              "$friendsCount",
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              "Friends",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,

@@ -25,6 +25,7 @@ class ProfileEditPage extends StatefulWidget {
 class _ProfileEditPageState extends State<ProfileEditPage> {
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
+  TextEditingController bioTextController = TextEditingController();
   List gender = ['male', 'female', 'other'];
   DateFormat dateFormat = DateFormat("dd-MM-yyyy");
 
@@ -51,8 +52,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
               child: Column(
                 children: [
                   // image avtar
@@ -62,10 +62,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     children: [
                       Text(
                         "Sysmbol picture",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall!
-                            .copyWith(color: AppColor.black54),
+                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: AppColor.black54),
                       ),
                       InkWell(
                         onTap: () {
@@ -78,9 +75,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               // Get.dialog(Center(
                               //   child: Image.file(File(image)),
                               // ));
-                              ProfileRepository.instance
-                                  .postApiWithMultiPartProfile(
-                                      image: File(image));
+                              ProfileRepository.instance.postApiWithMultiPartProfile(image: File(image), isProfile: true);
                             },
                           );
                         },
@@ -98,17 +93,63 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             image: (userProfile.getImage != null)
                                 ? DecorationImage(
                                     //Come here user profile pic
-                                    image: CachedNetworkImageProvider(
-                                        "${ApiImagePath.profile}${UserController.instance.getImage}"),
+                                    image: CachedNetworkImageProvider("${ApiImagePath.profile}${UserController.instance.getImage}"),
                                     fit: BoxFit.cover,
-                                    colorFilter: ColorFilter.mode(
-                                        AppColor.black.withOpacity(0.2),
-                                        BlendMode.darken),
+                                    colorFilter: ColorFilter.mode(AppColor.black.withOpacity(0.2), BlendMode.darken),
                                   )
                                 : null,
                           ),
-                          child: Icon(Icons.camera_alt_outlined,
-                              color: AppColor.white),
+                          child: Icon(Icons.camera_alt_outlined, color: AppColor.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(thickness: 2),
+                  // image Cover
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        "Cover picture",
+                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: AppColor.black54),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          // print("Get Image");
+                          //get and change image
+                          AppUtils.imagePickerDailog(
+                            seletedImage: (image) {
+                              // print("object $image");
+                              AppUtils.closeDailog();
+                              // Get.dialog(Center(
+                              //   child: Image.file(File(image)),
+                              // ));
+                              ProfileRepository.instance.postApiWithMultiPartProfile(image: File(image), isProfile: false);
+                            },
+                          );
+                        },
+                        child: Container(
+                          constraints: BoxConstraints(
+                            maxHeight: 50,
+                            maxWidth: 50,
+                            minHeight: 50,
+                            minWidth: 50,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColor.white,
+                            gradient: AppColor.backgraundGradientV,
+                            borderRadius: BorderRadius.circular(25),
+                            image: (userProfile.getImage != null)
+                                ? DecorationImage(
+                                    //Come here user profile pic
+                                    image: CachedNetworkImageProvider("${ApiImagePath.cover}${UserController.instance.getCoverImage}"),
+                                    fit: BoxFit.cover,
+                                    colorFilter: ColorFilter.mode(AppColor.black.withOpacity(0.2), BlendMode.darken),
+                                  )
+                                : null,
+                          ),
+                          child: Icon(Icons.camera_alt_outlined, color: AppColor.white),
                         ),
                       ),
                     ],
@@ -138,10 +179,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                   SizedBox(height: h20),
                                   Text(
                                     "Edit Name",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium!
-                                        .copyWith(color: AppColor.black),
+                                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: AppColor.black),
                                   ),
                                   SizedBox(height: h20),
                                   Padding(
@@ -152,8 +190,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                           child: KTextField2(
                                             textEditingController: firstName,
                                             hintText: "First Name",
-                                            textInputAction:
-                                                TextInputAction.next,
+                                            textInputAction: TextInputAction.next,
                                           ),
                                         ),
                                         SizedBox(width: 8),
@@ -161,8 +198,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                           child: KTextField2(
                                             textEditingController: lastName,
                                             hintText: "Last Name",
-                                            textInputAction:
-                                                TextInputAction.done,
+                                            textInputAction: TextInputAction.done,
                                           ),
                                         ),
                                       ],
@@ -173,16 +209,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: MyGradientBtn(
                                         onPress: () {
-                                          if (firstName.text.isEmpty ||
-                                              lastName.text.isEmpty) {
-                                            AppUtils.showSnakBar(
-                                                msg: "Enter Full Name");
+                                          if (firstName.text.isEmpty || lastName.text.isEmpty) {
+                                            AppUtils.showSnakBar(msg: "Enter Full Name");
                                           } else {
                                             if (Get.isBottomSheetOpen == true) {
                                               Get.back();
                                             }
-                                            ProfileRepository.instance
-                                                .updateProfile(
+                                            ProfileRepository.instance.updateProfile(
                                               firstName: firstName.text,
                                               lastName: lastName.text,
                                             );
@@ -244,8 +277,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               firstDate: DateTime(1900),
                               lastDate: DateTime(3000),
                             ).then((date) {
-                              ProfileRepository.instance
-                                  .updateProfile(dob: date.toString());
+                              ProfileRepository.instance.updateProfile(dob: date.toString());
                             });
                           },
                           child: Row(
@@ -253,13 +285,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             children: [
                               Text(
                                 //Error Check
-                                (userProfile.getDob.toString().isEmpty ||
-                                        userProfile.getDob == null)
-                                    ? "NA"
-                                    : dateFormat
-                                        .format(
-                                            DateTime.parse(userProfile.getDob))
-                                        .toString(),
+                                (userProfile.getDob.toString().isEmpty || userProfile.getDob == null) ? "NA" : dateFormat.format(DateTime.parse(userProfile.getDob)).toString(),
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -301,8 +327,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                 .toList();
                           },
                           onSelected: (value) {
-                            ProfileRepository.instance
-                                .updateProfile(gender: value.toString());
+                            ProfileRepository.instance.updateProfile(gender: value.toString());
                           },
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -346,8 +371,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             showCountryPicker(
                               context: context,
                               onSelect: (value) {
-                                ProfileRepository.instance
-                                    .updateProfile(country: value.name);
+                                ProfileRepository.instance.updateProfile(country: value.name);
                                 Get.back();
                                 // print(value.name);
                                 // AppUtils.showSnakBar(msg: value.toString());
@@ -370,6 +394,113 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                 color: AppColor.black54,
                               )
                             ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(thickness: 2),
+
+                  // Bio
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Your bio",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.black,
+                                ),
+                              ),
+                              SizedBox(height: 6),
+                              Text(
+                                userProfile.getBio ?? "NA",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            print("bio");
+                            Get.bottomSheet(Container(
+                              // height: 100,
+                              color: AppColor.white,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(height: h20),
+                                  Text(
+                                    "Edit Bio",
+                                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: AppColor.black),
+                                  ),
+                                  // SizedBox(height: h20),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: KTextField2(
+                                            textEditingController: bioTextController,
+                                            hintText: "All about you",
+                                            textInputAction: TextInputAction.done,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(height: h20),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: MyGradientBtn(
+                                        onPress: () {
+                                          if (bioTextController.text.isEmpty) {
+                                            AppUtils.showSnakBar(msg: "Enter your bio");
+                                          } else {
+                                            if (Get.isBottomSheetOpen == true) {
+                                              Get.back();
+                                            }
+                                            ProfileRepository.instance.updateProfile(
+                                              // firstName: firstName.text,
+                                              // lastName: lastName.text,
+                                              bio: bioTextController.text,
+                                            );
+
+                                            firstName.clear();
+                                            lastName.clear();
+                                          }
+                                        },
+                                        text: "Save"),
+                                  )
+                                ],
+                              ),
+                            ));
+
+                            // showCountryPicker(
+                            //   context: context,
+                            //   onSelect: (value) {
+                            //     // ProfileRepository.instance.updateProfile(country: value.name);
+                            //     // Get.back();
+                            //     // print(value.name);
+                            //     // AppUtils.showSnakBar(msg: value.toString());
+                            //   },
+                            // );
+                          },
+                          child: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: AppColor.black54,
                           ),
                         ),
                       ],

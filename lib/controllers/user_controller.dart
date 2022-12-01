@@ -16,9 +16,11 @@ class UserController extends GetxController {
   final String _lastName = "last_name";
   final String _mobile = "mobile";
   final String _image = "image";
+  final String _coverImage = "cover_image";
   final String _gender = "gender";
   final String _dob = "dob";
   final String _country = "country";
+  final String _bio = "bio";
   // int? id;
   // String? firstName;
   // String? lastName;
@@ -43,8 +45,10 @@ class UserController extends GetxController {
       _lastName: profileData.lastName,
       _mobile: profileData.mobile,
       _image: profileData.image,
+      _coverImage: profileData.coverImage,
       _gender: profileData.gender,
       _dob: profileData.dob,
+      _bio: profileData.bio,
       _country: profileData.country,
     });
 
@@ -63,6 +67,8 @@ class UserController extends GetxController {
   get getImage => _getUserProfileData[_image];
   get getGender => _getUserProfileData[_gender];
   get getDob => _getUserProfileData[_dob];
+  get getCoverImage => _getUserProfileData[_coverImage];
+  get getBio => _getUserProfileData[_bio];
   get getCountry => _getUserProfileData[_country];
 
   //delete user
