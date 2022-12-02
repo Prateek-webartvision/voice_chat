@@ -14,9 +14,34 @@ class PostRepository {
   static final PostFriendsController _postFriendsController = PostFriendsController.instance;
 
   testPostApidata() {
+    print("pordt ");
     _postController.setPostStatus(ApiStatusEnum.loading);
     _postController.allPostList.clear();
     ApiServices.postApi(url: AppUrls.getAllPost2, mapData: {"token": UserController.instance.getToken}).then((value) {
+      if (value['status'] == true) {
+        _postController.setPostStatus(ApiStatusEnum.success);
+        // print("Post s:  $value");
+        for (var element in value['data']) {
+          print(element);
+          _postController.addPost(PostModel.formJson(element));
+        }
+      } else {
+        _postController.setPostStatus(ApiStatusEnum.error);
+        _postController.setError(value['msg']);
+      }
+      // print(value[]);
+    }).onError((error, stackTrace) {
+      _postController.setPostStatus(ApiStatusEnum.error);
+      _postController.setError(error.toString());
+    });
+  }
+
+  //get All Posts
+  Future getAllPost() async {
+    print("post call");
+    _postController.setPostStatus(ApiStatusEnum.loading);
+    _postController.allPostList.clear();
+    await ApiServices.getApi(url: AppUrls.getAllPost).then((value) {
       if (value['status'] == true) {
         _postController.setPostStatus(ApiStatusEnum.success);
         // print("Post s:  $value");
@@ -27,34 +52,11 @@ class PostRepository {
         _postController.setPostStatus(ApiStatusEnum.error);
         _postController.setError(value['msg']);
       }
-      // print(value);
+      print(value);
     }).onError((error, stackTrace) {
       _postController.setPostStatus(ApiStatusEnum.error);
       _postController.setError(error.toString());
     });
-  }
-
-  //get All Posts
-  Future getAllPost() async {
-    print("post call");
-    // _postController.setPostStatus(ApiStatusEnum.loading);
-    // _postController.allPostList.clear();
-    // await ApiServices.getApi(url: AppUrls.getAllPost).then((value) {
-    //   if (value['status'] == true) {
-    //     _postController.setPostStatus(ApiStatusEnum.success);
-    //     // print("Post s:  $value");
-    //     for (var element in value['data']) {
-    //       _postController.addPost(PostModel.formJson(element));
-    //     }
-    //   } else {
-    //     _postController.setPostStatus(ApiStatusEnum.error);
-    //     _postController.setError(value['msg']);
-    //   }
-    //   // print(value);
-    // }).onError((error, stackTrace) {
-    //   _postController.setPostStatus(ApiStatusEnum.error);
-    //   _postController.setError(error.toString());
-    // });
   }
 
   // get All friends Posts
@@ -147,7 +149,7 @@ class PostRepository {
       } else {
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
       }
-      // print(value);
+      print(value);
     }).onError((error, stackTrace) {
       AppUtils.closeDailog();
       AppUtils.showSnakBar(msg: error.toString(), second: 2);

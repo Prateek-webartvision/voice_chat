@@ -9,6 +9,7 @@ import 'package:voice_chat/controllers/friend_profile_controller.dart';
 import 'package:voice_chat/data/app_enums.dart';
 import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/repositorys/friend_profile_repo.dart';
+import 'package:voice_chat/repositorys/friend_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 
@@ -265,7 +266,13 @@ class _FriendProfilePageState extends State<FriendProfilePage> with TickerProvid
                       decoration: BoxDecoration(gradient: AppColor.backgraundGradientV, borderRadius: BorderRadius.circular(40)),
                       child: InkWell(
                         onTap: () {
-                          friendData.changeIsFriend(!friendData.friendProfile!.isFriend);
+                          if (friendData.friendProfile!.isFriend != true) {
+                            FriendRepository.instance.sendFriendRequest(friendId: friendData.friendProfile!.id!);
+                            // friendData.changeIsFriend(!friendData.friendProfile!.isFriend);
+                          } else {
+                            //Todo Chat
+                            print("chat");
+                          }
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -291,8 +298,14 @@ class _FriendProfilePageState extends State<FriendProfilePage> with TickerProvid
                       height: 40,
                       decoration: BoxDecoration(gradient: AppColor.backgraundGradientV, borderRadius: BorderRadius.circular(40)),
                       child: InkWell(
-                        onTap: () {
-                          friendData.changeIsFollowing(!friendData.friendProfile!.isFollowing);
+                        onTap: () async {
+                          if (friendData.friendProfile!.isFollowing != true) {
+                            await FriendRepository.instance.followFriend(friendId: friendData.friendProfile!.id!).then((v) {
+                              friendData.changeIsFollowing(!friendData.friendProfile!.isFollowing);
+                            });
+                          } else {
+                            print("follow");
+                          }
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

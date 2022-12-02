@@ -40,6 +40,9 @@ class AppUrls {
   static const String getFriendsAndFolloersList = "$_api/friends/get-friendship-list";
   static const String unFriend = "$_api/friends/remove-friendship";
 
+  //followers
+  static const String followFriend = "$_api/followers/request-follow";
+
   //Room
   static const String getAllRooms = "$_api/rooms/get";
   static const String createNewRoom = "$_api/rooms/add-room";

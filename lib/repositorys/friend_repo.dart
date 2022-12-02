@@ -10,27 +10,31 @@ class FriendRepository {
   static FriendRepository instance = FriendRepository();
 
   //send friend request
-  sendFriendRequest({required int friendId}) {
+  sendFriendRequest({required int friendId}) async {
     Map<String, dynamic> requestData = {
       "token": UserController.instance.getToken,
       "friend_id": friendId,
     };
-
+    String? data;
     print(requestData);
 
     AppUtils.progressDailog();
-    ApiServices.postApi(url: AppUrls.sendFriendRequest, mapData: requestData).then((response) {
-      if (response['status']) {
+    await ApiServices.postApi(url: AppUrls.sendFriendRequest, mapData: requestData).then((response) {
+      if (response['status'] == true) {
         AppUtils.closeDailog();
         AppUtils.showSnakBar(msg: response["msg"], second: 2);
+        data = "";
       } else {
         AppUtils.closeDailog();
         AppUtils.showSnakBar(msg: response["msg"], second: 2);
+        data = null;
       }
     }).onError((error, stackTrace) {
       AppUtils.closeDailog();
+      data = null;
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
     });
+    return data;
   }
 
   //get all friend requests
@@ -80,6 +84,7 @@ class FriendRepository {
     });
   }
 
+  //UnFriend
   unFriend(int friendId) {
     Map<String, dynamic> unfriendData = {
       "token": UserController.instance.getToken,
@@ -99,5 +104,33 @@ class FriendRepository {
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
     });
     // print(unfriendData);
+  }
+
+  // follow friend
+  followFriend({required int friendId}) async {
+    String? data;
+    AppUtils.progressDailog();
+
+    await ApiServices.postApi(url: AppUrls.followFriend, mapData: {
+      "follow_to_id": friendId,
+      "token": UserController.instance.getToken,
+    }).then((value) {
+      AppUtils.closeDailog();
+      if (value["status"] == true) {
+        data = "";
+
+        AppUtils.showSnakBar(msg: value['msg'], second: 2);
+      } else {
+        data = null;
+
+        AppUtils.showSnakBar(msg: value['msg'], second: 2);
+      }
+      print(value);
+    }).onError((error, stackTrace) {
+      AppUtils.closeDailog();
+      AppUtils.showSnakBar(msg: error.toString(), second: 2);
+    });
+
+    return data;
   }
 }
