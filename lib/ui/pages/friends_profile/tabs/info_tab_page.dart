@@ -5,7 +5,10 @@ import 'package:voice_chat/res/constant_value.dart';
 class InfoTabPage extends StatelessWidget {
   const InfoTabPage({
     Key? key,
+    required this.userInfo,
   }) : super(key: key);
+
+  final String? userInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class InfoTabPage extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: AppColor.black, fontSize: 14),
           ),
           SizedBox(height: h10),
-          const Text("this is me bio")
+          Text(userInfo ?? "NA")
         ],
       ),
     );

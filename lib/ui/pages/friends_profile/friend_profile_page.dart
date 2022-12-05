@@ -50,7 +50,6 @@ class _FriendProfilePageState extends State<FriendProfilePage> with TickerProvid
   }
 
   List<String> tabBarList = ["Info", "Moment", "Badges", "Gift"];
-  List<Widget> tabPages = [InfoTabPage(), MomentsTabPage(), BadgesTabPage(), GiftTabPages()];
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +83,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> with TickerProvid
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Cover Image
+                  // Cover Image with user info
                   BgWithAvtar(
                     coverImage: (friendData.friendProfile!.coverImage != null) ? "${ApiImagePath.cover}${friendData.friendProfile!.coverImage}" : null,
                     profileImage: (friendData.friendProfile!.image != null) ? "${ApiImagePath.profile}${friendData.friendProfile!.image}" : null,
@@ -117,7 +116,12 @@ class _FriendProfilePageState extends State<FriendProfilePage> with TickerProvid
                     child: TabBarView(
                       physics: BouncingScrollPhysics(),
                       controller: _tabController,
-                      children: tabPages,
+                      children: [
+                        InfoTabPage(userInfo: friendData.friendProfile!.bio),
+                        MomentsTabPage(),
+                        BadgesTabPage(),
+                        GiftTabPages(),
+                      ],
                     ),
                   )
                 ],

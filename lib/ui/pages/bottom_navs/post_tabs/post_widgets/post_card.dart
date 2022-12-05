@@ -8,6 +8,7 @@ import 'package:voice_chat/models/post_model.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/ui/pages/friends_profile/friend_profile_page.dart';
+import 'package:voice_chat/utils/app_utils.dart';
 
 class PostCardWidget extends StatelessWidget {
   const PostCardWidget({
@@ -36,7 +37,9 @@ class PostCardWidget extends StatelessWidget {
             //avtar
             InkWell(
               //Nivigate to friend profile page
-              onTap: () => Get.to(() => FriendProfilePage(friendId: cardData.createdBy)),
+              onTap: () => (cardData.createdBy == UserController.instance.getId)
+                  ? AppUtils.showSnakBar(msg: "Can't open your profile", second: 2)
+                  : Get.to(() => FriendProfilePage(friendId: cardData.createdBy)),
               child: Container(
                 height: avtarSize,
                 width: avtarSize,
