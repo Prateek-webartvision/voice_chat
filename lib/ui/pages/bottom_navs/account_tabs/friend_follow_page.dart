@@ -73,15 +73,19 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
                   controller: _tabController,
                   children: [
                     //Friends Tab
-
                     (friendController.friendsAndFollowersData!.friends.isEmpty)
                         ? Center(
                             child: Text("No Friends"),
                           )
-                        : ListView.builder(
+                        : ListView.separated(
                             itemCount: friendController.friendsAndFollowersData!.friends.length,
                             itemBuilder: (context, index) {
-                              return friendUserTile(friendController.friendsAndFollowersData!.friends[index]);
+                              return friendUserTile(friendController.friendsAndFollowersData!.friends[index], isFriendsTab: true);
+                            },
+                            separatorBuilder: (context, index) {
+                              return Divider(
+                                thickness: 1.5,
+                              );
                             },
                           ),
 
@@ -90,10 +94,15 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
                         ? Center(
                             child: Text("No Following"),
                           )
-                        : ListView.builder(
+                        : ListView.separated(
                             itemCount: friendController.friendsAndFollowersData!.followings.length,
                             itemBuilder: (context, index) {
-                              return friendUserTile(friendController.friendsAndFollowersData!.followings[index]);
+                              return friendUserTile(friendController.friendsAndFollowersData!.followings[index], isFollowingTab: true);
+                            },
+                            separatorBuilder: (context, index) {
+                              return Divider(
+                                thickness: 1.5,
+                              );
                             },
                           ),
                     //Follower Tab
@@ -101,10 +110,15 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
                         ? Center(
                             child: Text("No Followers"),
                           )
-                        : ListView.builder(
+                        : ListView.separated(
                             itemCount: friendController.friendsAndFollowersData!.followers.length,
                             itemBuilder: (context, index) {
                               return friendUserTile(friendController.friendsAndFollowersData!.followers[index]);
+                            },
+                            separatorBuilder: (context, index) {
+                              return Divider(
+                                thickness: 1.5,
+                              );
                             },
                           ),
                   ],
@@ -115,7 +129,7 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
   }
 
   // Friend Tile
-  Widget friendUserTile(FriendUserModel friendUserData) {
+  Widget friendUserTile(FriendUserModel friendUserData, {bool? isFriendsTab = false, bool? isFollowingTab = false}) {
     return ListTile(
       //Image
       leading: Container(
@@ -135,11 +149,38 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
       ),
       //name
       title: Text("${friendUserData.firstName} ${friendUserData.lastName}"),
-      trailing: IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: () {
-            FriendRepository.instance.unFriend(friendUserData.id);
-          }),
+      trailing: (isFriendsTab == true)
+          ? InkWell(
+              onTap: () => FriendRepository.instance.unFriend(friendUserData.id),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                decoration: BoxDecoration(
+                  color: AppColor.closeToPurple,
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: Icon(
+                  Icons.delete,
+                  color: AppColor.white,
+                ),
+              ),
+            )
+          : (isFollowingTab == true)
+              ? Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppColor.closeToPurple,
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  child: Text("Unfollow", style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 12)),
+                )
+              : Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppColor.closeToPurple,
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  child: Text("Remove", style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 12)),
+                ),
     );
   }
 
