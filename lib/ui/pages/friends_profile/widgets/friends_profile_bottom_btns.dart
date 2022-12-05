@@ -71,11 +71,16 @@ class FriendsProfileBottomBtns extends StatelessWidget {
                       onTap: () async {
                         if (friendData.friendProfile!.isFollowing != true) {
                           await FriendRepository.instance.followFriend(friendId: friendData.friendProfile!.id!).then((v) {
-                            friendData.changeIsFollowing(!friendData.friendProfile!.isFollowing);
+                            if (v != null) {
+                              friendData.changeIsFollowing(!friendData.friendProfile!.isFollowing);
+                            }
                           });
                         } else {
-                          // TODO Unfollow btn
-                          print("follow");
+                          await FriendRepository.instance.unfollow(friendData.friendProfile!.id!).then((v) {
+                            if (v != null) {
+                              friendData.changeIsFollowing(!friendData.friendProfile!.isFollowing);
+                            }
+                          });
                         }
                       },
                       child: Row(

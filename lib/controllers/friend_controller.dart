@@ -31,4 +31,32 @@ class FriendsController extends GetxController {
     friendsAndFollowersData!.friends.remove(unFriendUser);
     update();
   }
+
+  //unfollow
+  unfollow(int followingId) {
+    FriendUserModel unFollow = friendsAndFollowersData!.followings.where((element) {
+      if (element.id == followingId) {
+        return true;
+      } else {
+        return false;
+      }
+    }).first;
+
+    friendsAndFollowersData!.followings.remove(unFollow);
+    update();
+  }
+
+  //remove follower
+  reomveFollower(int followerId) {
+    FriendUserModel removeFollower = friendsAndFollowersData!.followers.where((element) {
+      if (element.id == followerId) {
+        return true;
+      } else {
+        return false;
+      }
+    }).first;
+
+    friendsAndFollowersData!.followers.remove(removeFollower);
+    update();
+  }
 }

@@ -1,7 +1,7 @@
 class AppUrls {
   // static const String domain = "http://apichatapp.webartvision.in";
-  static const String domain = "http://199.192.24.175:3000"; // web
-  // static const String domain = "http://192.168.0.234:3000"; //pc
+  // static const String domain = "http://199.192.24.175:3000"; // web
+  static const String domain = "http://192.168.0.234:3000"; //pc
   // static const String domain = "http://192.168.162.247:3000"; //phone
   static const String _api = "$domain/api";
 
@@ -42,6 +42,8 @@ class AppUrls {
 
   //followers
   static const String followFriend = "$_api/followers/request-follow";
+  static const String unfollow = "$_api/followers/request-unfollow";
+  static const String removefollower = "$_api/followers/request-removefollower";
 
   //Room
   static const String getAllRooms = "$_api/rooms/get";

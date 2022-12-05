@@ -108,29 +108,74 @@ class FriendRepository {
 
   // follow friend
   followFriend({required int friendId}) async {
-    String? data;
+    late String? data;
     AppUtils.progressDailog();
 
-    await ApiServices.postApi(url: AppUrls.followFriend, mapData: {
+    data = await ApiServices.postApi(url: AppUrls.followFriend, mapData: {
       "follow_to_id": friendId,
       "token": UserController.instance.getToken,
     }).then((value) {
       AppUtils.closeDailog();
+      print(value);
       if (value["status"] == true) {
-        data = "";
+        AppUtils.showSnakBar(msg: value['msg'], second: 2);
+        return "";
+      } else {
+        AppUtils.showSnakBar(msg: value['msg'], second: 2);
+        return null;
+      }
+      // print(value);
+    }).onError((error, stackTrace) {
+      AppUtils.closeDailog();
+      AppUtils.showSnakBar(msg: error.toString(), second: 2);
+      return null;
+    });
 
+    return data;
+  }
+
+  // unfollow
+  unfollow(int followingId) async {
+    String? data;
+    AppUtils.progressDailog();
+    data = await ApiServices.postApi(url: AppUrls.unfollow, mapData: {
+      "follow_id": followingId,
+      "token": UserController.instance.getToken,
+    }).then((value) {
+      AppUtils.closeDailog();
+      if (value['status'] == true) {
+        // data = "";
+        AppUtils.showSnakBar(msg: value['msg'], second: 2);
+        return '';
+      } else {
+        AppUtils.showSnakBar(msg: value['msg'], second: 2);
+        return null;
+      }
+    }).onError((error, stackTrace) {
+      AppUtils.closeDailog();
+      AppUtils.showSnakBar(msg: error.toString(), second: 2);
+      return null;
+    });
+    return data;
+  }
+
+  // removeFollower
+  removeFollower(int followerId) {
+    AppUtils.progressDailog();
+    ApiServices.postApi(url: AppUrls.removefollower, mapData: {
+      "follow_id": followerId,
+      "token": UserController.instance.getToken,
+    }).then((value) {
+      AppUtils.closeDailog();
+      if (value['status'] == true) {
+        FriendsController.instance.reomveFollower(followerId);
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
       } else {
-        data = null;
-
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
       }
-      print(value);
     }).onError((error, stackTrace) {
       AppUtils.closeDailog();
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
     });
-
-    return data;
   }
 }

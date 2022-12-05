@@ -9,6 +9,7 @@ import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/friends_models/friend_user_model.dart';
 import 'package:voice_chat/repositorys/friend_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
+import 'package:voice_chat/ui/pages/friends_profile/friend_profile_page.dart';
 
 class FriendFollowPage extends StatefulWidget {
   const FriendFollowPage({super.key});
@@ -80,7 +81,14 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
                         : ListView.separated(
                             itemCount: friendController.friendsAndFollowersData!.friends.length,
                             itemBuilder: (context, index) {
-                              return friendUserTile(friendController.friendsAndFollowersData!.friends[index], isFriendsTab: true);
+                              return friendUserTile(
+                                friendController.friendsAndFollowersData!.friends[index],
+                                isFriendsTab: true,
+                                onTab: () {
+                                  // print("Is friend ${friendController.friendsAndFollowersData!.friends[index].id}");
+                                  Get.to(() => FriendProfilePage(friendId: friendController.friendsAndFollowersData!.friends[index].id));
+                                },
+                              );
                             },
                             separatorBuilder: (context, index) {
                               return Divider(
@@ -97,7 +105,13 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
                         : ListView.separated(
                             itemCount: friendController.friendsAndFollowersData!.followings.length,
                             itemBuilder: (context, index) {
-                              return friendUserTile(friendController.friendsAndFollowersData!.followings[index], isFollowingTab: true);
+                              return friendUserTile(
+                                friendController.friendsAndFollowersData!.followings[index],
+                                isFollowingTab: true,
+                                onTab: () {
+                                  Get.to(() => FriendProfilePage(friendId: friendController.friendsAndFollowersData!.followings[index].id));
+                                },
+                              );
                             },
                             separatorBuilder: (context, index) {
                               return Divider(
@@ -113,7 +127,12 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
                         : ListView.separated(
                             itemCount: friendController.friendsAndFollowersData!.followers.length,
                             itemBuilder: (context, index) {
-                              return friendUserTile(friendController.friendsAndFollowersData!.followers[index]);
+                              return friendUserTile(
+                                friendController.friendsAndFollowersData!.followers[index],
+                                onTab: () {
+                                  Get.to(() => FriendProfilePage(friendId: friendController.friendsAndFollowersData!.followings[index].id));
+                                },
+                              );
                             },
                             separatorBuilder: (context, index) {
                               return Divider(
@@ -129,8 +148,14 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
   }
 
   // Friend Tile
-  Widget friendUserTile(FriendUserModel friendUserData, {bool? isFriendsTab = false, bool? isFollowingTab = false}) {
+  Widget friendUserTile(
+    FriendUserModel friendUserData, {
+    bool? isFriendsTab = false,
+    bool? isFollowingTab = false,
+    Function()? onTab,
+  }) {
     return ListTile(
+      onTap: onTab,
       //Image
       leading: Container(
         height: 40,
@@ -151,6 +176,7 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
       title: Text("${friendUserData.firstName} ${friendUserData.lastName}"),
       trailing: (isFriendsTab == true)
           ? InkWell(
+              //unfirend
               onTap: () => FriendRepository.instance.unFriend(friendUserData.id),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -165,21 +191,37 @@ class _FriendFollowPageState extends State<FriendFollowPage> with TickerProvider
               ),
             )
           : (isFollowingTab == true)
-              ? Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: AppColor.closeToPurple,
-                    borderRadius: BorderRadius.circular(40),
+              ? InkWell(
+                  //unfollow
+                  onTap: () async {
+                    await FriendRepository.instance.unfollow(friendUserData.id).then((v) {
+                      if (v != null) {
+                        FriendsController.instance.unfollow(friendUserData.id);
+                      }
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: AppColor.closeToPurple,
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: Text("Unfollow", style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 12)),
                   ),
-                  child: Text("Unfollow", style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 12)),
                 )
-              : Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: AppColor.closeToPurple,
-                    borderRadius: BorderRadius.circular(40),
+              : InkWell(
+                  onTap: () {
+                    // print("Remove follower");
+                    FriendRepository.instance.removeFollower(friendUserData.id);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: AppColor.closeToPurple,
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: Text("Remove", style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 12)),
                   ),
-                  child: Text("Remove", style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: 12)),
                 ),
     );
   }
