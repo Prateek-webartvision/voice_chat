@@ -38,9 +38,15 @@ class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
           isTranding = false;
         }
       });
-      print(isTranding);
+      // print(isTranding);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
   }
 
   @override
