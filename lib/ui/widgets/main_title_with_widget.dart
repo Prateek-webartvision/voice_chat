@@ -6,11 +6,11 @@ class MainTitleWithWidget extends StatelessWidget {
   const MainTitleWithWidget({
     super.key,
     required this.title,
-    required this.onTab,
+    @Deprecated("this is see more btn that is not in use") this.onTab,
     this.child,
   });
   final String title;
-  final Function onTab;
+  final Function? onTab;
   final Widget? child;
 
   @override

@@ -8,14 +8,13 @@ class RoomRepository {
   static RoomRepository instance = RoomRepository();
 
   //get all rooms
-  getAllRooms() async {
-    RoomController.instance.rooms.clear();
-    List<Room> rooms = [];
+  Future getAllRooms() async {
+    RoomController.instance.rooms = null;
 
-    await ApiServices.getApi(url: AppUrls.getAllRooms).then((value) {
+    return await ApiServices.getApi(url: AppUrls.getAllRooms).then((value) {
       if (value['status'] == true) {
         RoomController.instance.getRooms(RoomModel.fromJson(value));
-        rooms = RoomController.instance.rooms;
+        // rooms = RoomController.instance.rooms;
       } else {
         //responce error
         AppUtils.showSnakBar(msg: value['msg'], second: 2);
@@ -25,8 +24,6 @@ class RoomRepository {
       // error message
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
     });
-
-    return rooms;
   }
 
   //create new Room
@@ -50,32 +47,16 @@ class RoomRepository {
       "last_name": userLastName,
       "creator_image": userProfileImage,
     }).then((value) {
-      // print(value);
       AppUtils.closeDailog();
       AppUtils.showSnakBar(msg: value['msg'], second: 2);
       onCreated(Room.fromJson(value['data']));
-      // if (value['status'] == true) {
-      //   // print(value["data"]);
-      //   AppUtils.showSnakBar(msg: "Room Created '$roomName'");
-      //   //   SocketIoPrository.instance.crateRoom(roomName: roomName);
-      //   // getAllRooms().then((v) {
-      //   //   if (onCreated != null) {
-      //   //     v.forEach((Room e) {
-      //   //       if (e.roomName == roomName) {
-      //   //         onCreated(e);
-      //   //       }
-      //   //     });
-      //   //   }
-      //   // });
-      // } else {
-      //   AppUtils.showSnakBar(msg: value['msg'], second: 2);
-      // }
     }).onError((error, stackTrace) {
       AppUtils.closeDailog();
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
     });
   }
 
+  //Fix Room
   //delete room
 
 }

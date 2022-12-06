@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:voice_chat/repositorys/home_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/home_tabs/home_discover_tab.dart';
+import 'package:voice_chat/ui/pages/rooms/room_page.dart';
 import 'package:voice_chat/ui/widgets/main_title_with_widget.dart';
 
 class HomeAllTab extends StatefulWidget {
@@ -22,10 +25,21 @@ class HomeAllTab extends StatefulWidget {
 
 class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
   late TabController tabController;
+  bool isTranding = true;
 
   @override
   void initState() {
     tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    tabController.addListener(() {
+      setState(() {
+        if (tabController.index == 0) {
+          isTranding = true;
+        } else {
+          isTranding = false;
+        }
+      });
+      print(isTranding);
+    });
     super.initState();
   }
 
@@ -44,10 +58,6 @@ class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
           // Fixed Room
           MainTitleWithWidget(
             title: "Fixed Room",
-            onTab: () {
-              //TODO add see more
-              print("Fixed Room");
-            },
             child: const HomeAllFixedRoom(),
           ),
           SizedBox(height: 20.h),
@@ -76,11 +86,7 @@ class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
           SizedBox(
             height: h10,
           ),
-          const Rooms(),
-
-          // TabBarView(
-          //     controller: tabController,
-          //     children: [Text("data"), Text("data")]),
+          (isTranding == true) ? const Rooms() : const Rooms(),
 
           SizedBox(height: h30),
         ],
@@ -96,82 +102,83 @@ class HomeAllFixedRoom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RoomController.instance.rooms.shuffle();
+    RoomController.instance.rooms!.shuffle();
 
     return GetBuilder<RoomController>(builder: (controller) {
       return SizedBox(
         height: 140,
-        child: Text("kundan"),
-        // child: ListView.builder(
-        //   itemCount: controller.rooms.length > 6 ? 6 : controller.rooms.length,
-        //   scrollDirection: Axis.horizontal,
-        //   itemBuilder: (context, index) {
-        //     return Card(
-        //       clipBehavior: Clip.hardEdge,
-        //       child: InkWell(
-        //         onTap: () {
-        //           Get.to(() => RoomPage(
-        //                 room: controller.rooms[index],
-        //               ));
-        //         },
-        //         child: Container(
-        //           width: 120,
-        //           decoration: BoxDecoration(
-        //             //Room Thumb
-        //             image: DecorationImage(
-        //               image: CachedNetworkImageProvider(
-        //                   controller.rooms[index].roomThum),
-        //               fit: BoxFit.cover,
-        //               colorFilter: ColorFilter.mode(
-        //                 AppColor.black.withOpacity(0.3),
-        //                 BlendMode.darken,
-        //               ),
-        //             ),
-        //           ),
-        //           alignment: Alignment.bottomCenter,
-        //           child: Padding(
-        //             padding: const EdgeInsets.only(
-        //               bottom: 10,
-        //               left: 10,
-        //               right: 10,
-        //             ),
-        //             child: Row(
-        //               children: [
-        //                 Container(
-        //                   height: 30,
-        //                   width: 30,
-        //                   decoration: BoxDecoration(
-        //                     //Avtar
-        //                     image: (controller.rooms[index].userProfile != null)
-        //                         ? DecorationImage(
-        //                             image: CachedNetworkImageProvider(
-        //                                 controller.rooms[index].userProfile!),
-        //                             fit: BoxFit.cover,
-        //                           )
-        //                         : null,
-        //                     borderRadius: BorderRadius.circular(30),
-        //                   ),
-        //                 ),
-        //                 const SizedBox(width: 10),
-        //                 Expanded(
-        //                   child: Text(
-        //                     controller.rooms[index].userName,
-        //                     style: TextStyle(
-        //                       color: AppColor.white,
-        //                       fontSize: 16.sp,
-        //                       fontWeight: FontWeight.w500,
-        //                     ),
-        //                     overflow: TextOverflow.ellipsis,
-        //                   ),
-        //                 )
-        //               ],
-        //             ),
-        //           ),
-        //         ),
-        //       ),
-        //     );
-        //   },
-        // ),
+        // child: Text("kundan"),
+        child: ListView.builder(
+          itemCount: controller.rooms!.length > 6 ? 6 : controller.rooms!.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return Card(
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                onTap: () {
+                  Get.to(() => RoomPage(
+                        room: controller.rooms![index],
+                      ));
+                },
+                child: Container(
+                  width: 120,
+                  decoration: BoxDecoration(
+                    //Room Thumb
+                    image: DecorationImage(
+                      // image: CachedNetworkImageProvider(
+                      //     controller.rooms![index]),
+                      image: const AssetImage("assets/images/bg.jpg"),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                        AppColor.black.withOpacity(0.3),
+                        BlendMode.darken,
+                      ),
+                    ),
+                  ),
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 10,
+                      left: 10,
+                      right: 10,
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                            gradient: AppColor.backgraundGradientV,
+                            //Avtar
+                            image: (controller.rooms![index].image != null)
+                                ? DecorationImage(
+                                    image: CachedNetworkImageProvider("${ApiImagePath.profile}${controller.rooms![index].image}"),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            "${controller.rooms![index].firstName} ${controller.rooms![index].lastName}",
+                            style: TextStyle(
+                              color: AppColor.white,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
       );
     });
   }
@@ -188,7 +195,6 @@ class _BannerState extends State<Banner> {
   int pageIndex = 0;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     HomeRepository.getHomeBanner();
   }
@@ -197,7 +203,6 @@ class _BannerState extends State<Banner> {
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
       builder: (controller) {
-        print(controller.banners);
         if (controller.banners == null) {
           return const Center(child: CircularProgressIndicator());
         } else if (controller.banners!.isEmpty) {
