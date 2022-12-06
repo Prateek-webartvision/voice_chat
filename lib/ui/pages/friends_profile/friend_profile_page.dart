@@ -34,7 +34,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> with TickerProvid
   @override
   void initState() {
     _tabController = TabController(length: tabBarList.length, vsync: this);
-    FirendProfileRepository().getUserById(widget.friendId);
+    FriendProfileRepository().getUserById(widget.friendId);
     scrollSetting();
     super.initState();
   }
@@ -118,7 +118,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> with TickerProvid
                       controller: _tabController,
                       children: [
                         InfoTabPage(userInfo: friendData.friendProfile!.bio),
-                        MomentsTabPage(),
+                        MomentsTabPage(userId: friendData.friendProfile!.id!),
                         BadgesTabPage(),
                         GiftTabPages(),
                       ],

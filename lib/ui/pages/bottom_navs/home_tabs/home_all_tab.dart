@@ -197,13 +197,16 @@ class _BannerState extends State<Banner> {
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
       builder: (controller) {
-        if (controller.banners.isEmpty) {
+        print(controller.banners);
+        if (controller.banners == null) {
           return const Center(child: CircularProgressIndicator());
+        } else if (controller.banners!.isEmpty) {
+          return const SizedBox();
         } else {
           return Column(
             children: [
               CarouselSlider.builder(
-                itemCount: controller.banners.length,
+                itemCount: controller.banners!.length,
                 itemBuilder: (context, index, realIndex) {
                   return Container(
                     margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -211,7 +214,7 @@ class _BannerState extends State<Banner> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
                       image: DecorationImage(
-                        image: CachedNetworkImageProvider("${ApiImagePath.banner}${controller.banners[index]}"),
+                        image: CachedNetworkImageProvider("${ApiImagePath.banner}${controller.banners![index]}"),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -232,7 +235,7 @@ class _BannerState extends State<Banner> {
               const SizedBox(height: 10),
               AnimatedSmoothIndicator(
                 activeIndex: pageIndex,
-                count: controller.banners.length,
+                count: controller.banners!.length,
                 effect: WormEffect(
                   dotHeight: 10,
                   dotWidth: 10,

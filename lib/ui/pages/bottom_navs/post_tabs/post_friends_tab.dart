@@ -7,7 +7,6 @@ import 'package:voice_chat/repositorys/post_repo.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/post_tabs/post_widgets/pos_comment_bottom_sheet_f.dart';
 
 import 'post_widgets/post_card.dart';
-import 'post_widgets/post_comment_bottom_sheet.dart';
 import 'post_widgets/try_again_btn.dart';
 
 class PostFriendsTab extends StatefulWidget {
@@ -59,7 +58,7 @@ class _PostFriendsTabState extends State<PostFriendsTab> {
               // physics: BouncingScrollPhysics(),
               shrinkWrap: true,
               // reverse: true,
-              padding: EdgeInsets.only(bottom: 20, left: 16, right: 16),
+              padding: const EdgeInsets.only(bottom: 20, left: 16, right: 16),
               itemCount: controller.allFriendsPostList.length,
               itemBuilder: (context, index) {
                 int reversedIndex = controller.allFriendsPostList.length - 1 - index;

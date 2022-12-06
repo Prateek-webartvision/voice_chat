@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:voice_chat/res/app_color.dart';
 
 class BgWithAvtar extends StatelessWidget {
@@ -61,6 +62,7 @@ class BgWithAvtar extends StatelessWidget {
                     top: -120 * .4,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           height: 120,
@@ -80,11 +82,18 @@ class BgWithAvtar extends StatelessWidget {
                         ),
                         //
                         const SizedBox(height: 6),
-                        Text(
-                          userName,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                        Container(
+                          // color: Colors.green,
+                          padding: const EdgeInsets.only(right: 16),
+                          constraints: BoxConstraints(maxWidth: Get.width - 32),
+                          child: Text(
+                            userName,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                         ),
                       ],

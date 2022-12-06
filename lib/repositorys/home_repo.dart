@@ -5,12 +5,18 @@ import '../data/api_services.dart';
 
 class HomeRepository {
   static getHomeBanner() {
-    HomeController.instance.banners.clear();
+    HomeController.instance.setNull();
     ApiServices.getApi(url: AppUrls.homeBanner).then((value) {
+      List<String> tempList = [];
+
       if (value["status"] == true) {
         for (var element in value['data']) {
-          HomeController.instance.addBanner(element['obj']);
+          tempList.add(element['obj']);
         }
+
+        HomeController.instance.addBanner(tempList);
+
+        // print(tempList);
       }
       // print(value);
     }).onError((error, stackTrace) {

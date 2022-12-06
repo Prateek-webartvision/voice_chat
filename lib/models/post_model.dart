@@ -86,6 +86,87 @@ class PostModel {
   }
 }
 
+class FriendProfilePostModel {
+  final int id;
+  final String? title;
+  final String? body;
+  final String? tags;
+  final String? postImage;
+  final List<PostLikeModel> likes;
+  final List<PostCommentModel> comments;
+  final int createdBy;
+  final String firstName;
+  final String lastName;
+  final String? creatorImage;
+  final String? info;
+  final bool? active;
+  final String createdAt;
+  final String updateAt;
+  bool isLiked;
+  int likesCount;
+  int commentCount;
+
+  FriendProfilePostModel({
+    required this.id,
+    this.title,
+    this.body,
+    this.tags,
+    this.postImage,
+    required this.likes,
+    required this.comments,
+    required this.createdBy,
+    required this.firstName,
+    required this.lastName,
+    this.creatorImage,
+    this.info,
+    this.active,
+    required this.createdAt,
+    required this.updateAt,
+    required this.isLiked,
+    required this.likesCount,
+    required this.commentCount,
+  });
+
+  factory FriendProfilePostModel.fromJson(Map<String, dynamic> json) {
+    bool isliked = false;
+
+    List<PostLikeModel> _likes = [];
+    json['likes'].forEach((v) {
+      _likes.add(PostLikeModel.fromJson(v));
+      if (v["userid"] == UserController.instance.getId) {
+        isliked = true;
+      }
+    });
+
+    List<PostCommentModel> _commnets = [];
+    json['comments'].forEach((v) {
+      // print(v);
+      _commnets.add(PostCommentModel.fromJson(v));
+    });
+
+    return FriendProfilePostModel(
+      id: json['id'],
+      title: json['title'],
+      body: json['body'],
+      tags: json['body'],
+      postImage: json['image'],
+      likes: _likes,
+      comments: _commnets,
+      createdBy: json['created_by'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      creatorImage: json['creator_image'],
+      info: json['info'],
+      active: json['active'],
+      createdAt: json['createdAt'],
+      updateAt: json['updatedAt'],
+      isLiked: isliked,
+      likesCount: _likes.length,
+      commentCount: _commnets.length,
+    );
+  }
+}
+
 //Post like
 class PostLikeModel {
   final int userid;
