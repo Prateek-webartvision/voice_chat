@@ -30,14 +30,14 @@ class _SigleChatPageState extends State<SigleChatPage> {
         "message": "hello",
         "profile": widget.profileUrl,
         "name": widget.fillName,
-        "time": DateTime.now().subtract(const Duration(minutes: 30)).toString(),
+        "time": DateTime.now().subtract(const Duration(days: 1)).toString(),
         "sender_id": widget.friendId,
       },
       {
         "message": "hi",
         "profile": UserController.instance.getImage,
         "name": UserController.instance.getFirstName,
-        "time": DateTime.now().subtract(const Duration(minutes: 29)).toString(),
+        "time": DateTime.now().subtract(const Duration(minutes: 59)).toString(),
         "sender_id": UserController.instance.getId,
       },
       {
@@ -246,7 +246,7 @@ class SingleChatCard extends StatelessWidget {
     String? chatTime;
     if (duration.inSeconds < 60) {
       chatTime = "just now";
-    } else if (duration.inSeconds >= 60 || duration.inHours < 1) {
+    } else if (duration.inSeconds >= 60 && duration.inHours < 1) {
       chatTime = "${duration.inMinutes} min";
     } else {
       chatTime = DateTime.parse(time).toString();
