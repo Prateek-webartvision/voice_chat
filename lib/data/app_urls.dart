@@ -48,15 +48,22 @@ class AppUrls {
 
   //Room
   static const String getAllRooms = "$_api/rooms/get";
+  static const String getRoomById = "$_api/rooms/get-v2/";
   static const String createNewRoom = "$_api/rooms/add-room";
+  static const String roomSendMessage = "$_api/rooms/chat";
 
   // static const deleteRoom = "$_api";
 }
 
 class SocketStrings {
   static String newUser = 'new-user';
+  static String userConnected = "user-connected";
+  static String userDisconnect = "user-disconnected";
+
+  // static String roomMessage = "room-message";
+
   static String sendChatMessage = 'send-chat-message';
-  static String chateMessages = 'chat-message';
+  static String chateMessages = 'chat-msg';
 }
 
 class ApiImagePath {

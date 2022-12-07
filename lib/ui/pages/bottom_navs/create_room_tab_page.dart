@@ -98,11 +98,7 @@ class _CreateRoomTabPageState extends State<CreateRoomTabPage> {
                         Container(
                           height: 50,
                           width: 50,
-                          decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(50),
-                              border:
-                                  Border.all(color: AppColor.white, width: 1)),
+                          decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(50), border: Border.all(color: AppColor.white, width: 1)),
                           child: Icon(
                             Icons.mic,
                             color: AppColor.white,
@@ -128,8 +124,7 @@ class _CreateRoomTabPageState extends State<CreateRoomTabPage> {
                               decoration: BoxDecoration(
                                 color: AppColor.white,
                                 borderRadius: BorderRadius.circular(50),
-                                border: Border.all(
-                                    color: AppColor.closeToPurple, width: 2),
+                                border: Border.all(color: AppColor.closeToPurple, width: 2),
                               ),
                             ),
                           ),
@@ -138,11 +133,7 @@ class _CreateRoomTabPageState extends State<CreateRoomTabPage> {
                         Container(
                           height: 50,
                           width: 50,
-                          decoration: BoxDecoration(
-                              color: Colors.green[400],
-                              borderRadius: BorderRadius.circular(50),
-                              border:
-                                  Border.all(color: AppColor.white, width: 1)),
+                          decoration: BoxDecoration(color: Colors.green[400], borderRadius: BorderRadius.circular(50), border: Border.all(color: AppColor.white, width: 1)),
                           child: Icon(
                             Icons.chat,
                             color: AppColor.white,
@@ -173,11 +164,12 @@ class _CreateRoomTabPageState extends State<CreateRoomTabPage> {
         image: "iamge1",
         createBy: userData.id.toString(),
         info: "sadasd",
-        onCreated: (Room room) {
+        onCreated: (dynamic room) {
+          // TODO add Rooms
           // try to join room here
-          print("Room message : ${room.roomName}");
+          print("Room message id : $room");
 
-          Get.off(() => RoomPage(room: room));
+          Get.off(() => RoomPage(roomId: room));
         },
       );
       // print("create ${roomname.text}");

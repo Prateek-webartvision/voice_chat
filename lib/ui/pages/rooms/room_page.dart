@@ -6,9 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/controllers/message_controller.dart';
 import 'package:voice_chat/controllers/profile_controller.dart';
+import 'package:voice_chat/controllers/room_controller.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/room_model.dart';
+import 'package:voice_chat/repositorys/room_repo.dart';
 import 'package:voice_chat/repositorys/socket_io_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
@@ -16,8 +18,8 @@ import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/utils/app_utils.dart';
 
 class RoomPage extends StatefulWidget {
-  const RoomPage({super.key, required this.room});
-  final Room room;
+  const RoomPage({super.key, required this.roomId});
+  final int roomId;
 
   @override
   State<RoomPage> createState() => _RoomPageState();
@@ -30,29 +32,36 @@ class _RoomPageState extends State<RoomPage> {
 
   @override
   void initState() {
-    // Get.put(MessageController());
-
-    getUser();
+    MessageController.instance.messages.clear();
+    // RoomController.instance.clearRoomChat();
+    // getUser();
+    init();
     super.initState();
   }
 
-  // get current user and connect to socker
-  getUser() {
-    MessageController.instance.messages.clear();
-
-    print(widget.room.creatorImage);
-
+  init() async {
+    await RoomRepository.instance.getRoomByid(widget.roomId);
     mySocket.connect();
-
-    mySocket.joinRoom(
-      roomName: widget.room.roomName,
-      userName:
-          "${UserController.instance.getFirstName} ${UserController.instance.getLastName}",
-    );
-
-    // // read messages
-    mySocket.chatMessages();
+    mySocket.roomChatMessage(widget.roomId);
+    mySocket.onDis();
   }
+
+  // get current user and connect to socker
+  // getUser() {
+  //   MessageController.instance.messages.clear();
+
+  //   print(widget.room.creatorImage);
+
+  //   mySocket.connect();
+
+  //   mySocket.joinRoom(
+  //     roomName: widget.room.roomName,
+  //     userName: "${UserController.instance.getFirstName} ${UserController.instance.getLastName}",
+  //   );
+
+  //   // // read messages
+  //   mySocket.chatMessages();
+  // }
 
   @override
   void dispose() {
@@ -67,39 +76,44 @@ class _RoomPageState extends State<RoomPage> {
     return AuthBackgraundWidget(
       child: Scaffold(
         backgroundColor: AppColor.transparent,
-        body: GetBuilder<ProfileController>(
+        body: GetBuilder<RoomController>(
           builder: (controller) {
-            if (controller.profileData == null) {
-              if (controller.error == null) {
-                return Center(child: CircularProgressIndicator());
-              } else {
-                return Center(
-                  child: Text(controller.error!),
-                );
-              }
+            if (controller.currentRoom == null) {
+              return Center(child: CircularProgressIndicator());
             } else {
               return Column(
                 children: [
                   //CustumAppBar
                   RoomAppBar(
-                      name: widget.room.roomName,
-                      userImage: widget.room.creatorImage),
+                    name: "${controller.currentRoom!.firstName} ${controller.currentRoom!.lastName}",
+                    userImage: controller.currentRoom!.creatorImage,
+                  ),
                   //Room header
                   RoomHeaderUsers(testImage: null),
 
-                  //Chat List
-                  Flexible(child: GetBuilder<MessageController>(
-                    builder: (controller) {
-                      return ListView.builder(
-                        itemCount: controller.messages.length,
-                        itemBuilder: (context, index) {
-                          return RoomChatCard(
-                            messages: controller.messages[index],
+                  // //Chat List
+                  Flexible(
+                    child: GetBuilder<MessageController>(
+                      builder: (controller) {
+                        if (controller.messages.isEmpty) {
+                          return Center(
+                              child: Text(
+                            "No Messages",
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ));
+                        } else {
+                          return ListView.builder(
+                            itemCount: controller.messages.length,
+                            itemBuilder: (context, index) {
+                              return RoomChatCard(
+                                messages: controller.messages[index],
+                              );
+                            },
                           );
-                        },
-                      );
-                    },
-                  )),
+                        }
+                      },
+                    ),
+                  ),
 
                   //chat text
                   Padding(
@@ -224,17 +238,15 @@ class _RoomPageState extends State<RoomPage> {
                                     onPressed: () {
                                       //socket messgaing
                                       if (message.text.isEmpty) {
-                                        AppUtils.showSnakBar(
-                                            msg: "Enter message");
+                                        AppUtils.showSnakBar(msg: "Enter message");
                                       } else {
-                                        SocketIoPrository.instance.sendMessage(
-                                          roomName: widget.room.roomName,
-                                          message: message.text,
-                                          profilePic:
-                                              UserController.instance.getImage,
-                                          userName:
-                                              "${ProfileController.instance.profileData!.firstName} ${ProfileController.instance.profileData!.lastName}",
-                                        );
+                                        SocketIoPrository.instance.sendRoomChatMessage(controller.currentRoom!.id, message.text);
+                                        //   SocketIoPrository.instance.sendMessage(
+                                        //     roomName: widget.room.roomName,
+                                        //     message: message.text,
+                                        //     profilePic: UserController.instance.getImage,
+                                        //     userName: "${ProfileController.instance.profileData!.firstName} ${ProfileController.instance.profileData!.lastName}",
+                                        //   );
 
                                         if (Get.isBottomSheetOpen == true) {
                                           message.clear();
@@ -263,7 +275,7 @@ class _RoomPageState extends State<RoomPage> {
                       ],
                     ),
                   ),
-                  // Center(child: Text(room.userName)),
+                  // // Center(child: Text(room.userName)),
                 ],
               );
             }
@@ -280,52 +292,82 @@ class RoomChatCard extends StatelessWidget {
     Key? key,
     required this.messages,
   }) : super(key: key);
-  final MessageModel messages;
+  final RoomMessageModel messages;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.all(8),
-        margin: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          // color: AppColor.white,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  height: 25,
-                  width: 25,
-                  decoration: BoxDecoration(
+    if (messages.msg == "conncet") {
+      return connectAndDisConnect(context);
+    } else if (messages.msg == "disconnet") {
+      return connectAndDisConnect(context);
+    } else {
+      return Container(
+          padding: EdgeInsets.all(8),
+          margin: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            // color: AppColor.white,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 25,
+                    width: 25,
+                    decoration: BoxDecoration(
                       color: Colors.green,
                       gradient: AppColor.backgraundGradientV,
                       borderRadius: BorderRadius.circular(15),
                       image: (messages.profilePic != null)
                           ? DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                  "${ApiImagePath.profile}${messages.profilePic!}"),
+                              image: CachedNetworkImageProvider("${ApiImagePath.profile}${messages.profilePic!}"),
                               fit: BoxFit.cover,
                             )
-                          : null),
-                ),
-                SizedBox(width: 6),
-                Text(messages.name,
-                    style: TextStyle(color: AppColor.white, fontSize: 10)),
-              ],
-            ),
-            SizedBox(height: 6),
+                          : null,
+                    ),
+                  ),
+                  SizedBox(width: 6),
+                  Text(messages.name, style: TextStyle(color: AppColor.white, fontSize: 10)),
+                ],
+              ),
+              SizedBox(height: 6),
+              Text(
+                messages.message,
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                      color: AppColor.white,
+                      fontSize: 16,
+                    ),
+              ),
+            ],
+          ));
+    }
+  }
+
+  Widget connectAndDisConnect(BuildContext context) {
+    return Center(
+      child: Container(
+        padding: EdgeInsets.all(3),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
             Text(
-              messages.message,
-              style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+              messages.name,
+              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                     color: AppColor.white,
-                    fontSize: 16,
+                    fontSize: 12,
                   ),
             ),
+            Text(
+              messages.message,
+              style: Theme.of(context).textTheme.headlineSmall,
+            )
           ],
-        ));
+        ),
+      ),
+    );
   }
 }
 
@@ -343,10 +385,7 @@ class RoomHeaderUsers extends StatelessWidget {
       width: double.maxFinite,
       decoration: BoxDecoration(
         color: Colors.green,
-        image: DecorationImage(
-            image: CachedNetworkImageProvider(
-                "https://www.texassampling.com/wp-content/uploads/2014/04/bokeh-cover-bg.jpg"),
-            fit: BoxFit.cover),
+        image: DecorationImage(image: CachedNetworkImageProvider("https://www.texassampling.com/wp-content/uploads/2014/04/bokeh-cover-bg.jpg"), fit: BoxFit.cover),
       ),
       child: GridView.builder(
         itemCount: 10,
@@ -371,9 +410,7 @@ class RoomHeaderUsers extends StatelessWidget {
                   ),
                   image: (index == 9)
                       ? DecorationImage(
-                          image: CachedNetworkImageProvider(testImage ??
-                              "https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"),
-                          fit: BoxFit.cover)
+                          image: CachedNetworkImageProvider(testImage ?? "https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"), fit: BoxFit.cover)
                       : null,
                 ),
                 child: (index == 9)
@@ -433,8 +470,7 @@ class RoomAppBar extends StatelessWidget {
                           gradient: AppColor.backgraundGradientV,
                           image: (userImage != null)
                               ? DecorationImage(
-                                  image: CachedNetworkImageProvider(
-                                      "${ApiImagePath.profile}$userImage"),
+                                  image: CachedNetworkImageProvider("${ApiImagePath.profile}$userImage"),
                                   fit: BoxFit.cover,
                                 )
                               : null,

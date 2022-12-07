@@ -6,9 +6,15 @@ class RoomController extends GetxController {
 
   List<Room>? rooms;
   List<Room>? fixRooms;
+  Room? currentRoom;
 
   getRooms(RoomModel roomData) {
     rooms = roomData.rooms;
+    update();
+  }
+
+  setRoomData(Room room) {
+    currentRoom = room;
     update();
   }
 }

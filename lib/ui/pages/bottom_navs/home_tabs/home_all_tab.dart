@@ -122,9 +122,8 @@ class HomeAllFixedRoom extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                 onTap: () {
-                  Get.to(() => RoomPage(
-                        room: controller.rooms![index],
-                      ));
+                  //Go to room page
+                  Get.to(() => RoomPage(roomId: controller.rooms![index].id));
                 },
                 child: Container(
                   width: 120,
