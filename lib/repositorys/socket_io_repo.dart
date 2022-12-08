@@ -23,33 +23,30 @@ class SocketIoPrository {
     return _instance!;
   }
 
-  // connect to socket server
+  //* connect to socket server
   Future<void> connect() async {
     socket!.connect();
-    socket!.onConnect((data) => print("connected"));
-    // socket!.onDisconnect((data) => print("disconnet"));
+    socket!.onConnect((data) {
+      print("connected");
+    });
+    socket!.onDisconnect((data) => print("disconnet"));
     socket!.onConnectError((err) => print("errpr; $err"));
     socket!.onError((err) => print(err));
+    socket!.on("e", (data) {
+      print(data);
+    });
   }
 
-  onDis() {
-    // socket!.onDisconnect((data) {
-    //   socket!.emit(SocketStrings.userDisconnect, "dis");
-    // });
-  }
-
-  //Send message
-  sendRoomChatMessage(
-    int roomId,
-    String message,
-  ) {
+  //*Send message in room
+  sendRoomChatMessage(int roomId, String message) {
     ApiServices.postApi(url: AppUrls.roomSendMessage, mapData: {
       "roomid": roomId,
       "token": UserController.instance.getToken,
       "message": message,
     }).then((value) {
+      //
       if (value['status'] == true) {
-        print(value);
+        print("Res: $value");
       } else {
         AppUtils.showSnakBar(msg: value['status'], second: 2);
       }
@@ -60,9 +57,8 @@ class SocketIoPrository {
 
   roomChatMessage(int roomid) {
     socket!.on("room-message", (data) {
-      // print(data);
+      print(data);
       if (roomid == data["room_id"]) {
-        // print("yes");
         MessageController.instance.pushMessage(
           RoomMessageModel(name: "${data["first_name"]} ${data["last_name"]}", message: data["message"], profilePic: data['sender_image'], msg: "chat"),
         );
@@ -146,10 +142,6 @@ class SocketIoPrository {
 
   roomDisconnet() {
     socket!.disconnect();
-    socket!.dispose();
-  }
-
-  closeConnection() {
     socket!.dispose();
   }
 }

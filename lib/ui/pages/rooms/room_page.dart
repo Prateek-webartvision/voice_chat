@@ -1,21 +1,18 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:voice_chat/controllers/message_controller.dart';
-import 'package:voice_chat/controllers/profile_controller.dart';
-import 'package:voice_chat/controllers/room_controller.dart';
-import 'package:voice_chat/controllers/user_controller.dart';
-import 'package:voice_chat/data/app_urls.dart';
-import 'package:voice_chat/models/room_model.dart';
-import 'package:voice_chat/repositorys/room_repo.dart';
-import 'package:voice_chat/repositorys/socket_io_repo.dart';
+import 'package:flutter/material.dart';
 import 'package:voice_chat/res/app_color.dart';
-import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
-import 'package:voice_chat/ui/widgets/k_text_field.dart';
+import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/utils/app_utils.dart';
+import 'package:voice_chat/repositorys/room_repo.dart';
+import 'package:voice_chat/ui/widgets/k_text_field.dart';
+import 'package:voice_chat/repositorys/socket_io_repo.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:voice_chat/controllers/room_controller.dart';
+import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:voice_chat/controllers/message_controller.dart';
 
 class RoomPage extends StatefulWidget {
   const RoomPage({super.key, required this.roomId});
@@ -33,8 +30,6 @@ class _RoomPageState extends State<RoomPage> {
   @override
   void initState() {
     MessageController.instance.messages.clear();
-    // RoomController.instance.clearRoomChat();
-    // getUser();
     init();
     super.initState();
   }
@@ -42,32 +37,18 @@ class _RoomPageState extends State<RoomPage> {
   init() async {
     await RoomRepository.instance.getRoomByid(widget.roomId);
     mySocket.connect();
-    mySocket.roomChatMessage(widget.roomId);
-    mySocket.onDis();
-  }
+    // mySocket.roomChatMessage(widget.roomId);
 
-  // get current user and connect to socker
-  // getUser() {
-  //   MessageController.instance.messages.clear();
-
-  //   print(widget.room.creatorImage);
-
-  //   mySocket.connect();
-
-  //   mySocket.joinRoom(
-  //     roomName: widget.room.roomName,
-  //     userName: "${UserController.instance.getFirstName} ${UserController.instance.getLastName}",
-  //   );
-
-  //   // // read messages
-  //   mySocket.chatMessages();
-  // }
-
-  @override
-  void dispose() {
-    mySocket.roomDisconnet();
-    message.dispose();
-    super.dispose();
+    //* get Room Messages
+    mySocket.socket!.on("room-message", (data) {
+      print(data);
+      if (widget.roomId == data["room_id"]) {
+        MessageController.instance.pushMessage(
+          RoomMessageModel(name: "${data["first_name"]} ${data["last_name"]}", message: data["message"], profilePic: data['sender_image'], msg: "chat"),
+        );
+      }
+    });
+    //
   }
 
 //
@@ -83,9 +64,10 @@ class _RoomPageState extends State<RoomPage> {
             } else {
               return Column(
                 children: [
-                  //CustumAppBar
+                  //* Custum AppBar
                   RoomAppBar(
                     name: "${controller.currentRoom!.firstName} ${controller.currentRoom!.lastName}",
+                    roomName: controller.currentRoom!.roomName,
                     userImage: controller.currentRoom!.creatorImage,
                   ),
                   //Room header
@@ -217,10 +199,9 @@ class _RoomPageState extends State<RoomPage> {
                           ),
                         ),
 
+                        //*message btn
                         InkWell(
                           onTap: () {
-                            // print("object");
-                            // socket!.emit("chat message", "hello world");
                             Get.bottomSheet(Container(
                               // height: 100,
                               color: AppColor.white,
@@ -236,7 +217,7 @@ class _RoomPageState extends State<RoomPage> {
                                   IconButton(
                                     icon: Icon(Icons.send),
                                     onPressed: () {
-                                      //socket messgaing
+                                      //*socket messgaing
                                       if (message.text.isEmpty) {
                                         AppUtils.showSnakBar(msg: "Enter message");
                                       } else {
@@ -283,6 +264,13 @@ class _RoomPageState extends State<RoomPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    mySocket.roomDisconnet();
+    message.dispose();
+    super.dispose();
   }
 }
 
@@ -438,9 +426,10 @@ class RoomHeaderUsers extends StatelessWidget {
 }
 
 class RoomAppBar extends StatelessWidget {
-  const RoomAppBar({super.key, this.userImage, required this.name});
+  const RoomAppBar({super.key, this.userImage, required this.name, required this.roomName});
   final String? userImage;
   final String name;
+  final String roomName;
 
   @override
   Widget build(BuildContext context) {
@@ -454,14 +443,14 @@ class RoomAppBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //user side
+              //*user side
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //Avtar
+                  //*Avtar
                   Row(
                     children: [
-                      //image
+                      //*image
                       Container(
                         height: 32,
                         width: 32,
@@ -483,15 +472,12 @@ class RoomAppBar extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            name,
-                            style: TextStyle(
-                              color: AppColor.white,
-                              fontSize: 14.sp,
-                            ),
+                            roomName,
+                            style: TextStyle(color: AppColor.white, fontSize: 16.sp, fontWeight: FontWeight.w600),
                           ),
                           SizedBox(height: 2),
                           Text(
-                            "154955634",
+                            name,
                             style: TextStyle(
                               color: AppColor.white54,
                               fontSize: 12.sp,

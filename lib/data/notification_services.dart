@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:voice_chat/res/app_color.dart';
 
 class LocalNotifition {
   static LocalNotifition instance = LocalNotifition();
@@ -6,7 +7,7 @@ class LocalNotifition {
 
   final InitializationSettings _initializationSettings = const InitializationSettings(
     //? add app icon with no bg
-    android: AndroidInitializationSettings("@mipmap/launcher_icon"),
+    android: AndroidInitializationSettings("@mipmap/ic_launcher"),
     iOS: DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -23,6 +24,7 @@ class LocalNotifition {
       priority: Priority.max,
       importance: Importance.max,
       playSound: true,
+      color: AppColor.closeToPurple,
       enableVibration: false,
     ),
     iOS: DarwinNotificationDetails(
