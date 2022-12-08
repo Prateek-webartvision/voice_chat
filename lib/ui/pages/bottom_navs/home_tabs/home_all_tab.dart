@@ -92,7 +92,7 @@ class _HomeAllTabState extends State<HomeAllTab> with TickerProviderStateMixin {
           SizedBox(
             height: h10,
           ),
-          (isTranding == true) ? const Rooms() : const Rooms(),
+          (isTranding == true) ? const RoomsWidget() : const RoomsWidget(),
 
           SizedBox(height: h30),
         ],

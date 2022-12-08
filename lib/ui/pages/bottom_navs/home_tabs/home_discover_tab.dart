@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/controllers/room_controller.dart';
+import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/models/countrys_flag_imoji_model.dart';
 import 'package:voice_chat/repositorys/room_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
@@ -47,7 +49,7 @@ class _HomeDiscoverTabState extends State<HomeDiscoverTab> {
               //all new rooms
               MainTitleWithWidget(
                 title: "New Rooms",
-                child: Rooms(),
+                child: RoomsWidget(),
               ),
               const SizedBox(height: 50),
             ],
@@ -58,8 +60,8 @@ class _HomeDiscoverTabState extends State<HomeDiscoverTab> {
   }
 }
 
-class Rooms extends StatelessWidget {
-  const Rooms({
+class RoomsWidget extends StatelessWidget {
+  const RoomsWidget({
     Key? key,
   }) : super(key: key);
 
@@ -88,7 +90,6 @@ class Rooms extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     //Bg image
-
                     image: DecorationImage(
                       // image: CachedNetworkImageProvider(
                       //     controller.rooms[index].roomThum),
@@ -107,6 +108,7 @@ class Rooms extends StatelessWidget {
                       left: 10,
                       right: 10,
                     ),
+
                     //user
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -132,13 +134,12 @@ class Rooms extends StatelessWidget {
                               width: 30,
                               decoration: BoxDecoration(
                                 gradient: AppColor.backgraundGradientV,
-                                // image: (controller.rooms[index].userProfile != null)
-                                //     ? DecorationImage(
-                                //         image: CachedNetworkImageProvider(
-                                //             controller.rooms[index].userProfile!),
-                                //         fit: BoxFit.cover,
-                                //       )
-                                //     : null,
+                                image: (controller.rooms![index].creatorImage != null)
+                                    ? DecorationImage(
+                                        image: CachedNetworkImageProvider("${ApiImagePath.profile}${controller.rooms![index].creatorImage}"),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : null,
                                 borderRadius: BorderRadius.circular(30),
                               ),
                             ),
