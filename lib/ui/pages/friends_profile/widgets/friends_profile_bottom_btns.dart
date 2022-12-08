@@ -37,7 +37,7 @@ class FriendsProfileBottomBtns extends StatelessWidget {
                           // friendData.changeIsFriend(!friendData.friendProfile!.isFriend);
                         } else {
                           //TODO Chat page rout
-                          Get.to(() => SigleChatPage(
+                          Get.to(() => SingleChatPage(
                                 friendId: friendData.friendProfile!.id!,
                                 fillName: "${friendData.friendProfile!.firstName} ${friendData.friendProfile!.lastName}",
                                 profileUrl: friendData.friendProfile!.image,

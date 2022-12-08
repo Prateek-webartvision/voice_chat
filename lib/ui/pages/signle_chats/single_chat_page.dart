@@ -9,17 +9,17 @@ import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/utils/app_utils.dart';
 
-class SigleChatPage extends StatefulWidget {
-  const SigleChatPage({super.key, required this.friendId, required this.fillName, required this.profileUrl});
+class SingleChatPage extends StatefulWidget {
+  const SingleChatPage({super.key, required this.friendId, required this.fillName, required this.profileUrl});
   final int friendId;
   final String fillName;
   final String? profileUrl;
 
   @override
-  State<SigleChatPage> createState() => _SigleChatPageState();
+  State<SingleChatPage> createState() => _SingleChatPageState();
 }
 
-class _SigleChatPageState extends State<SigleChatPage> {
+class _SingleChatPageState extends State<SingleChatPage> {
   bool isReplying = false;
   String replayMessage = '';
   late List<Map<String, dynamic>> dummyChat;
