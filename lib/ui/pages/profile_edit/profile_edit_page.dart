@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_picker/country_picker.dart';
@@ -78,7 +76,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         },
                         //* image Container
                         child: Container(
-                          constraints: BoxConstraints(maxHeight: 50, maxWidth: 50, minHeight: 50, minWidth: 50),
+                          constraints: const BoxConstraints(maxHeight: 50, maxWidth: 50, minHeight: 50, minWidth: 50),
                           decoration: BoxDecoration(
                             color: AppColor.white,
                             gradient: AppColor.backgraundGradientV,
@@ -98,7 +96,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       ),
                     ],
                   ),
-                  Divider(thickness: 2),
+                  const Divider(thickness: 2),
 
                   //* Cover image
                   Row(
@@ -119,7 +117,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           );
                         },
                         child: Container(
-                          constraints: BoxConstraints(maxHeight: 50, maxWidth: 50, minHeight: 50, minWidth: 50),
+                          constraints: const BoxConstraints(maxHeight: 50, maxWidth: 50, minHeight: 50, minWidth: 50),
                           decoration: BoxDecoration(
                             color: AppColor.white,
                             gradient: AppColor.backgraundGradientV,
@@ -138,7 +136,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       ),
                     ],
                   ),
-                  Divider(thickness: 2),
+                  const Divider(thickness: 2),
 
                   //*Name
                   Padding(
@@ -178,7 +176,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                             textInputAction: TextInputAction.next,
                                           ),
                                         ),
-                                        SizedBox(width: 8),
+                                        const SizedBox(width: 8),
                                         Flexible(
                                           child: KTextField2(
                                             textEditingController: lastName,
@@ -237,7 +235,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       ],
                     ),
                   ),
-                  Divider(thickness: 2),
+                  const Divider(thickness: 2),
 
                   //*Dob
                   Padding(
@@ -288,7 +286,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       ],
                     ),
                   ),
-                  Divider(thickness: 2),
+                  const Divider(thickness: 2),
 
                   //*Gender
                   Padding(
@@ -337,7 +335,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       ],
                     ),
                   ),
-                  Divider(thickness: 2),
+                  const Divider(thickness: 2),
 
                   //*Country
                   Padding(
@@ -387,7 +385,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       ],
                     ),
                   ),
-                  Divider(thickness: 2),
+                  const Divider(thickness: 2),
 
                   //* Bio
                   Padding(
@@ -408,7 +406,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                   color: AppColor.black,
                                 ),
                               ),
-                              SizedBox(height: 6),
+                              const SizedBox(height: 6),
                               Text(
                                 userProfile.getBio ?? "NA",
                                 style: TextStyle(
@@ -486,7 +484,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       ],
                     ),
                   ),
-                  Divider(thickness: 2),
+                  const Divider(thickness: 2),
                 ],
               ),
             ),

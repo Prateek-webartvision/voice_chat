@@ -36,7 +36,7 @@ class PostRepository {
     });
   }
 
-  //get All Posts
+  //*get All Posts
   Future getAllPost() async {
     print("post call");
     _postController.setPostStatus(ApiStatusEnum.loading);
@@ -59,7 +59,7 @@ class PostRepository {
     });
   }
 
-  // get All friends Posts
+  //* get All friends Posts
   Future grtAllFriendsPost() async {
     print("post f call");
     _postFriendsController.setPostStatus(ApiStatusEnum.loading);
@@ -75,14 +75,13 @@ class PostRepository {
         _postFriendsController.setPostStatus(ApiStatusEnum.error);
         _postFriendsController.setError(value['msg']);
       }
-      // print(value);
     }).onError((error, stackTrace) {
       _postFriendsController.setPostStatus(ApiStatusEnum.error);
       _postFriendsController.setError(error.toString());
     });
   }
 
-  // Create new Post
+  //* Create new Post
   createNewPost({String? postMessage, String? tag, String? image}) {
     if (postMessage!.isNotEmpty || image != null) {
       AppUtils.progressDailog();
@@ -113,7 +112,7 @@ class PostRepository {
     }
   }
 
-  //remove Post
+  //*remove Post
   Future removePost({required int postId}) async {
     Map<String, dynamic> removePostData = {
       "token": UserController.instance.getToken,
@@ -133,7 +132,7 @@ class PostRepository {
     });
   }
 
-  // Remove comment from post
+  //* Remove comment from post
   removeComment({required String commentId, required int postId}) {
     // print("$commentId $postId");
     AppUtils.progressDailog();
@@ -156,7 +155,7 @@ class PostRepository {
     });
   }
 
-  // Remove comment from post
+  //* Remove comment from post
   removeFriendsPostComment({required String commentId, required int postId}) {
     // print("$commentId $postId");
     AppUtils.progressDailog();
@@ -180,7 +179,7 @@ class PostRepository {
     });
   }
 
-  // add Comment to post
+  //* add Comment to post
   Future addPostComment({required int postId, required String postMessage}) async {
     AppUtils.progressDailog();
 
@@ -213,7 +212,7 @@ class PostRepository {
     return d; // print(commentData);
   }
 
-  // add Comment to post
+  //* add Comment to post
   Future addPostFriendsComment({required int postId, required String postMessage}) async {
     AppUtils.progressDailog();
 
@@ -246,7 +245,7 @@ class PostRepository {
     return d; // print(commentData);
   }
 
-  //Like post
+  //*Like post
   Future addPostLike({required int postId}) async {
     AppUtils.progressDailog();
 

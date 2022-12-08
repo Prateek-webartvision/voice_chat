@@ -6,6 +6,7 @@ import 'package:voice_chat/controllers/post_suggested_controller.dart';
 import 'package:voice_chat/data/app_enums.dart';
 import 'package:voice_chat/repositorys/friend_repo.dart';
 import 'package:voice_chat/repositorys/post_repo.dart';
+import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/res/constant_value.dart';
 
 import 'post_widgets/post_card.dart';
@@ -24,42 +25,38 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
   void initState() {
     Get.lazyPut(() => PostSuggestedController());
     refreshFun();
-    // PostRepository.instance.testPostApidata();
     super.initState();
   }
 
-  //Refresh indictor fun
+  //*Refresh indictor fun
   Future refreshFun() async {
-    // await PostRepository.instance.getAllPost();
     PostRepository.instance.testPostApidata();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<PostSuggestedController>(
-      builder: (controller) {
-        if (controller.postEnum == ApiStatusEnum.loading) {
-          return Center(child: CircularProgressIndicator());
-        } else if (controller.postEnum == ApiStatusEnum.error) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  controller.erroMessage.toString(),
-                ),
-                SizedBox(height: 20),
-                TryAgainBtn(
-                  onTab: () {
-                    refreshFun();
-                  },
-                )
-              ],
-            ),
-          );
+    return GetBuilder<PostSuggestedController>(builder: (controller) {
+      if (controller.postEnum == ApiStatusEnum.loading) {
+        //? check if is loading
+        return Center(child: CircularProgressIndicator());
+      } else if (controller.postEnum == ApiStatusEnum.error) {
+        // ? checking error
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(controller.erroMessage.toString()),
+              SizedBox(height: 20),
+              TryAgainBtn(onTab: () => refreshFun()),
+            ],
+          ),
+        );
+      } else {
+        //*Success
+        if (controller.allPostList.isEmpty) {
+          return Center(child: Text("No Post", style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: AppColor.black)));
         } else {
-          //Success
           return RefreshIndicator(
             onRefresh: refreshFun,
             child: ListView.separated(
@@ -96,21 +93,16 @@ class _PostSuggestedTabState extends State<PostSuggestedTab> {
               separatorBuilder: (BuildContext context, int index) {
                 return Column(
                   children: [
-                    const Divider(
-                      thickness: 2,
-                      endIndent: 40,
-                    ),
-                    SizedBox(
-                      height: h10,
-                    )
+                    const Divider(thickness: 2, endIndent: 40),
+                    SizedBox(height: h10),
                   ],
                 );
               },
             ),
           );
         }
-      },
-    );
+      }
+    });
   }
 }
 

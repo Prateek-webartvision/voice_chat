@@ -4,6 +4,7 @@ import 'package:voice_chat/controllers/post_friends_controller.dart';
 import 'package:voice_chat/data/app_enums.dart';
 import 'package:voice_chat/repositorys/friend_repo.dart';
 import 'package:voice_chat/repositorys/post_repo.dart';
+import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/post_tabs/post_widgets/pos_comment_bottom_sheet_f.dart';
 
 import 'post_widgets/post_card.dart';
@@ -39,20 +40,17 @@ class _PostFriendsTabState extends State<PostFriendsTab> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                controller.erroMessage.toString(),
-              ),
+              Text(controller.erroMessage.toString()),
               const SizedBox(height: 20),
-              TryAgainBtn(
-                onTab: () {
-                  refreshFun();
-                },
-              )
+              TryAgainBtn(onTab: () => refreshFun()),
             ],
           ),
         );
       } else {
-        return RefreshIndicator(
+        if (controller.allFriendsPostList.isEmpty) {
+          return Center(child: Text("No Firends Post", style: Theme.of(context).textTheme.headlineSmall!.copyWith(color: AppColor.black)));
+        } else {
+          return RefreshIndicator(
             onRefresh: refreshFun,
             child: ListView.separated(
               // physics: BouncingScrollPhysics(),
@@ -99,7 +97,9 @@ class _PostFriendsTabState extends State<PostFriendsTab> {
                   ],
                 );
               },
-            ));
+            ),
+          );
+        }
       }
     });
   }

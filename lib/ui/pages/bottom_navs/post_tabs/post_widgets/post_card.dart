@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -48,7 +50,9 @@ class PostCardWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(40),
                   image: (cardData.userProfile != null)
                       ? DecorationImage(
-                          image: CachedNetworkImageProvider("${ApiImagePath.profile}${cardData.userProfile!}"),
+                          image: CachedNetworkImageProvider(
+                            "${ApiImagePath.profile}${cardData.userProfile!}",
+                          ),
                           fit: BoxFit.cover,
                         )
                       : null,
@@ -123,7 +127,21 @@ class PostCardWidget extends StatelessWidget {
         (cardData.image != null)
             ? ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: CachedNetworkImage(imageUrl: "${ApiImagePath.post}${cardData.image!}"),
+                child: CachedNetworkImage(
+                  imageUrl: "${ApiImagePath.post}${cardData.image!}",
+                  placeholder: (context, url) {
+                    return CircularProgressIndicator();
+                  },
+                  errorWidget: (context, url, error) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Placeholder(
+                        fallbackHeight: 100,
+                        color: Colors.red,
+                      ),
+                    );
+                  },
+                ),
               )
             : const SizedBox(),
         (cardData.image != null) ? SizedBox(height: h10) : const SizedBox(),
