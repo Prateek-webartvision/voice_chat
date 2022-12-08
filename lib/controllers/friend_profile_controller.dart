@@ -31,24 +31,32 @@ class FriendProfileController extends GetxController {
     update();
   }
 
-  //change is friend
+  //*Set Post List
+  addPostList(List<FriendProfilePostModel> postModelList) {
+    friendProfilePostList = postModelList;
+    update();
+  }
+
+  //*change is friend
   changeIsFriend(bool v) {
     friendProfile!.isFriend = v;
     update();
   }
 
-  // change is following
+  //* change is following
   changeIsFollowing(bool v) {
     friendProfile!.isFollowing = v;
+
+    //* update followers number
+    if (v == true) {
+      friendProfile!.followersCount++;
+    } else {
+      friendProfile!.followersCount--;
+    }
     update();
   }
 
-  addPostList(List<FriendProfilePostModel> postModelList) {
-    friendProfilePostList = postModelList;
-    print("list profile post");
-    update();
-  }
-
+  //*Like post
   postLike(bool val, int postId) {
     var post = friendProfilePostList!.where(
       (element) {
@@ -62,14 +70,14 @@ class FriendProfileController extends GetxController {
 
     post.isLiked = val;
     if (val == true) {
-      post.likesCount = post.likesCount + 1;
+      post.likesCount++;
     } else {
-      post.likesCount = post.likesCount - 1;
+      post.likesCount--;
     }
     update();
   }
 
-  //Post comment
+  //*Post comment
   addCommentPost({required PostCommentModel comment, required int postId}) {
     var postData = friendProfilePostList!.where((element) {
       if (element.id == postId) {
@@ -78,14 +86,14 @@ class FriendProfileController extends GetxController {
         return false;
       }
     }).first;
+
     postData.comments.add(comment);
     postData.commentCount = postData.comments.length;
-    // postData.
+
     update();
-    // print("${comment.message} $postId ${postData.comments}");
   }
 
-  // post comment remove
+  //* post comment remove
   removeCommentPost({required int postId, required String commentId}) {
     var postData = friendProfilePostList!.where((element) {
       if (element.id == postId) {
@@ -95,7 +103,7 @@ class FriendProfileController extends GetxController {
       }
     }).first;
 
-    PostCommentModel commentModel = postData.comments.where(
+    var commentModel = postData.comments.where(
       (element) {
         if (element.commentId == commentId) {
           return true;

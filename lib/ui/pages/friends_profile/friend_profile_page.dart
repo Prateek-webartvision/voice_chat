@@ -83,7 +83,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> with TickerProvid
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Cover Image with user info
+                  //* Cover Image with user info
                   BgWithAvtar(
                     coverImage: (friendData.friendProfile!.coverImage != null) ? "${ApiImagePath.cover}${friendData.friendProfile!.coverImage}" : null,
                     profileImage: (friendData.friendProfile!.image != null) ? "${ApiImagePath.profile}${friendData.friendProfile!.image}" : null,
@@ -93,7 +93,7 @@ class _FriendProfilePageState extends State<FriendProfilePage> with TickerProvid
                     followingsCount: friendData.friendProfile!.followingCount,
                   ),
 
-                  // Tab Bar
+                  //* Tab Bar
                   Container(
                     alignment: Alignment.centerLeft,
                     color: AppColor.white,

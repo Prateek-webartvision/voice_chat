@@ -25,7 +25,7 @@ class FriendsProfileBottomBtns extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // add friend or chat
+                  //* add friend or chat
                   Container(
                     width: 135,
                     height: 40,
@@ -62,7 +62,7 @@ class FriendsProfileBottomBtns extends StatelessWidget {
                     ),
                   ),
 
-                  // follow and unfollow
+                  //* follow and unfollow
                   Container(
                     width: 135,
                     height: 40,

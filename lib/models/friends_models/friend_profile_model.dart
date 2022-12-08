@@ -3,9 +3,9 @@ import 'package:voice_chat/models/profile_model.dart';
 class FriendProfileModel extends ProfileModel {
   bool isFriend;
   bool isFollowing;
-  final int friendsCount;
-  final int followersCount;
-  final int followingCount;
+  int friendsCount;
+  int followersCount;
+  int followingCount;
 
   FriendProfileModel({
     required int id,

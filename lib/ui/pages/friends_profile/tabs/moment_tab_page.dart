@@ -6,7 +6,6 @@ import 'package:voice_chat/models/post_model.dart';
 import 'package:voice_chat/repositorys/friend_profile_repo.dart';
 import 'package:voice_chat/repositorys/post_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
-import 'package:voice_chat/ui/pages/bottom_navs/post_tabs/post_widgets/post_comment_bottom_sheet.dart';
 import 'package:voice_chat/ui/pages/friends_profile/friend_profile_comment.page.dart';
 
 class MomentsTabPage extends StatefulWidget {
@@ -79,11 +78,14 @@ class _MomentsTabPageState extends State<MomentsTabPage> {
         children: [
           Text(post.body ?? ""),
           const SizedBox(height: 8),
-          Image.network(
-            "${ApiImagePath.post}${post.postImage}",
-            fit: BoxFit.fitHeight,
-          ),
-          const SizedBox(height: 8),
+          //? check post image is null or not
+          (post.postImage != null)
+              ? Image.network(
+                  "${ApiImagePath.post}${post.postImage}",
+                  fit: BoxFit.fitHeight,
+                )
+              : const SizedBox(),
+          (post.postImage != null) ? const SizedBox(height: 8) : const SizedBox(),
           Row(
             children: [
               Row(

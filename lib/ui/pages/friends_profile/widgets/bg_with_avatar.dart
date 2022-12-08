@@ -25,7 +25,7 @@ class BgWithAvtar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        //Cover Image
+        //*Cover Image
         Container(
           height: 200,
           width: double.maxFinite,
@@ -33,10 +33,12 @@ class BgWithAvtar extends StatelessWidget {
             gradient: AppColor.backgraundGradientV,
             image: (coverImage != null)
                 ? DecorationImage(
-                    image: CachedNetworkImageProvider(
-                      coverImage!,
-                    ),
+                    image: CachedNetworkImageProvider(coverImage!),
                     fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                      AppColor.black.withOpacity(0.3),
+                      BlendMode.darken,
+                    ),
                   )
                 : null,
           ),
