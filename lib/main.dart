@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:voice_chat/controller_binding.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
+import 'package:voice_chat/data/notification_services.dart';
 import 'package:voice_chat/res/app_themes.dart';
 import 'package:voice_chat/ui/pages/auth/sign_in_page.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/bottom_nav_bar_page.dart';
@@ -31,6 +32,9 @@ networkChecker() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  LocalNotifition.instance.setSettings();
+  //! test notification it remove shortly
+  LocalNotifition.instance.flutterLocalNotificationsPlugin.show(1, "test notification", "You opened Voice chat", LocalNotifition.instance.notificationDetails);
   await GetStorage.init();
   runApp(const MyApp());
 }

@@ -89,10 +89,8 @@ class RoomsWidget extends StatelessWidget {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    //Bg image
+                    //* room cord Bg image
                     image: DecorationImage(
-                      // image: CachedNetworkImageProvider(
-                      //     controller.rooms[index].roomThum),
                       image: const AssetImage("assets/images/bg.jpg"),
                       fit: BoxFit.cover,
                       colorFilter: ColorFilter.mode(
@@ -114,7 +112,7 @@ class RoomsWidget extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        //Room name
+                        //*Room name
                         Text(
                           controller.rooms![index].roomName,
                           style: TextStyle(
@@ -126,9 +124,10 @@ class RoomsWidget extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 10),
-                        //Creater Name and avtar
+                        //*Creater Name and avtar
                         Row(
                           children: [
+                            //*avtar
                             Container(
                               height: 30,
                               width: 30,
@@ -144,6 +143,7 @@ class RoomsWidget extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 10),
+                            //* room creater name
                             Expanded(
                               child: Text(
                                 "${controller.rooms![index].firstName} ${controller.rooms![index].lastName}",
@@ -170,6 +170,7 @@ class RoomsWidget extends StatelessWidget {
   }
 }
 
+//* top counrys widget
 class CountryGridView extends StatelessWidget {
   const CountryGridView({
     Key? key,
