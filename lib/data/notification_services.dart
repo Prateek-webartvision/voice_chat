@@ -1,19 +1,22 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:voice_chat/res/app_color.dart';
 
 class LocalNotifition {
   static LocalNotifition instance = LocalNotifition();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterNotiPlugin = FlutterLocalNotificationsPlugin();
 
-  final InitializationSettings _initializationSettings = InitializationSettings(
+  final InitializationSettings _initializationSettings = const InitializationSettings(
     //? add app icon with no bg
     android: AndroidInitializationSettings("@mipmap/launcher_icon"),
-    iOS: DarwinInitializationSettings(requestAlertPermission: true, requestBadgePermission: true, requestCriticalPermission: true, requestSoundPermission: true),
+    iOS: DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestCriticalPermission: true,
+      requestSoundPermission: true,
+    ),
   );
 
-  NotificationDetails notificationDetails = NotificationDetails(
+  //*defoult notification
+  NotificationDetails notificationDetails = const NotificationDetails(
     android: AndroidNotificationDetails(
       "channelId",
       "channelName",
@@ -31,6 +34,6 @@ class LocalNotifition {
 
   // initialize
   setSettings() async {
-    await flutterLocalNotificationsPlugin.initialize(_initializationSettings);
+    await flutterNotiPlugin.initialize(_initializationSettings);
   }
 }

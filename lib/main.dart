@@ -34,7 +34,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocalNotifition.instance.setSettings();
   //! test notification it remove shortly
-  LocalNotifition.instance.flutterLocalNotificationsPlugin.show(1, "test notification", "You opened Voice chat", LocalNotifition.instance.notificationDetails);
+  LocalNotifition.instance.flutterNotiPlugin.show(1, "test notification", "You opened Voice chat", LocalNotifition.instance.notificationDetails);
   await GetStorage.init();
   runApp(const MyApp());
 }
