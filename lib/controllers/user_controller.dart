@@ -21,14 +21,6 @@ class UserController extends GetxController {
   final String _dob = "dob";
   final String _country = "country";
   final String _bio = "bio";
-  // int? id;
-  // String? firstName;
-  // String? lastName;
-  // String? mobile;
-  // String? image;
-  // String? gender;
-  // String? dob;
-  // String? country;
 
   setUser({required Map<String, dynamic> userData}) {
     var v = userStorage.write(_user, userData);

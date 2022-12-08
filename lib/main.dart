@@ -5,9 +5,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:voice_chat/controller_binding.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
-import 'package:voice_chat/models/profile_model.dart';
-import 'package:voice_chat/repositorys/profile_repo.dart';
-import 'package:voice_chat/repositorys/socket_io_repo.dart';
 import 'package:voice_chat/res/app_themes.dart';
 import 'package:voice_chat/ui/pages/auth/sign_in_page.dart';
 import 'package:voice_chat/ui/pages/bottom_navs/bottom_nav_bar_page.dart';
@@ -15,6 +12,7 @@ import 'package:voice_chat/ui/pages/bottom_navs/bottom_nav_bar_page.dart';
 import 'utils/app_utils.dart';
 
 networkChecker() {
+  //* check internet connection
   Connectivity().onConnectivityChanged.listen(
     (event) {
       if (event == ConnectivityResult.none) {
@@ -22,12 +20,11 @@ networkChecker() {
           message: "No Internet Connection",
           color: Colors.red,
         );
-        // isConnected = false;
+        //? isConnected = false;
       } else {
         AppUtils.closeFlushBar();
-        // isConnected = true;
+        //? isConnected = true;
       }
-      // update();
     },
   );
 }
@@ -53,8 +50,8 @@ class MyApp extends StatelessWidget {
           themeMode: ThemeMode.light,
           home: GetBuilder<UserController>(
             builder: (user) {
-              //check internet
-              // networkChecker();
+              //? check internet
+              //? networkChecker();
               if (user.getUser != null) {
                 return const BottomNavBarPage();
               } else {
