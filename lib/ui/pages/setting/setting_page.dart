@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
-import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/ui/pages/auth/sign_in_page.dart';
 import 'package:voice_chat/utils/app_utils.dart';
@@ -38,8 +37,7 @@ class SettingPage extends StatelessWidget {
                 },
                 tileColor: AppColor.white,
                 style: ListTileStyle.drawer,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 title: Text(
                   "Link Account",
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
@@ -57,8 +55,7 @@ class SettingPage extends StatelessWidget {
                 },
                 tileColor: AppColor.white,
                 style: ListTileStyle.drawer,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 title: Text(
                   "Update virsion",
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
@@ -84,8 +81,7 @@ class SettingPage extends StatelessWidget {
                 },
                 tileColor: AppColor.white,
                 style: ListTileStyle.drawer,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 title: Text(
                   "Change Language",
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
@@ -103,8 +99,7 @@ class SettingPage extends StatelessWidget {
                 },
                 tileColor: AppColor.white,
                 style: ListTileStyle.drawer,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 title: Text(
                   "Black List",
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
@@ -122,8 +117,7 @@ class SettingPage extends StatelessWidget {
                 },
                 tileColor: AppColor.white,
                 style: ListTileStyle.drawer,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 title: Text(
                   "Privacy agreement",
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
@@ -141,8 +135,7 @@ class SettingPage extends StatelessWidget {
                 },
                 tileColor: AppColor.white,
                 style: ListTileStyle.drawer,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 title: Text(
                   "About voice chat",
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
@@ -172,8 +165,7 @@ class SettingPage extends StatelessWidget {
                 },
                 tileColor: AppColor.white,
                 style: ListTileStyle.drawer,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 title: Text(
                   "Logout",
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
