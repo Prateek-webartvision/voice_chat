@@ -48,7 +48,6 @@ class RoomRepository {
     }).onError((error, stackTrace) {
       AppUtils.showSnakBar(msg: error.toString(), second: 2);
     });
-    print("1");
   }
 
   //create new Room

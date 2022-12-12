@@ -2,6 +2,7 @@
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:voice_chat/data/app_urls.dart';
 import 'package:voice_chat/utils/app_utils.dart';
@@ -37,7 +38,17 @@ class _RoomPageState extends State<RoomPage> {
   init() async {
     await RoomRepository.instance.getRoomByid(widget.roomId);
     mySocket.connect();
+
+    mySocket.socket!.on("user-connected", (data) {
+      print("new conncetion $data");
+    });
+
+    mySocket.socket!.emit("new-user", [widget.roomId, UserController.instance.getId]);
+
     // mySocket.roomChatMessage(widget.roomId);
+    mySocket.socket!.on("user-disconnected", (data) {
+      print(data);
+    });
 
     //* get Room Messages
     mySocket.socket!.on("room-message", (data) {
@@ -48,6 +59,11 @@ class _RoomPageState extends State<RoomPage> {
         );
       }
     });
+
+    mySocket.socket!.on("new-user", (data) {
+      print("close $data");
+    });
+
     //
   }
 

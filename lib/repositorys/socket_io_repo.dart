@@ -29,11 +29,16 @@ class SocketIoPrository {
     socket!.onConnect((data) {
       print("connected");
     });
-    socket!.onDisconnect((data) => print("disconnet"));
+    // socket!.onDisconnect((data) => print("disconnet"));
     socket!.onConnectError((err) => print("errpr; $err"));
     socket!.onError((err) => print(err));
-    socket!.on("e", (data) {
-      print(data);
+  }
+
+  //* disconnetUSer
+  disconnetUSer({required int roomis, required String name}) {
+    socket!.onDisconnect((data) {
+      socket!.emit("dis", [roomis, name]);
+      print("Dis");
     });
   }
 

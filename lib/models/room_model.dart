@@ -44,7 +44,7 @@ class Room {
     // print(json);
     id = json['id'];
     roomName = json['room_name'];
-    users = json['users'];
+    // users = json['users'];
     image = json['image'];
     createdBy = int.parse("${json['created_by']}");
     firstName = json['first_name'];
