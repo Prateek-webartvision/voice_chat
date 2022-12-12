@@ -39,6 +39,17 @@ class _RoomPageState extends State<RoomPage> {
     await RoomRepository.instance.getRoomByid(widget.roomId);
     mySocket.connect();
 
+    // mySocket.socket!.on("users", (data) {
+    //   print(data);
+    // });
+
+    // mySocket.socket!.on("sendMessage", (data) {
+    //   print(data);
+    // });
+    // print(widget.roomId);
+
+    // mySocket.socket!.emit("join-chat-room", [widget.roomId, UserController.instance.getId]);
+
     mySocket.socket!.on("user-connected", (data) {
       print("new conncetion $data");
     });
@@ -238,6 +249,7 @@ class _RoomPageState extends State<RoomPage> {
                                         AppUtils.showSnakBar(msg: "Enter message");
                                       } else {
                                         SocketIoPrository.instance.sendRoomChatMessage(controller.currentRoom!.id, message.text);
+
                                         //   SocketIoPrository.instance.sendMessage(
                                         //     roomName: widget.room.roomName,
                                         //     message: message.text,
