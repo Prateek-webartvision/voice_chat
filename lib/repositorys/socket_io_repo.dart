@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:socket_io_client/socket_io_client.dart';
-import 'package:voice_chat/controllers/message_controller.dart';
+import 'package:voice_chat/controllers/room_message_controller.dart';
 import 'package:voice_chat/controllers/user_controller.dart';
 import 'package:voice_chat/data/api_services.dart';
 import 'package:voice_chat/data/app_urls.dart';
@@ -64,7 +64,7 @@ class SocketIoPrository {
     socket!.on("room-message", (data) {
       print(data);
       if (roomid == data["room_id"]) {
-        MessageController.instance.pushMessage(
+        RoomMessageController.instance.pushMessage(
           RoomMessageModel(name: "${data["first_name"]} ${data["last_name"]}", message: data["message"], profilePic: data['sender_image'], msg: "chat"),
         );
       }

@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
 
-class MessageController extends GetxController {
-  static MessageController instance = Get.find<MessageController>();
+class RoomMessageController extends GetxController {
+  static RoomMessageController instance = Get.find<RoomMessageController>();
   List<RoomMessageModel> messages = [];
+  List<RoomConnectedUser> allConnectedUsers = [];
 
   //update chat messages
   pushMessage(RoomMessageModel data) {
@@ -10,9 +11,26 @@ class MessageController extends GetxController {
     update();
   }
 
+  pushCoonectedUsers(List<RoomConnectedUser> data) {
+    allConnectedUsers = data;
+    update();
+  }
+
   // clearMessage() {
   //   messages;
   // }
+}
+
+class RoomConnectedUser {
+  final int id;
+  final String fillName;
+  String? profileImage;
+
+  RoomConnectedUser({
+    required this.id,
+    required this.fillName,
+    required this.profileImage,
+  });
 }
 
 class RoomMessageModel {

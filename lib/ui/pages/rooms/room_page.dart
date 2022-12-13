@@ -9,11 +9,12 @@ import 'package:voice_chat/utils/app_utils.dart';
 import 'package:voice_chat/repositorys/room_repo.dart';
 import 'package:voice_chat/ui/widgets/k_text_field.dart';
 import 'package:voice_chat/repositorys/socket_io_repo.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:voice_chat/controllers/room_controller.dart';
 import 'package:voice_chat/ui/widgets/backgraund_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:voice_chat/controllers/message_controller.dart';
+import 'package:voice_chat/controllers/room_message_controller.dart';
+
+import 'widgets/room_app_bar.dart';
 
 class RoomPage extends StatefulWidget {
   const RoomPage({super.key, required this.roomId});
@@ -30,7 +31,7 @@ class _RoomPageState extends State<RoomPage> {
 
   @override
   void initState() {
-    MessageController.instance.messages.clear();
+    RoomMessageController.instance.messages.clear();
     init();
     super.initState();
   }
@@ -39,43 +40,42 @@ class _RoomPageState extends State<RoomPage> {
     await RoomRepository.instance.getRoomByid(widget.roomId);
     mySocket.connect();
 
-    // mySocket.socket!.on("users", (data) {
-    //   print(data);
-    // });
+    //*get connected users or online users
+    mySocket.socket!.on("users", (data) {
+      List<RoomConnectedUser> connectedUsers = [];
 
-    // mySocket.socket!.on("sendMessage", (data) {
-    //   print(data);
-    // });
-    // print(widget.roomId);
-
-    // mySocket.socket!.emit("join-chat-room", [widget.roomId, UserController.instance.getId]);
-
-    mySocket.socket!.on("user-connected", (data) {
-      print("new conncetion $data");
-    });
-
-    mySocket.socket!.emit("new-user", [widget.roomId, UserController.instance.getId]);
-
-    // mySocket.roomChatMessage(widget.roomId);
-    mySocket.socket!.on("user-disconnected", (data) {
-      print(data);
-    });
-
-    //* get Room Messages
-    mySocket.socket!.on("room-message", (data) {
-      print(data);
-      if (widget.roomId == data["room_id"]) {
-        MessageController.instance.pushMessage(
-          RoomMessageModel(name: "${data["first_name"]} ${data["last_name"]}", message: data["message"], profilePic: data['sender_image'], msg: "chat"),
+      for (var element in data) {
+        // print(element['userDb']);
+        connectedUsers.add(
+          RoomConnectedUser(
+            id: element['userDb']['id'],
+            fillName: "${element['userDb']['first_name']} ${element['userDb']['last_name']}",
+            profileImage: element['userDb']['image'],
+          ),
         );
       }
+
+      RoomMessageController.instance.pushCoonectedUsers(connectedUsers);
     });
 
-    mySocket.socket!.on("new-user", (data) {
-      print("close $data");
+    //* new user koin message
+    mySocket.socket!.on("notification", (data) {
+      // print("notify $data");
+      RoomMessageController.instance.pushMessage(
+        RoomMessageModel(name: data['description'], message: data["title"], profilePic: null, msg: "conncet"),
+      );
     });
+    // User messgae
+    mySocket.socket!.on("message", (data) {
+      // print("message: $data");
+      RoomMessageController.instance.pushMessage(
+        RoomMessageModel(name: data['user'].toString(), message: data["text"], profilePic: data['profile'], msg: "chat"),
+      );
+    });
+    print(widget.roomId);
 
-    //
+    //* join room
+    mySocket.socket!.emit("join-chat-room", [widget.roomId, UserController.instance.getId]);
   }
 
 //
@@ -97,12 +97,12 @@ class _RoomPageState extends State<RoomPage> {
                     roomName: controller.currentRoom!.roomName,
                     userImage: controller.currentRoom!.creatorImage,
                   ),
-                  //Room header
+                  //*Room header
                   RoomHeaderUsers(testImage: null),
 
-                  // //Chat List
+                  //*Chat List
                   Flexible(
-                    child: GetBuilder<MessageController>(
+                    child: GetBuilder<RoomMessageController>(
                       builder: (controller) {
                         if (controller.messages.isEmpty) {
                           return Center(
@@ -248,8 +248,8 @@ class _RoomPageState extends State<RoomPage> {
                                       if (message.text.isEmpty) {
                                         AppUtils.showSnakBar(msg: "Enter message");
                                       } else {
-                                        SocketIoPrository.instance.sendRoomChatMessage(controller.currentRoom!.id, message.text);
-
+                                        mySocket.socket!.emit("sendMessage", [message.text]);
+                                        // SocketIoPrository.instance.sendRoomChatMessage(controller.currentRoom!.id, message.text);
                                         //   SocketIoPrository.instance.sendMessage(
                                         //     roomName: widget.room.roomName,
                                         //     message: message.text,
@@ -448,140 +448,6 @@ class RoomHeaderUsers extends StatelessWidget {
             ],
           );
         },
-      ),
-    );
-  }
-}
-
-class RoomAppBar extends StatelessWidget {
-  const RoomAppBar({super.key, this.userImage, required this.name, required this.roomName});
-  final String? userImage;
-  final String name;
-  final String roomName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.maxFinite,
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //*user side
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //*Avtar
-                  Row(
-                    children: [
-                      //*image
-                      Container(
-                        height: 32,
-                        width: 32,
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          gradient: AppColor.backgraundGradientV,
-                          image: (userImage != null)
-                              ? DecorationImage(
-                                  image: CachedNetworkImageProvider("${ApiImagePath.profile}$userImage"),
-                                  fit: BoxFit.cover,
-                                )
-                              : null,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      //name number
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            roomName,
-                            style: TextStyle(color: AppColor.white, fontSize: 16.sp, fontWeight: FontWeight.w600),
-                          ),
-                          SizedBox(height: 2),
-                          Text(
-                            name,
-                            style: TextStyle(
-                              color: AppColor.white54,
-                              fontSize: 12.sp,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 10),
-
-                  //Troffi
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.wine_bar_outlined,
-                        color: Colors.yellow,
-                        size: 16,
-                      ),
-                      SizedBox(width: 2),
-                      Text(
-                        "1254",
-                        style: TextStyle(
-                          color: AppColor.white,
-                          fontSize: 10.sp,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              )
-              // viewers side
-              ,
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Wrap(
-                    // runSpacing: 10,
-                    spacing: 8,
-                    children: [
-                      CircleAvatar(
-                        radius: 12,
-                        backgroundColor: AppColor.white,
-                        // foregroundImage: (userImage != null)
-                        //     ? CachedNetworkImageProvider(userImage!)
-                        //     : null,
-                      ),
-                      CircleAvatar(
-                        radius: 12,
-                        backgroundColor: AppColor.white,
-                        // foregroundImage: (userImage != null)
-                        //     ? CachedNetworkImageProvider(userImage!)
-                        //     : null,
-                      ),
-                      CircleAvatar(
-                        radius: 12,
-                        backgroundColor: AppColor.white,
-                        // foregroundImage: (userImage != null)
-                        //     ? CachedNetworkImageProvider(userImage!)
-                        //     : null,
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    "5",
-                    style: TextStyle(
-                      color: AppColor.white,
-                      fontSize: 10.sp,
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
       ),
     );
   }
