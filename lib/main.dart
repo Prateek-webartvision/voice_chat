@@ -33,7 +33,7 @@ networkChecker() {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocalNotifition.instance.setSettings();
-  //! test notification it remove shortly
+  //! test notification will remove shortly
   LocalNotifition.instance.flutterNotiPlugin.show(1, "test notification", "You opened Voice chat", LocalNotifition.instance.notificationDetails);
   await GetStorage.init();
   runApp(const MyApp());

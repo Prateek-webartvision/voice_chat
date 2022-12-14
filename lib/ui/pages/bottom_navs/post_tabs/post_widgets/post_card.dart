@@ -30,15 +30,16 @@ class PostCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(cardData.tag);
     final avtarSize = 40.h;
     return Column(
       children: [
         Container(height: 10),
         Row(
           children: [
-            //avtar
+            //*avtar
             InkWell(
-              //Nivigate to friend profile page
+              //?Nivigate to friend profile page
               onTap: () => (cardData.createdBy == UserController.instance.getId)
                   ? AppUtils.showSnakBar(msg: "Can't open your profile", second: 2)
                   : Get.to(() => FriendProfilePage(friendId: cardData.createdBy)),
@@ -112,6 +113,26 @@ class PostCardWidget extends StatelessWidget {
           ],
         ),
         SizedBox(height: h10),
+        Visibility(
+          visible: (cardData.tag != null),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "#${cardData.tag}",
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                height: 10,
+              )
+            ],
+          ),
+        ),
+
         //Comment
         Row(
           children: [

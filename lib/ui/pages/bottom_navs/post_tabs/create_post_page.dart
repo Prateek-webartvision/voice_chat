@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:voice_chat/repositorys/post_repo.dart';
 import 'package:voice_chat/res/app_color.dart';
 import 'package:image_picker/image_picker.dart';
@@ -281,7 +280,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
   sedPost() => PostRepository.instance.createNewPost(
         image: imageFile?.path,
         postMessage: messageTextController.text,
-        tag: "",
+        tag: postController.tagsString,
       );
 
   @override

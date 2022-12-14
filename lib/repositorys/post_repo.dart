@@ -90,6 +90,7 @@ class PostRepository {
         mapData: {
           "token": UserController.instance.getToken,
           "body": postMessage,
+          "tags": tag ?? "",
           "title": "dsadsa",
         },
         imageData: (image != null)
